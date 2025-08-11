@@ -1,0 +1,90 @@
+import { useState } from "react";
+import SideBar from "./SideBar";
+import { Button, NavItem } from "@/components/shared";
+import SearchBar from "@/features/search/components/SearchBar";
+import { useWindowWidth } from "@/hooks/useWindowWidth";
+
+function Header() {
+    const [sideBar, setSideBar] = useState<boolean>(false);
+    const width = useWindowWidth();
+
+    return (
+        <header>
+            <nav className="bg-primary flex h-16 justify-center gap-4 py-4 lg:h-36">
+                {/* Sidebar */}
+                {sideBar && <SideBar />}
+
+                {/* Navbar */}
+                <div className="flex h-full w-full max-w-7/8 lg:flex-col">
+                    {/* Hàng 1 */}
+                    <div className="flex flex-1 items-center justify-between px-8">
+                        <h1 className="text-xl font-semibold text-white lg:flex-1/4">
+                            LOGO
+                        </h1>
+
+                        {width < 1024 && (
+                            <div
+                                className="text-xl font-semibold text-white"
+                                onClick={() =>
+                                    setSideBar((sideBar) => !sideBar)
+                                }
+                            >
+                                <i className="fa-solid fa-bars"></i>
+                            </div>
+                        )}
+
+                        {width >= 1024 && (
+                            <div className="flex h-full w-full justify-between">
+                                <SearchBar />
+
+                                <div className="flex gap-4">
+                                    <Button
+                                        border=""
+                                        hoverColor=""
+                                        icon="fa-solid fa-heart"
+                                    />
+                                    <Button
+                                        border=""
+                                        hoverColor=""
+                                        icon="fa-solid fa-bag-shopping"
+                                    />
+                                    <Button
+                                        border=""
+                                        hoverColor=""
+                                        icon="fa-solid fa-user"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Hàng 2 cho màn hình lớn */}
+                    {width >= 1024 && (
+                        <div className="flex flex-1 justify-between">
+                            <div className="flex flex-3/4 items-center justify-between px-8">
+                                <div className="bg-surface flex items-center justify-center gap-3 rounded-xl px-4 py-2 font-bold">
+                                    <i className="fa-solid fa-bars"></i>
+                                    <h1>Browse All Categories</h1>
+                                </div>
+
+                                <NavItem text="Home" to="#" />
+                                <NavItem text="Shop" to="shop" />
+                                <NavItem text="Food" to="#" />
+                                <NavItem text="Beverages" to="#" />
+                                <NavItem text="About Us" to="#" />
+                                <NavItem text="Blog" to="#" />
+                            </div>
+
+                            <div className="text-surface flex flex-1/4 items-center justify-end gap-2 px-8">
+                                <p>Recently Viewed</p>
+                                <i className="fa-solid fa-caret-down"></i>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </nav>
+        </header>
+    );
+}
+
+export default Header;

@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: oklch(52.7% 0.154 150.069);
+    --color-secondary: oklch(62.7% 0.194 149.214);
+    --color-secondary-light: oklch(96.2% 0.044 156.743);
+    --color-focus-input: oklch(87.1% 0.15 154.449);
+    --color-disable: oklch(55.1% 0.027 264.364);
+    --color-surface: oklch(85.2% 0.199 91.936);
+
+    --shadow-light: 0px 0px 8px 2px rgb(0, 0, 0, 0.2);
+}
