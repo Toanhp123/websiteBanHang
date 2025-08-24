@@ -1,15 +1,10 @@
 import { Input } from "@/components/shared";
 import type { ItemFilter } from "../types/filter.type";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import {
-    deleteFilter,
-    selectFilter,
-    setListFilter,
-} from "../redux/filter.slice";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { deleteFilter, setListFilter } from "../redux/filter.slice";
 import { TypeFilter } from "@/constants/typeFilter";
 
-// TODO: cần làm thêm về việc chọn filter
 function ItemFilterOption<T extends object>({
     title,
     options,
@@ -19,10 +14,7 @@ function ItemFilterOption<T extends object>({
     type = "list",
 }: ItemFilter<T>) {
     // TODO: cần cải thiện lại biến selectName
-    const listFilter = useAppSelector(selectFilter);
-    console.log(listFilter[1]);
-
-    const [selectName, setSelectName] = useState<string>("");
+    const [selectName, setSelectName] = useState<string>(TypeFilter.ALL);
     const dispatch = useAppDispatch();
 
     useEffect(() => {

@@ -3,10 +3,11 @@ import type { FilterState, SetListFilterPayload } from "../types/filter.type";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { TypeFilter } from "@/constants/typeFilter";
 
+// TODO: cầm làm gì đó với biến price
 const initialState: FilterState = {
     category: TypeFilter.ALL,
-    price: null,
-    productType: TypeFilter.ALL,
+    // price: null,
+    product_type: TypeFilter.ALL,
     available: TypeFilter.ALL,
 };
 
@@ -20,7 +21,7 @@ export const FilterSlice = createSlice({
                     state.category = action.payload.selectName;
                     break;
                 case TypeFilter.PRODUCT_TYPE:
-                    state.productType = action.payload.selectName;
+                    state.product_type = action.payload.selectName;
                     break;
                 case TypeFilter.AVAILABLE:
                     state.available = action.payload.selectName;
@@ -28,18 +29,15 @@ export const FilterSlice = createSlice({
             }
         },
 
-        // TODO: cần làm gì đó
         deleteFilter(state, action: PayloadAction<string>) {
-            if ((action.payload as keyof FilterState) !== "price") {
-                state[action.payload as keyof FilterState] = TypeFilter.ALL;
-            }
+            state[action.payload as keyof FilterState] = TypeFilter.ALL;
         },
 
         deleteAllFilter(state) {
             state.available = TypeFilter.ALL;
             state.category = TypeFilter.ALL;
-            state.price = null;
-            state.productType = TypeFilter.ALL;
+            // state.price = null;
+            state.product_type = TypeFilter.ALL;
         },
     },
 });

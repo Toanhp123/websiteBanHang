@@ -3,7 +3,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import clsx from "clsx";
 
 type ProsTagItem = {
-    text: string;
+    text: string | null;
     type: string;
     isTagOnly?: boolean;
 };
@@ -11,6 +11,7 @@ type ProsTagItem = {
 function TagItem({ text, type, isTagOnly = false }: ProsTagItem) {
     const dispatch = useAppDispatch();
 
+    // TODO: cần làm sao để xóa thì bên listFilter sẽ chuyển về tất cả
     const handleDeleteFilter = (type: string): void => {
         dispatch(deleteFilter(type));
     };

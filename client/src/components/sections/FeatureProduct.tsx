@@ -24,7 +24,7 @@ function FeatureProduct() {
             </div>
 
             <div>
-                <SlideListProduct />
+                <SlideListProduct options="latest" />
             </div>
         </div>
     );

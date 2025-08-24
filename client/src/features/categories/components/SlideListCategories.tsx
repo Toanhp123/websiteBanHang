@@ -13,6 +13,7 @@ function SlideListCategories() {
                 640: { slidesPerView: 3 },
                 1024: { slidesPerView: 5 },
             }}
+            spaceBetween={50}
         >
             {categories.categories.map((category) => (
                 <SwiperSlide key={category.product_category_id}>

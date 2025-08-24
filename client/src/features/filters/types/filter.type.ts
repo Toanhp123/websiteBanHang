@@ -7,15 +7,15 @@ export type ItemFilter<T extends object> = {
     nameGetter: (item: T) => string;
 };
 
-export interface FilterState {
+export type FilterState = {
     category: string | null;
-    price: [string, string] | null;
-    productType: string | null;
+    // price: [string, string] |null;
+    product_type: string | null;
     available: string | null;
-}
+};
 
 export type SetListFilterPayload = {
-    selectName: string | null;
+    selectName: string;
     optionsType: string;
 };
 

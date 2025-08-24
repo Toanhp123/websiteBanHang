@@ -8,6 +8,7 @@ type ButtonPros = {
     iconBefore?: boolean;
     bgColor?: string;
     hoverColor?: string;
+    textColorHover?: string;
     border?: string;
     borderColor?: string;
     type?: "big" | "small" | "icon";
@@ -22,6 +23,7 @@ function Button({
     iconBefore = true,
     bgColor = "bg-primary",
     hoverColor = "hover:bg-secondary",
+    textColorHover = "hover:text-white",
     border = "border",
     borderColor = "black",
     type = "big",
@@ -43,6 +45,7 @@ function Button({
                 textColor,
                 bgColor,
                 hoverColor,
+                textColorHover,
             )}
         >
             {iconBefore ? (

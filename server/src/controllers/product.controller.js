@@ -1,9 +1,12 @@
 const productService = require("../services/product.service");
+const { ProductFilter } = require("../utils/search");
 
 class ProductController {
 	// [GET] product/
-	async getAllProduct(req, res) {
-		const product = await productService.getAllProduct();
+	async getProductByCondition(req, res) {
+		const product = await productService.getProductByCondition(
+			ProductFilter(req.query)
+		);
 
 		res.json(product);
 	}
@@ -29,7 +32,6 @@ class ProductController {
 		res.json(productStatus);
 	}
 
-	// TODO: có lỗi j đó
 	// [GET] product/stock/:id
 	async getProductStock(req, res) {
 		const { productID } = req.params;
@@ -37,6 +39,20 @@ class ProductController {
 		const productStock = await productService.getProductStock(productID);
 
 		res.json({ availability: productStock });
+	}
+
+	// [GET] product/latest
+	async getLatestProduct(req, res) {
+		const product = await productService.getLatestProduct();
+
+		res.json(product);
+	}
+
+	// [GET] product/bestSeller
+	async getBestSellerProduct(req, res) {
+		const product = await productService.getBestSellerProduct();
+
+		res.json(product);
 	}
 }
 

@@ -14,7 +14,7 @@ class ProductService {
 	 * Hàm lấy thông tin toàn bộ sản phẩm
 	 * @return {Promise<Array>} danh sách sản phẩm
 	 */
-	async getAllProduct() {
+	async getProductByCondition(query) {
 		const product = await Product.findAll({
 			include: [
 				{
@@ -25,9 +25,10 @@ class ProductService {
 					model: Inventory,
 					attributes: [],
 				},
-				// {
-				// 	model: ProductType,
-				// },
+				{
+					model: ProductType,
+					attributes: [],
+				},
 				// {
 				// 	model: Supplier,
 				// },
@@ -51,8 +52,11 @@ class ProductService {
 					sequelize.col("ProductCategory.product_category_name"),
 					"category",
 				],
+				[sequelize.col("ProductType.product_type_name"), "type"],
 			],
 			group: ["Product.product_id"],
+			where: query.where,
+			having: query.having,
 		});
 		return product;
 	}
@@ -102,6 +106,31 @@ class ProductService {
 		);
 
 		return totalStock;
+	}
+
+	/**
+	 * Hàm lấy thông tin sản phẩm mới nhất
+	 * @return sản phẩm mới nhất
+	 */
+	async getLatestProduct() {
+		const product = await Product.findAll({
+			order: [["product_date_add", "DESC"]],
+		});
+
+		return product;
+	}
+
+	/**
+	 * Hàm lấy thông tin sản phẩm bán chạy nhất
+	 * @return sản phẩm bán chạy nhất
+	 */
+	async getBestSellerProduct() {
+		// TODO: cần phải làm thêm
+		const product = await Product.findAll({
+			order: [["product_date_add", "DESC"]],
+		});
+
+		return product;
 	}
 }
 

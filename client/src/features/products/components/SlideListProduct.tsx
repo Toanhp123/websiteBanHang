@@ -1,7 +1,28 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import ItemProduct from "./ItemProduct";
+import { useEffect, useState } from "react";
+import {
+    getBestSellerProduct,
+    getLatestProduct,
+} from "../services/product.api";
+import type { Product, SlideListProductPros } from "../types/product.type";
+import bakery from "@/assets/images/categories/bakery.png";
 
-function SlideListProduct() {
+function SlideListProduct({ options }: SlideListProductPros) {
+    const [product, setProduct] = useState<Product[]>([]);
+
+    useEffect(() => {
+        const handleGetProduct = async () => {
+            if (options === "latest") {
+                setProduct(await getLatestProduct());
+            } else if (options === "best sell") {
+                setProduct(await getBestSellerProduct());
+            }
+        };
+
+        handleGetProduct();
+    }, []);
+
     return (
         <Swiper
             breakpoints={{
@@ -14,33 +35,18 @@ function SlideListProduct() {
             }}
             spaceBetween={50}
         >
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
-
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
-
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
-
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
-
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
-
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
-
-            <SwiperSlide>
-                <ItemProduct />
-            </SwiperSlide>
+            {product.map((item) => (
+                <SwiperSlide key={item.product_id}>
+                    <ItemProduct
+                        id={item.product_id}
+                        name={item.product_name}
+                        category={item.category}
+                        price={item.price}
+                        totalStock={item.totalStock}
+                        img={bakery}
+                    />
+                </SwiperSlide>
+            ))}
         </Swiper>
     );
 }

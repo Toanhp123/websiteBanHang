@@ -5,9 +5,11 @@ export type Product = {
     price: number;
     totalStock: number;
     category: string;
+    type: string;
 };
 
 export type ItemProductPros = {
+    id: number;
     name: string;
     img: string;
     price: number;
@@ -17,4 +19,8 @@ export type ItemProductPros = {
 
 export type ItemStock = {
     availability: number;
+};
+
+export type SlideListProductPros = {
+    options: "latest" | "best sell";
 };

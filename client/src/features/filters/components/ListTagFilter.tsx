@@ -7,6 +7,11 @@ function ListTagFilter() {
     const listFilter = useAppSelector(selectFilter);
     const dispatch = useAppDispatch();
 
+    // TODO: cần làm sao để xóa thì bên listFilter sẽ chuyển về tất cả
+    const handleDeleteFilterOption = () => {
+        dispatch(deleteAllFilter());
+    };
+
     return (
         <div>
             <div className="flex items-center justify-between">
@@ -38,7 +43,7 @@ function ListTagFilter() {
                     .some((value) => value[1] !== null && value[1] !== "") && (
                     <p
                         className="text-primary font-semibold underline"
-                        onClick={() => dispatch(deleteAllFilter())}
+                        onClick={handleDeleteFilterOption}
                     >
                         Clear All
                     </p>

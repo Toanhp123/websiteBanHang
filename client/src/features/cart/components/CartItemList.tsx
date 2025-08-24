@@ -1,8 +1,15 @@
-import bakery from "@/assets/images/categories/bakery.png";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { deleteAllCart, selectCart } from "../redux/cart.slice";
 
 function CartItemList() {
+    const listCart = useAppSelector(selectCart);
+    const dispatch = useAppDispatch();
+
+    const handleDeleteAllCart = () => {
+        dispatch(deleteAllCart());
+    };
+
     return (
-        // TODO: cần làm tiếp đang có đường kẻ trắng ở hàng đầu tiên
         <div>
             <table className="w-full border-separate border-spacing-0 text-left">
                 <thead>
@@ -19,44 +26,48 @@ function CartItemList() {
                 </thead>
 
                 <tbody>
-                    <tr className="border-b border-gray-300">
-                        <td className="px-4 py-2">
-                            <div className="my-3 flex items-center gap-4">
-                                <div className="h-14 w-14 rounded-xl border border-gray-300 p-2">
-                                    <img src={bakery} alt="image" />
+                    {listCart.map((item) => (
+                        <tr className="border-b border-gray-300" key={item.id}>
+                            <td className="px-4 py-2">
+                                <div className="my-3 flex items-center gap-4">
+                                    <div className="h-14 w-14 rounded-xl border border-gray-300 p-2">
+                                        <img src={item.img} alt="image" />
+                                    </div>
+
+                                    <h1>{item.product}</h1>
                                 </div>
-
-                                <h1>Fresh Oranges</h1>
-                            </div>
-                        </td>
-                        <td className="px-4 py-2 text-center">2</td>
-                        <td className="px-4 py-2 text-right">3</td>
-                        <td className="px-4 py-2 text-right">4</td>
-                    </tr>
-
-                    <tr className="border-b border-gray-300">
-                        <td className="px-4 py-2">
-                            <div className="my-3 flex items-center gap-4">
-                                <div className="h-14 w-14 rounded-xl border border-gray-300 p-2">
-                                    <img src={bakery} alt="image" />
-                                </div>
-
-                                <h1>Fresh Oranges</h1>
-                            </div>
-                        </td>
-                        <td className="px-4 py-2 text-center">2</td>
-                        <td className="px-4 py-2 text-right">3</td>
-                        <td className="px-4 py-2 text-right">4</td>
-                    </tr>
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                                {item.price}
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                                {item.quantity}
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                                {item.price * item.quantity}
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
 
-                {/* TODO: cần làm thêm input và button cho item list */}
                 <tfoot>
                     <tr>
+                        {/* TODO: cần làm thêm input và button áp dụng khuyến mãi cho item list */}
                         <td className="flex">
-                            <div>1</div>
-                            <div>1</div>
-                            <div>1</div>
+                            {/* <Input />
+                            <Button /> */}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td className="text-center">
+                            {listCart.length > 0 && (
+                                <p
+                                    className="text-primary font-semibold underline"
+                                    onClick={handleDeleteAllCart}
+                                >
+                                    Clear Shopping Cart
+                                </p>
+                            )}
                         </td>
                     </tr>
                 </tfoot>

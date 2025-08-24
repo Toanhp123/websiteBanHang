@@ -2,8 +2,11 @@ import { useState } from "react";
 import Button from "../../../components/shared/Button";
 import { useNavigate } from "react-router-dom";
 import type { ItemProductPros } from "../types/product.type";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { addToCart } from "@/features/cart/redux/cart.slice";
 
 function ItemProduct({
+    id,
     totalStock,
     img,
     price,
@@ -12,14 +15,14 @@ function ItemProduct({
 }: ItemProductPros) {
     const [like, setLike] = useState<boolean>(false);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const handleClickItem = (): void => {
         navigate("/shop/productDetail");
     };
 
-    // TODO: cần làm thêm
     const handleClickButton = () => {
-        console.log(1);
+        dispatch(addToCart({ id, product: name, price, img, quantity: 1 }));
     };
 
     //TODO: Có thể cần thêm size thẻ -- max-h-90 min-h-70 max-w-65 min-w-45

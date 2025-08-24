@@ -36,6 +36,10 @@ const Product = sequelize.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		product_date_add: {
+			type: DataTypes.DATE,
+			defaultValue: DataTypes.NOW,
+		},
 	},
 	{
 		tableName: "product",

@@ -25,7 +25,7 @@ function BestSeller() {
             </div>
 
             <div>
-                <SlideListProduct />
+                <SlideListProduct options="best sell" />
             </div>
         </div>
     );
