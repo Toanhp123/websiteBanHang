@@ -1,43 +1,107 @@
-const AppError = require("../utils/errorCustom.util");
-const { ProductError } = require("../configs/constants.config");
 const {
 	Product,
-	ProductType,
+	ProductCategory,
 	Supplier,
 	ProductStatus,
 	ProductImage,
+	ProductType,
+	Inventory,
+	sequelize,
 } = require("../models");
 
 class ProductService {
 	/**
 	 * Hàm lấy thông tin toàn bộ sản phẩm
-	 * @return {Promise<Array>} thông tin sản phẩm
+	 * @return {Promise<Array>} danh sách sản phẩm
 	 */
 	async getAllProduct() {
 		const product = await Product.findAll({
 			include: [
 				{
-					model: ProductType,
+					model: ProductCategory,
+					attributes: [],
 				},
 				{
-					model: Supplier,
+					model: Inventory,
+					attributes: [],
 				},
-				{
-					model: ProductStatus,
-				},
-				{
-					model: ProductImage,
-				},
+				// {
+				// 	model: ProductType,
+				// },
+				// {
+				// 	model: Supplier,
+				// },
+				// {
+				// 	model: ProductStatus,
+				// },
+				// {
+				// 	model: ProductImage,
+				// },
 			],
+			attributes: [
+				"product_id",
+				"product_name",
+				"product_description",
+				"price",
+				[
+					sequelize.fn("SUM", sequelize.col("Inventories.quantity")),
+					"totalStock",
+				],
+				[
+					sequelize.col("ProductCategory.product_category_name"),
+					"category",
+				],
+			],
+			group: ["Product.product_id"],
 		});
-
 		return product;
 	}
 
+	/**
+	 * Hàm lấy thông tin category
+	 * @returns {Promise<Array>} danh sách category
+	 */
 	async getCategories() {
-		const categories = await ProductType.findAll();
+		const categories = await ProductCategory.findAll();
 
 		return categories;
+	}
+
+	/**
+	 * Hàm lấy thông tin product type
+	 * @returns {Promise<Array>} danh sách type
+	 */
+	async getProductType() {
+		const productType = await ProductType.findAll();
+
+		return productType;
+	}
+
+	/**
+	 * Hàm lấy thông tin product status
+	 * @returns {Promise<Array>} danh sách status
+	 */
+	async getProductStatus() {
+		const productStatus = await ProductStatus.findAll();
+
+		return productStatus;
+	}
+
+	/**
+	 * Hàm lấy thông tin product stock
+	 * @returns {Promise<number>} số lượng stock còn lại
+	 */
+	async getProductStock(product_id) {
+		const productStock = await Inventory.findAll({
+			where: { product_id: product_id },
+		});
+
+		const totalStock = productStock.reduce(
+			(acc, item) => acc + item.quantity,
+			0
+		);
+
+		return totalStock;
 	}
 }
 

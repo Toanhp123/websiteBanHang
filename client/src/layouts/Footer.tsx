@@ -6,7 +6,7 @@ function Footer() {
     const [email, setEmail] = useState("");
 
     return (
-        <div className="space-y-18 bg-gray-100 p-4">
+        <div className="space-y-18 bg-gray-200 p-4">
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-gray-600">
                     Our Newsletter

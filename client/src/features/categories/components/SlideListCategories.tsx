@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
-import type { Categories } from "../types/categories.type";
 import { Swiper, SwiperSlide } from "swiper/react";
 import bakery from "@/assets/images/categories/bakery.png";
 import ItemCategories from "./ItemCategories";
-import { getCategories } from "@/services/getCategories.api";
+import { useCategories } from "@/hooks/useCategories";
 
 function SlideListCategories() {
-    const [listCategories, setListCategories] = useState<Categories[]>([]);
-
-    const handleGetCategories = async () => {
-        setListCategories(await getCategories());
-    };
-
-    useEffect(() => {
-        handleGetCategories();
-    }, []);
+    const categories = useCategories();
 
     return (
         <Swiper
@@ -24,11 +14,11 @@ function SlideListCategories() {
                 1024: { slidesPerView: 5 },
             }}
         >
-            {listCategories.map((category) => (
-                <SwiperSlide key={category.product_type_id}>
+            {categories.categories.map((category) => (
+                <SwiperSlide key={category.product_category_id}>
                     <ItemCategories
                         img={bakery}
-                        name={category.product_type_name}
+                        name={category.product_category_name}
                     />
                 </SwiperSlide>
             ))}

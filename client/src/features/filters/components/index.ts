@@ -1,3 +1,5 @@
-import { default as FilterOption } from "./FilterOption";
+import { default as ListFilterOption } from "./ListFilterOption";
+import { default as ItemFilterOption } from "./ItemFilterOption";
+import { default as ListTagFilter } from "./ListTagFilter";
 
-export { FilterOption };
+export { ListFilterOption, ItemFilterOption, ListTagFilter };

@@ -34,7 +34,7 @@ function RegisterForm() {
             password === retypePass && password !== "" ? password : undefined,
     };
 
-    //TODO: cần xử lý sự kiện chuyển trang handleNextStep đang bị hiện tượng khi đến step 3 gọi func back step sẽ gọi onSubmit form dẫn đến không lùi được
+    //TODO: cần xử lý sự kiện chuyển trang handleNextStep đang bị hiện tượng khi đến step 3 gọi func back step sẽ gọi onSubmit form dẫn đến không lùi được, cần làm nốt sự kiện đăng ký người dùng
     const handleRegister = async (
         e: React.FormEvent<HTMLFormElement>,
     ): Promise<void> => {
@@ -136,7 +136,7 @@ function RegisterForm() {
                             value={phone}
                             setValue={setPhone}
                             required={true}
-                            type="tel"
+                            inputFormat="tel"
                         />
 
                         <Input
@@ -145,7 +145,7 @@ function RegisterForm() {
                             value={birthday}
                             setValue={setBirthday}
                             required={true}
-                            type="date"
+                            inputFormat="date"
                         />
 
                         <Input
@@ -167,7 +167,7 @@ function RegisterForm() {
                             value={password}
                             setValue={setPassword}
                             required={true}
-                            type="password"
+                            inputFormat="password"
                         />
 
                         <Input
@@ -176,7 +176,7 @@ function RegisterForm() {
                             value={retypePass}
                             setValue={setRetypePass}
                             required={true}
-                            type="password"
+                            inputFormat="password"
                         />
                     </div>
                 )}

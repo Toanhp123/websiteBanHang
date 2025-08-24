@@ -1,5 +1,6 @@
 import axios, { AxiosError, type AxiosInstance } from "axios";
 import { handleApiError } from "./errorHandler";
+import { getAccessToken } from "@/stores/authStore";
 
 const instance: AxiosInstance = axios.create({
     baseURL: "http://localhost:3000",
@@ -9,7 +10,7 @@ const instance: AxiosInstance = axios.create({
 // Interceptor: Gắn token vào mỗi request
 instance.interceptors.request.use(
     (config) => {
-        const token: string | null = localStorage.getItem("accessToken");
+        const token: string | null = getAccessToken();
 
         if (token && config.headers) {
             config.headers["Authorization"] = `Bearer ${token}`;

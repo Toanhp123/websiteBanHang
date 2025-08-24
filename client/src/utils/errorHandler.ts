@@ -1,8 +1,9 @@
-import { getAccessToken } from "@/features/auth/services/auth.api";
+import { refreshToken } from "@/features/auth/services/auth.api";
 import type { RetryRequestConfig } from "@/types/axiosType";
 import { AxiosError } from "axios";
 import axios from "@/utils/axiosInstance";
 import { ErrorCode } from "@/constants/errorCode";
+import { clearAccessToken, setAccessToken } from "@/stores/authStore";
 
 // TODO: cân làm hàm xử lý lỗi
 // Có thể nhận thêm đối số như router nếu cần
@@ -18,8 +19,9 @@ export const handleApiError = async (error: AxiosError) => {
                 originalRequest._retry = true;
 
                 try {
-                    const newAccessToken = await getAccessToken();
+                    const newAccessToken = await refreshToken();
 
+                    setAccessToken(newAccessToken);
                     // Gắn lại access token mới vào request cũ
                     originalRequest.headers["Authorization"] =
                         `Bearer ${newAccessToken}`;
@@ -29,7 +31,7 @@ export const handleApiError = async (error: AxiosError) => {
                     console.log(refreshError);
                     console.error("Refresh thất bại, cần đăng nhập lại");
 
-                    localStorage.removeItem("accessToken");
+                    clearAccessToken();
                     window.location.href = "/login";
                 }
             }

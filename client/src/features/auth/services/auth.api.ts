@@ -30,7 +30,7 @@ export const login = async ({
  * Hàm lấy access token nếu refresh token hợp lệ
  * @returns trả về access token mới
  */
-export const getAccessToken = async (): Promise<string> => {
+export const refreshToken = async (): Promise<string> => {
     const res = await axios.post<RefreshResponse>(
         "/auth/refresh-token",
         {},
@@ -39,7 +39,6 @@ export const getAccessToken = async (): Promise<string> => {
         },
     );
     const newAccessToken = res.data.accessToken;
-    localStorage.setItem("accessToken", newAccessToken);
 
     return newAccessToken;
 };
@@ -61,3 +60,12 @@ export const register = async (
 
     return res.data;
 };
+
+/**
+ * Hàm xử lý check accessToken còn hạn không
+ */
+// export const checkAccessToken = async (accessToken: string) => {
+//     const res = await axios.post<>("/auth/register", {});
+
+//     return res.data;
+// };

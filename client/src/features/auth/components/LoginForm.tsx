@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login } from "../services/auth.api";
 import type { LoginCredentials } from "../types/auth.type";
+import { setAccessToken } from "@/stores/authStore";
 
 function LoginForm() {
     const [username, setUsername] = useState<string>("");
@@ -21,7 +22,7 @@ function LoginForm() {
 
         try {
             const res = await login({ username, password });
-            localStorage.setItem("accessToken", res.data.accessToken);
+            setAccessToken(res.data.accessToken);
             navigate(from, { replace: true });
         } catch (error) {
             console.log(error);
@@ -51,7 +52,7 @@ function LoginForm() {
                     placeholder="Password"
                     value={password}
                     setValue={setPassword}
-                    type="password"
+                    type="text"
                     required={true}
                 />
 

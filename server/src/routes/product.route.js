@@ -8,6 +8,12 @@ const route = express.Router();
 
 route.get("/categories", catchAsync(productController.getCategories));
 
+route.get("/type", catchAsync(productController.getProductType));
+
+route.get("/status", catchAsync(productController.getProductStatus));
+
+route.get("/stock/:productID", catchAsync(productController.getProductStock));
+
 route.get("/", catchAsync(productController.getAllProduct));
 
 module.exports = route;

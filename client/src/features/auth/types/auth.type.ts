@@ -28,3 +28,7 @@ export type RegisterCredentials = {
     username: string;
     password: string | undefined;
 };
+
+export type AuthState = {
+    accessToken: string | null;
+};

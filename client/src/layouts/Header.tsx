@@ -3,10 +3,16 @@ import SideBar from "./SideBar";
 import { Button, NavItem } from "@/components/shared";
 import SearchBar from "@/features/search/components/SearchBar";
 import { useWindowWidth } from "@/hooks/useWindowWidth";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
     const [sideBar, setSideBar] = useState<boolean>(false);
     const width = useWindowWidth();
+    const navigate = useNavigate();
+
+    const handleClick = (location: string): void => {
+        navigate("/" + location);
+    };
 
     return (
         <header>
@@ -47,11 +53,13 @@ function Header() {
                                         border=""
                                         hoverColor=""
                                         icon="fa-solid fa-bag-shopping"
+                                        onClick={() => handleClick("cartShop")}
                                     />
                                     <Button
                                         border=""
                                         hoverColor=""
                                         icon="fa-solid fa-user"
+                                        onClick={() => handleClick("myAccount")}
                                     />
                                 </div>
                             </div>
