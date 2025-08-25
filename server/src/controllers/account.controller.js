@@ -20,6 +20,38 @@ class AccountController {
 
 		res.json(account);
 	}
+
+	// [POST] /account/cart
+	async putItemToCart(req, res) {
+		const { product_id, quantity } = req.body;
+		const account_id = req.user.id;
+
+		const cart = await AccountService.putItemToCart(
+			product_id,
+			quantity,
+			account_id
+		);
+
+		res.json({ message: "Added to cart success", cart: cart });
+	}
+
+	// [GET] /account/cart
+	async getCart(req, res) {
+		const account_id = req.user.id;
+
+		const cart = await AccountService.getCart(account_id);
+
+		res.json(cart);
+	}
+
+	// [DELETE] /account/cart/:id
+	async deleteItemInCart(req, res) {
+		const { id } = req.params;
+
+		await AccountService.deleteItemInCart(id);
+
+		res.json({ message: "Delete item in cart success" });
+	}
 }
 
 module.exports = new AccountController();

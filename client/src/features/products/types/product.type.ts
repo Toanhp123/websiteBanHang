@@ -1,3 +1,5 @@
+import type { FilterState } from "@/features/filters/types/filter.type";
+
 export type Product = {
     product_id: number;
     product_name: string;
@@ -6,12 +8,19 @@ export type Product = {
     totalStock: number;
     category: string;
     type: string;
+    images: ProductImage[];
+};
+
+export type ProductImage = {
+    product_id: number;
+    is_main: number;
+    image_url: string;
 };
 
 export type ItemProductPros = {
-    id: number;
-    name: string;
-    img: string;
+    product_id: number;
+    product_name: string;
+    images: ProductImage[];
     price: number;
     category: string;
     totalStock: number;
@@ -23,4 +32,11 @@ export type ItemStock = {
 
 export type SlideListProductPros = {
     options: "latest" | "best sell";
+};
+
+export type SortOptions = "latest" | "best" | "name decs" | "name up";
+
+export type GetProductByConditionParams = {
+    filterOption?: FilterState;
+    option?: SortOptions;
 };

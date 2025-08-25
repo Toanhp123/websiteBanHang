@@ -3,7 +3,7 @@ export type ListCartState = {
 };
 
 export type Cart = {
-    id: number;
+    id_product: number;
     product: string;
     quantity: number;
     price: number;

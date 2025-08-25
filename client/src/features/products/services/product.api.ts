@@ -1,15 +1,22 @@
 import axios from "@/utils/axiosInstance";
-import type { ItemStock, Product } from "../types/product.type";
-import type { FilterState } from "@/features/filters/types/filter.type";
+import type {
+    GetProductByConditionParams,
+    ItemStock,
+    Product,
+    SortOptions,
+} from "../types/product.type";
 
-export const getProductByCondition = async (
-    filterOption: FilterState,
-): Promise<Product[]> => {
-    const params: Record<string, string | number | boolean | null> = {
-        category: filterOption.category || null,
-        productType: filterOption.product_type || null,
-        availability: filterOption.available || null,
-    };
+export const getProductByCondition = async ({
+    filterOption,
+    option,
+}: GetProductByConditionParams): Promise<Product[]> => {
+    const params: Record<string, string | number | boolean | null> = {};
+
+    if (filterOption?.category) params.category = filterOption.category;
+    if (filterOption?.product_type)
+        params.productType = filterOption.product_type;
+    if (filterOption?.available) params.availability = filterOption.available;
+    if (option) params.sortBy = option;
 
     const res = await axios.get<Product[]>("product", {
         params,
@@ -18,14 +25,12 @@ export const getProductByCondition = async (
     return res.data;
 };
 
-export const getLatestProduct = async () => {
-    const res = await axios.get<Product[]>("product/latest");
+export const getProductSort = async (sortOptions: SortOptions) => {
+    const params: Record<string, string> = {
+        sortOptions,
+    };
 
-    return res.data;
-};
-
-export const getBestSellerProduct = async () => {
-    const res = await axios.get<Product[]>("product/bestSeller");
+    const res = await axios.get<Product[]>("product/bestSeller", params);
 
     return res.data;
 };

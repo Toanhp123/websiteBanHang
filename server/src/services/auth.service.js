@@ -116,6 +116,8 @@ class AuthService {
 				},
 				{ transaction }
 			);
+
+			await transaction.commit();
 		} catch (err) {
 			await transaction.rollback();
 
@@ -248,6 +250,8 @@ class AuthService {
 					);
 				}
 			}
+
+			await transaction.commit();
 		} catch (err) {
 			await transaction.rollback();
 

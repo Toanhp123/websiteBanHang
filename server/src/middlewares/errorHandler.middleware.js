@@ -3,6 +3,8 @@ const {
 	CookieStatus,
 	AccountStatus,
 	ProfileStatus,
+	CartStatus,
+	ProductStatus,
 } = require("../configs/constants.config");
 
 const AppError = require("../utils/errorCustom.util");
@@ -39,6 +41,13 @@ const errorHandler = (err, req, res, next) => {
 		AccountStatus.WRONG_EMAIL_FORMAT,
 
 		ProfileStatus.NOT_FOUND,
+
+		CartStatus.NOT_FOUND,
+		CartStatus.ERROR_ITEM,
+		CartStatus.ERROR_DELETE_ITEM,
+		CartStatus.ERROR_ADD_TO_DATABASE,
+
+		ProductStatus.ERROR_ITEM,
 	];
 
 	const statusCode = isAppError ? err.statusCode : 500;

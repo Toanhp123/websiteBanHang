@@ -15,6 +15,7 @@ class ProductService {
 	 * @return {Promise<Array>} danh sách sản phẩm
 	 */
 	async getProductByCondition(query) {
+		// TODO: cần thêm xét theo sort options và thuật toán tính tiền để suy ra sản phẩm bán chạy
 		const product = await Product.findAll({
 			include: [
 				{
@@ -29,15 +30,6 @@ class ProductService {
 					model: ProductType,
 					attributes: [],
 				},
-				// {
-				// 	model: Supplier,
-				// },
-				// {
-				// 	model: ProductStatus,
-				// },
-				// {
-				// 	model: ProductImage,
-				// },
 			],
 			attributes: [
 				"product_id",
@@ -58,7 +50,23 @@ class ProductService {
 			where: query.where,
 			having: query.having,
 		});
-		return product;
+
+		const productImage = await ProductImage.findAll({
+			attributes: ["image_url", "is_main", "product_id"],
+		});
+
+		const productsWithImage = product.map((p) => {
+			const imgs = productImage.filter(
+				(img) => img.product_id === p.product_id
+			);
+
+			return {
+				...p.toJSON(),
+				images: imgs,
+			};
+		});
+
+		return productsWithImage;
 	}
 
 	/**
@@ -106,31 +114,6 @@ class ProductService {
 		);
 
 		return totalStock;
-	}
-
-	/**
-	 * Hàm lấy thông tin sản phẩm mới nhất
-	 * @return sản phẩm mới nhất
-	 */
-	async getLatestProduct() {
-		const product = await Product.findAll({
-			order: [["product_date_add", "DESC"]],
-		});
-
-		return product;
-	}
-
-	/**
-	 * Hàm lấy thông tin sản phẩm bán chạy nhất
-	 * @return sản phẩm bán chạy nhất
-	 */
-	async getBestSellerProduct() {
-		// TODO: cần phải làm thêm
-		const product = await Product.findAll({
-			order: [["product_date_add", "DESC"]],
-		});
-
-		return product;
 	}
 }
 

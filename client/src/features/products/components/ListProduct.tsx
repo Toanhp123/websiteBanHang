@@ -4,7 +4,6 @@ import { Pagination } from "@/components/shared";
 import { ITEMS_PER_PAGE } from "@/constants/mics";
 import { getProductByCondition } from "../services/product.api";
 import type { Product } from "../types/product.type";
-import bakery from "@/assets/images/categories/bakery.png";
 import { useAppSelector } from "@/hooks/useRedux";
 import { selectFilter } from "@/features/filters/redux/filter.slice";
 import { normalizeFilter } from "@/utils/normalizeObject";
@@ -38,10 +37,10 @@ function ListProduct() {
                 {visibleItems.map((item) => (
                     <li key={item.product_id}>
                         <ItemProduct
-                            id={item.product_id}
+                            product_id={item.product_id}
                             totalStock={item.totalStock}
-                            name={item.product_name}
-                            img={bakery}
+                            product_name={item.product_name}
+                            images={item.images}
                             price={item.price}
                             category={item.category}
                         />

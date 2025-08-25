@@ -40,20 +40,6 @@ class ProductController {
 
 		res.json({ availability: productStock });
 	}
-
-	// [GET] product/latest
-	async getLatestProduct(req, res) {
-		const product = await productService.getLatestProduct();
-
-		res.json(product);
-	}
-
-	// [GET] product/bestSeller
-	async getBestSellerProduct(req, res) {
-		const product = await productService.getBestSellerProduct();
-
-		res.json(product);
-	}
 }
 
 module.exports = new ProductController();

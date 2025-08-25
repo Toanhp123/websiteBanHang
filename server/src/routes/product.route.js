@@ -14,10 +14,6 @@ route.get("/status", catchAsync(productController.getProductStatus));
 
 route.get("/stock/:productID", catchAsync(productController.getProductStock));
 
-route.get("/latest", catchAsync(productController.getLatestProduct));
-
-route.get("/bestSeller", catchAsync(productController.getBestSellerProduct));
-
 route.get("/", catchAsync(productController.getProductByCondition));
 
 module.exports = route;

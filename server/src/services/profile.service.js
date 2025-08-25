@@ -1,8 +1,6 @@
 const { Customer, Account } = require("../models");
 const { ProfileStatus } = require("../configs/constants.config");
 
-const AppError = require("../utils/errorCustom.util");
-
 class ProfileService {
 	/**
 	 * Lấy thông tin hồ sơ của khách hàng bằng ID

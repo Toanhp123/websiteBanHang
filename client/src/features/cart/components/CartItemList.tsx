@@ -1,22 +1,43 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { deleteAllCart, selectCart } from "../redux/cart.slice";
+import { deleteAllCart, selectCart, setCart } from "../redux/cart.slice";
+import { useEffect } from "react";
+import {
+    deleteCartAtDatabase,
+    getCartFromDatabase,
+} from "../services/cart.api";
+import { Button } from "@/components/shared";
 
 function CartItemList() {
-    const listCart = useAppSelector(selectCart);
+    const cart = useAppSelector(selectCart);
     const dispatch = useAppDispatch();
 
-    const handleDeleteAllCart = () => {
+    const handleDeleteAllCart = (): void => {
         dispatch(deleteAllCart());
     };
+
+    const handleDeleteItemCart = async (id_product: number): Promise<void> => {
+        await deleteCartAtDatabase(id_product);
+    };
+
+    useEffect(() => {
+        // Chỉ gọi API khi redux cart trống
+        if (!cart || cart.length === 0) {
+            console.log(1);
+
+            (async () => {
+                const res = await getCartFromDatabase();
+                dispatch(setCart(res));
+            })();
+        }
+    }, [cart, dispatch]);
 
     return (
         <div>
             <table className="w-full border-separate border-spacing-0 text-left">
                 <thead>
                     <tr className="bg-surface">
-                        <th className="rounded-tl-xl rounded-bl-xl px-4 py-2">
-                            Product
-                        </th>
+                        <th className="rounded-tl-xl rounded-bl-xl"></th>
+                        <th className="px-4 py-2">Product</th>
                         <th className="px-4 py-2 text-center">Price</th>
                         <th className="px-4 py-2 text-right">Quantity</th>
                         <th className="rounded-tr-xl rounded-br-xl px-4 py-2 text-right">
@@ -25,29 +46,61 @@ function CartItemList() {
                     </tr>
                 </thead>
 
+                {/* TODO: cần làm thêm về giao diện */}
                 <tbody>
-                    {listCart.map((item) => (
-                        <tr className="border-b border-gray-300" key={item.id}>
-                            <td className="px-4 py-2">
-                                <div className="my-3 flex items-center gap-4">
-                                    <div className="h-14 w-14 rounded-xl border border-gray-300 p-2">
-                                        <img src={item.img} alt="image" />
+                    {cart.length !== undefined &&
+                        cart.map((item) => (
+                            <tr key={item.id_product}>
+                                <td className="border-b border-gray-300">
+                                    <div className="ml-6 flex w-4 items-center justify-center">
+                                        <Button
+                                            onClick={() =>
+                                                handleDeleteItemCart(
+                                                    item.id_product,
+                                                )
+                                            }
+                                            icon="fa-solid fa-xmark"
+                                            bgColor=""
+                                            textColor="text-black"
+                                            border=""
+                                        />
                                     </div>
+                                </td>
+                                <td className="border-b border-gray-300 px-4 py-2">
+                                    <div className="my-3 flex items-center gap-4">
+                                        <div className="flex h-18 w-18 items-center justify-center rounded-xl border border-gray-300 p-1">
+                                            <img
+                                                src={`http://localhost:3000/${item.img}`}
+                                                alt="image"
+                                            />
+                                        </div>
 
-                                    <h1>{item.product}</h1>
-                                </div>
+                                        <h1>{item.product}</h1>
+                                    </div>
+                                </td>
+                                <td className="border-b border-gray-300 px-4 py-2 text-center">
+                                    {item.price}
+                                </td>
+                                <td className="border-b border-gray-300 px-4 py-2 text-right">
+                                    {item.quantity}
+                                </td>
+                                <td className="border-b border-gray-300 px-4 py-2 text-right">
+                                    {item.price * item.quantity}
+                                </td>
+                            </tr>
+                        ))}
+
+                    {cart.length === undefined && (
+                        <tr>
+                            <td>
+                                <div className="ml-2"></div>
                             </td>
-                            <td className="px-4 py-2 text-center">
-                                {item.price}
-                            </td>
-                            <td className="px-4 py-2 text-right">
-                                {item.quantity}
-                            </td>
-                            <td className="px-4 py-2 text-right">
-                                {item.price * item.quantity}
-                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
 
                 <tfoot>
@@ -60,7 +113,7 @@ function CartItemList() {
                         <td></td>
                         <td></td>
                         <td className="text-center">
-                            {listCart.length > 0 && (
+                            {cart.length > 0 && (
                                 <p
                                     className="text-primary font-semibold underline"
                                     onClick={handleDeleteAllCart}

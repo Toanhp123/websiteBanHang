@@ -4,31 +4,45 @@ import { useNavigate } from "react-router-dom";
 import type { ItemProductPros } from "../types/product.type";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { addToCart } from "@/features/cart/redux/cart.slice";
+import { getAccessToken } from "@/stores/authStore";
 
 function ItemProduct({
-    id,
+    product_id,
+    product_name,
     totalStock,
-    img,
     price,
-    name,
     category,
+    images,
 }: ItemProductPros) {
     const [like, setLike] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    const mainImage = images
+        .filter((img) => img.is_main === 1)
+        .map((img) => img.image_url)[0];
 
     const handleClickItem = (): void => {
         navigate("/shop/productDetail");
     };
 
     const handleClickButton = () => {
-        dispatch(addToCart({ id, product: name, price, img, quantity: 1 }));
+        if (getAccessToken()) {
+            dispatch(
+                addToCart({
+                    id_product: product_id,
+                    product: product_name,
+                    price,
+                    img: mainImage,
+                    quantity: 1,
+                }),
+            );
+        }
     };
 
-    //TODO: Có thể cần thêm size thẻ -- max-h-90 min-h-70 max-w-65 min-w-45
     return (
         <div className="relative flex flex-col justify-center rounded-2xl border border-gray-200 bg-white p-4">
-            <div onClick={() => handleClickItem()}>
+            <div className="h-60" onClick={() => handleClickItem()}>
                 <div className="absolute top-4 left-4 rounded-l-[8px] rounded-r-2xl bg-green-700 px-4 py-1 text-white">
                     50% off
                 </div>
@@ -44,8 +58,11 @@ function ItemProduct({
                     )}
                 </div>
 
-                <div className="p-6">
-                    <img src={img} alt="image" />
+                <div className="p-2">
+                    <img
+                        src={`http://localhost:3000/${mainImage}`}
+                        alt="image"
+                    />
                 </div>
             </div>
 
@@ -55,7 +72,7 @@ function ItemProduct({
                     <p className="font-semibold">Stock: {totalStock}</p>
                 </div>
 
-                <h1 className="text-[18px] font-bold">{name}</h1>
+                <h1 className="text-[18px] font-bold">{product_name}</h1>
 
                 <div className="bg-sur flex items-center justify-between text-[18px]">
                     <div className="flex gap-2">

@@ -1,12 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import ItemProduct from "./ItemProduct";
 import { useEffect, useState } from "react";
-import {
-    getBestSellerProduct,
-    getLatestProduct,
-} from "../services/product.api";
+import { getProductByCondition } from "../services/product.api";
 import type { Product, SlideListProductPros } from "../types/product.type";
-import bakery from "@/assets/images/categories/bakery.png";
 
 function SlideListProduct({ options }: SlideListProductPros) {
     const [product, setProduct] = useState<Product[]>([]);
@@ -14,9 +10,9 @@ function SlideListProduct({ options }: SlideListProductPros) {
     useEffect(() => {
         const handleGetProduct = async () => {
             if (options === "latest") {
-                setProduct(await getLatestProduct());
+                setProduct(await getProductByCondition({ option: "latest" }));
             } else if (options === "best sell") {
-                setProduct(await getBestSellerProduct());
+                setProduct(await getProductByCondition({ option: "best" }));
             }
         };
 
@@ -38,12 +34,12 @@ function SlideListProduct({ options }: SlideListProductPros) {
             {product.map((item) => (
                 <SwiperSlide key={item.product_id}>
                     <ItemProduct
-                        id={item.product_id}
-                        name={item.product_name}
+                        product_id={item.product_id}
+                        product_name={item.product_name}
                         category={item.category}
                         price={item.price}
                         totalStock={item.totalStock}
-                        img={bakery}
+                        images={item.images}
                     />
                 </SwiperSlide>
             ))}

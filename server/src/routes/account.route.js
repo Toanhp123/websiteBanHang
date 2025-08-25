@@ -6,18 +6,35 @@ const accountController = require("../controllers/account.controller");
 
 const router = express.Router();
 
-// [GET] /account/:username
-router.get(
-	"/:username",
+// [POST] /account/cart
+router.post(
+	"/cart",
 	checkAccessToken,
-	catchAsync(accountController.getAccountByUsername)
+	catchAsync(accountController.putItemToCart)
 );
+
+// [GET] /account/cart
+router.get("/cart", checkAccessToken, catchAsync(accountController.getCart));
 
 // [GET] /account
 router.get(
 	"/",
 	checkAccessToken,
 	catchAsync(accountController.getAccountByCondition)
+);
+
+// [DELETE] /account/cart/:id
+router.delete(
+	"/cart/:id",
+	checkAccessToken,
+	catchAsync(accountController.deleteItemInCart)
+);
+
+// [GET] /account/:username
+router.get(
+	"/:username",
+	checkAccessToken,
+	catchAsync(accountController.getAccountByUsername)
 );
 
 module.exports = router;
