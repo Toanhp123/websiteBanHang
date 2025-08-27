@@ -7,6 +7,7 @@ const {
 const {
 	throwBadRequest,
 	throwServerError,
+	throwNotFoundError,
 } = require("../utils/errorThrowFunc");
 const sequelize = require("../configs/database.config");
 
@@ -68,7 +69,10 @@ class AccountService {
 		});
 
 		if (!res) {
-			throwBadRequest("Customer ID not found", AccountStatus.NOT_FOUND);
+			throwNotFoundError(
+				"Customer ID not found",
+				AccountStatus.NOT_FOUND
+			);
 		}
 
 		const customer_id = res.dataValues.customer_id;
@@ -129,7 +133,10 @@ class AccountService {
 		});
 
 		if (!res) {
-			throwBadRequest("Customer ID not found", AccountStatus.NOT_FOUND);
+			throwNotFoundError(
+				"Customer ID not found",
+				AccountStatus.NOT_FOUND
+			);
 		}
 
 		const customer_id = res.dataValues.customer_id;
@@ -165,7 +172,10 @@ class AccountService {
 		});
 
 		if (!res) {
-			throwBadRequest("Can't find product in cart", CartStatus.NOT_FOUND);
+			throwNotFoundError(
+				"Can't find product in cart",
+				CartStatus.NOT_FOUND
+			);
 		}
 
 		const cart_id = res.dataValues.cart_id;
@@ -207,7 +217,7 @@ class AccountService {
 		});
 
 		if (!res) {
-			throwBadRequest("Can't find product in cart", CartStatus.NOT_FOUND);
+			throwNotFoundError("Can't find account", AccountStatus.NOT_FOUND);
 		}
 
 		const customer_id = res.dataValues.customer_id;
@@ -226,12 +236,33 @@ class AccountService {
 			transaction.rollback();
 
 			throwServerError(
-				"Failed to delete  cart",
+				"Failed to delete cart",
 				CartStatus.ERROR_DELETE_ITEM
 			);
 		}
+	}
 
-		return 1;
+	async changeQuantityItemCart(product_id, quantity) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await CartProduct.update(
+				{ quantity },
+				{
+					where: { product_id },
+				},
+				{ transaction }
+			);
+
+			transaction.commit();
+		} catch (error) {
+			transaction.rollback();
+
+			throwServerError(
+				"Failed to update quantity item in cart",
+				CartStatus.ERROR_UPDATE_QUANTITY
+			);
+		}
 	}
 }
 

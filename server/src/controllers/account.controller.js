@@ -61,6 +61,14 @@ class AccountController {
 
 		res.json({ message: "Delete item in cart success" });
 	}
+
+	// [PATCH] /account/cart/:id_product
+	async changeQuantityItemCart(req, res) {
+		const { id_product } = req.params;
+		const { quantity } = req.body;
+		await AccountService.changeQuantityItemCart(id_product, quantity);
+		res.json({ message: "Change quantity in cart success" });
+	}
 }
 
 module.exports = new AccountController();

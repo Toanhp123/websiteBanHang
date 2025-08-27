@@ -1,11 +1,13 @@
 import { useAppDispatch } from "@/hooks/useRedux";
-import { Button } from "@/components/shared";
+import { Button, SelectQuantity } from "@/components/shared";
 import { deleteCartAsync, deleteItemInCartSync } from "../redux/cart.thunk";
 import { useItemCartOnLoad } from "@/hooks/useItemCartOnLoad";
+import { useEffect, useState } from "react";
 
 function CartItemList() {
-    const { cart } = useItemCartOnLoad();
     const dispatch = useAppDispatch();
+    const { cart } = useItemCartOnLoad();
+    const [quantities, setQuantities] = useState<Record<number, number>>({});
 
     const handleDeleteCart = (): void => {
         dispatch(deleteCartAsync());
@@ -15,6 +17,20 @@ function CartItemList() {
         dispatch(deleteItemInCartSync(id_product));
     };
 
+    useEffect(() => {
+        if (cart && cart.length > 0) {
+            const initialQuantities = cart.reduce(
+                (acc, item) => {
+                    acc[item.id_product] = item.quantity;
+                    return acc;
+                },
+                {} as Record<number, number>,
+            );
+
+            setQuantities(initialQuantities);
+        }
+    }, [cart]);
+
     return (
         <div>
             <table className="w-full border-separate border-spacing-0 text-left">
@@ -22,8 +38,8 @@ function CartItemList() {
                     <tr className="bg-surface">
                         <th className="rounded-tl-xl rounded-bl-xl"></th>
                         <th className="px-4 py-2">Product</th>
-                        <th className="px-4 py-2 text-center">Price</th>
-                        <th className="px-4 py-2 text-right">Quantity</th>
+                        <th className="px-4 py-2 text-left">Price</th>
+                        <th className="px-4 py-2 text-center">Quantity</th>
                         <th className="rounded-tr-xl rounded-br-xl px-6 py-2 text-right">
                             Subtotal
                         </th>
@@ -61,11 +77,16 @@ function CartItemList() {
                                         <h1>{item.product}</h1>
                                     </div>
                                 </td>
-                                <td className="border-b border-gray-300 px-4 py-2 text-center">
+                                <td className="border-b border-gray-300 px-4 py-2 text-left">
                                     {item.price}
                                 </td>
-                                <td className="border-b border-gray-300 px-4 py-2 text-right">
-                                    {item.quantity}
+                                <td className="border-b border-gray-300 px-4 py-2 text-center">
+                                    <SelectQuantity
+                                        product_id={item.id_product}
+                                        quantity={quantities[item.id_product]}
+                                        setQuantityInList={setQuantities}
+                                        saveChangeCartToDatabase={true}
+                                    />
                                 </td>
                                 <td className="border-b border-gray-300 px-6 py-2 text-right">
                                     {item.price * item.quantity}

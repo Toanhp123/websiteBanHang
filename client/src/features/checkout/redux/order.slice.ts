@@ -1,26 +1,27 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { OrderState } from "../types/order.slice";
-import type { Product } from "@/features/products/types/product.type";
+import type { OrderState } from "../types/checkout.type";
 import type { RootState } from "@/stores/store";
+import type { Cart } from "@/features/cart/types/cart.type";
 
 const initialState: OrderState = {
-    buyNowItem: null,
+    buyItem: null,
 };
 
 const orderSlice = createSlice({
     name: "order",
     initialState,
     reducers: {
-        setBuyNowItem: (state, action: PayloadAction<Product>) => {
-            state.buyNowItem = action.payload;
+        setBuyItem: (state, action: PayloadAction<Cart[]>) => {
+            state.buyItem = action.payload;
         },
-        clearBuyNowItem: (state) => {
-            state.buyNowItem = null;
+
+        clearBuyItem: (state) => {
+            state.buyItem = null;
         },
     },
 });
 
-export const { setBuyNowItem, clearBuyNowItem } = orderSlice.actions;
-export const selectBuyNowItem = (state: RootState) => state.order.buyNowItem;
+export const { setBuyItem, clearBuyItem } = orderSlice.actions;
+export const selectBuyNowItem = (state: RootState) => state.order.buyItem;
 
 export default orderSlice.reducer;

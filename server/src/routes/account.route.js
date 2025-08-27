@@ -6,8 +6,15 @@ const accountController = require("../controllers/account.controller");
 
 const router = express.Router();
 
-// [POST] /account/cart
-router.post(
+// [PATCH] /account/cart/:id_product
+router.patch(
+	"/cart/:id_product",
+	checkAccessToken,
+	catchAsync(accountController.changeQuantityItemCart)
+);
+
+// [PUT] /account/cart
+router.put(
 	"/cart",
 	checkAccessToken,
 	catchAsync(accountController.putItemToCart)

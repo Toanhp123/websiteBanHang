@@ -5,6 +5,7 @@ import {
     Hero,
 } from "@/components/sections";
 import { Footer, Header, Section } from "@/layouts";
+
 function HomePage() {
     return (
         <div>

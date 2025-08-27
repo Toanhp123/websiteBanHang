@@ -294,7 +294,10 @@ class AuthService {
 	 */
 	async refreshTokenHandler(payload, ip) {
 		// Check xem session refresh token có hợp lệ không
-		const checkRefreshToken = this.checkRefreshTokenSession(payload.id, ip);
+		const checkRefreshToken = await this.checkRefreshTokenSession(
+			payload.id,
+			ip
+		);
 
 		if (!checkRefreshToken) {
 			throw new AppError("Refresh token is invalid", {

@@ -1,5 +1,4 @@
-import { CartBill } from "@/features/cart/components";
-import { BillingDetails } from "@/features/checkout/components";
+import { BillingDetails, BillingSummary } from "@/features/checkout/components";
 import { Footer, Header, Section, TitleSection } from "@/layouts";
 
 function CheckoutPage() {
@@ -12,13 +11,13 @@ function CheckoutPage() {
             <Section>
                 <div className="flex gap-8">
                     {/* Left menu */}
-                    <div className="flex-3">
+                    <div className="flex-4">
                         <BillingDetails />
                     </div>
 
                     {/* Right menu */}
-                    <div className="flex-1">
-                        <CartBill />
+                    <div className="flex-2">
+                        <BillingSummary />
                     </div>
                 </div>
             </Section>

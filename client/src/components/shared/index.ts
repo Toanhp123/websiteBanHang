@@ -7,6 +7,7 @@ import { default as TagItem } from "./TagItem";
 import { default as Pagination } from "./Pagination";
 import { default as PaginationButton } from "./PaginationButton";
 import { default as ImageProduct } from "./ImageProduct";
+import { default as SelectQuantity } from "./SelectQuantity";
 
 export {
     Button,
@@ -18,4 +19,5 @@ export {
     Pagination,
     PaginationButton,
     ImageProduct,
+    SelectQuantity,
 };

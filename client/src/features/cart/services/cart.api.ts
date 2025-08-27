@@ -3,12 +3,25 @@ import type { Cart } from "../types/cart.type";
 
 /**
  * Hàm gửi cart về backend để lưu trữ
- * @param Cart thông tin 1 sản phẩm
+ * @param cart thông tin 1 sản phẩm
  */
-export const saveCartToDatabase = async (Cart: Cart): Promise<void> => {
-    await axios.post("/account/cart", {
-        product_id: Cart.id_product,
-        quantity: Cart.quantity,
+export const saveCartToDatabase = async (cart: Cart): Promise<void> => {
+    await axios.put("/account/cart", {
+        product_id: cart.id_product,
+        quantity: cart.quantity,
+    });
+};
+
+/**
+ * Hàm sửa quantity cart ở database
+ * @param quantity số lượng sản phẩm
+ */
+export const changeQuantityItemCartInDatabase = async (
+    quantity: number,
+    id_product: number,
+): Promise<void> => {
+    await axios.patch(`/account/cart/${id_product}`, {
+        quantity,
     });
 };
 

@@ -1,4 +1,9 @@
-import { Button, ImageProduct, TagItem } from "@/components/shared";
+import {
+    Button,
+    ImageProduct,
+    SelectQuantity,
+    TagItem,
+} from "@/components/shared";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "@/features/loading/components/Loading";
@@ -38,16 +43,6 @@ function ItemProductBuy() {
     // TODO: cần thêm logic
     const handleBuyItemNow = (): void => {
         navigate("/cart/checkout/${product_id}");
-    };
-
-    const handleDecreaseQuantity = (): void => {
-        if (quantity > 0) {
-            setQuantity((q) => q - 1);
-        }
-    };
-
-    const handleIncreaseQuantity = (): void => {
-        setQuantity((q) => q + 1);
     };
 
     const handleBackImageSlide = (): void => {
@@ -143,25 +138,11 @@ function ItemProductBuy() {
                 </p>
 
                 <div className="mt-4 flex gap-4">
-                    <div className="flex items-center justify-center rounded-4xl border border-gray-300">
-                        <div
-                            className="px-4 py-2"
-                            onClick={() => {
-                                handleDecreaseQuantity();
-                            }}
-                        >
-                            -
-                        </div>
-                        <div className="h-full border-r border-gray-300"></div>
-                        <div className="px-4 py-2">{quantity}</div>
-                        <div className="h-full border-r border-gray-300"></div>
-                        <div
-                            className="px-4 py-2"
-                            onClick={() => handleIncreaseQuantity()}
-                        >
-                            +
-                        </div>
-                    </div>
+                    <SelectQuantity
+                        product_id={productDetail.product_id}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                    />
 
                     <Button
                         text="Add To Cart"

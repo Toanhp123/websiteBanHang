@@ -9,3 +9,5 @@ export type Cart = {
     price: number;
     img: string;
 };
+
+export type CartUpdate = Pick<Cart, "id_product" | "quantity">;

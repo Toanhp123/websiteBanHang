@@ -2,7 +2,11 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Cart, ListCartState } from "../types/cart.type";
 import type { RootState } from "@/stores/store";
 import { saveCartToDatabase } from "../services/cart.api";
-import { deleteCartAsync, deleteItemInCartSync } from "./cart.thunk";
+import {
+    changeQuantityItemCart,
+    deleteCartAsync,
+    deleteItemInCartSync,
+} from "./cart.thunk";
 
 const initialState: ListCartState = {
     items: [],
@@ -47,6 +51,8 @@ export const CartSlice = createSlice({
                 (item) => item.id_product !== action.payload,
             );
         });
+
+        builder.addCase(changeQuantityItemCart.fulfilled, () => {});
     },
 });
 

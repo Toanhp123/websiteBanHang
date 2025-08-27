@@ -1,9 +1,16 @@
+import BillingAddress from "./BillingAddress";
+import PaymentMethod from "./PaymentMethod";
+
 function BillingDetails() {
     return (
-        <div className="space-y-6">
-            <h1 className="text-2xl font-semibold">Shipping Address</h1>
+        <div className="space-y-12">
+            <div>
+                <BillingAddress />
+            </div>
 
-            <div></div>
+            <div>
+                <PaymentMethod />
+            </div>
         </div>
     );
 }

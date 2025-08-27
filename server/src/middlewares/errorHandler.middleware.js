@@ -46,6 +46,7 @@ const errorHandler = (err, req, res, next) => {
 		CartStatus.ERROR_ITEM,
 		CartStatus.ERROR_DELETE_ITEM,
 		CartStatus.ERROR_ADD_TO_DATABASE,
+		CartStatus.ERROR_UPDATE_QUANTITY,
 
 		ProductError.ERROR_ITEM,
 	];

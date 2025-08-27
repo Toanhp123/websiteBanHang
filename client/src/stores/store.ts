@@ -3,6 +3,7 @@ import categoryReducer from "@/features/categories/redux/category.slice";
 import filterReducer from "@/features/filters/redux/filter.slice";
 import cartReducer from "@/features/cart/redux/cart.slice";
 import orderReducer from "@/features/checkout/redux/order.slice";
+import billDetailReducer from "@/features/checkout/redux/billingDetail.slice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         filter: filterReducer,
         cart: cartReducer,
         order: orderReducer,
+        billDetail: billDetailReducer,
     },
 });
 

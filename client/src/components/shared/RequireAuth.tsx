@@ -1,38 +1,10 @@
-import { refreshToken } from "@/features/auth/services/auth.api";
 import Loading from "@/features/loading/components/Loading";
-import { getAccessToken, setAccessToken } from "@/stores/authStore";
-import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 function RequireAuth() {
     const location = useLocation();
-    const [loading, setLoading] = useState(true);
-    const [authorized, setAuthorized] = useState(false);
-
-    const accessToken = getAccessToken();
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                if (!accessToken) {
-                    const newAccessToken = await refreshToken();
-
-                    setAccessToken(newAccessToken);
-                    setAuthorized(true);
-                } else {
-                    setAuthorized(true);
-                }
-            } catch (err) {
-                console.log(err);
-
-                setAuthorized(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        checkAuth();
-    }, [accessToken]);
+    const { loading, authorized } = useAuth();
 
     if (loading) return <Loading />;
 
