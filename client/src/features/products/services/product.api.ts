@@ -3,6 +3,7 @@ import type {
     GetProductByConditionParams,
     ItemStock,
     Product,
+    ProductDetail,
 } from "../types/product.type";
 
 export const getProductByCondition = async ({
@@ -25,7 +26,7 @@ export const getProductByCondition = async ({
 };
 
 export const getDetailProduct = async (product_id: number) => {
-    const res = await axios.get<Product>(`product/${product_id}`);
+    const res = await axios.get<ProductDetail>(`product/${product_id}`);
 
     return res.data;
 };

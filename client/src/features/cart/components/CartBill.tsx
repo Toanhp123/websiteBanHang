@@ -1,11 +1,13 @@
 import { Button } from "@/components/shared";
 import { useAppSelector } from "@/hooks/useRedux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { selectCart } from "../redux/cart.slice";
 
 function CartBill() {
     const cart = useAppSelector(selectCart);
     const navigate = useNavigate();
+    const location = useLocation();
+    let textRedirect: string = "Checkout";
 
     const OrderSummary = {
         items: Object.entries(cart).reduce((sum, [_, item]) => {
@@ -17,8 +19,17 @@ function CartBill() {
         }, 0),
     };
 
+    if (location.pathname === "/cartShop/checkout") {
+        textRedirect = "Payment";
+    }
+
+    // TODO: còn cần phải làm thêm
     const handleClick = (): void => {
-        navigate("/cartShop/checkout");
+        if (location.pathname === "/cartShop") {
+            navigate("/cartShop/checkout");
+        } else if (location.pathname === "/cartShop/checkout") {
+            navigate("/");
+        }
     };
 
     return (
@@ -56,9 +67,10 @@ function CartBill() {
             </div>
 
             <Button
-                text="Process To Checkout"
+                text={`Process To ${textRedirect}`}
                 textSize="small"
                 onClick={handleClick}
+                disabled={cart.length === 0}
             />
         </div>
     );

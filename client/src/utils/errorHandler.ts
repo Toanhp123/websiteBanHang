@@ -6,7 +6,6 @@ import { ErrorCode } from "@/constants/errorCode";
 import { clearAccessToken, setAccessToken } from "@/stores/authStore";
 
 // TODO: cân làm hàm xử lý lỗi
-// Có thể nhận thêm đối số như router nếu cần
 export const handleApiError = async (error: AxiosError) => {
     const originalRequest = error.config as RetryRequestConfig;
     const err = error.response?.data || "Something went wrong";

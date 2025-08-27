@@ -167,6 +167,7 @@ function ItemProductBuy() {
                         text="Add To Cart"
                         textSize="small"
                         onClick={() => handleAddItemToCart()}
+                        disabled={quantity === 0}
                     />
                     <Button
                         text="Buy Now"

@@ -1,10 +1,10 @@
 import { getDetailProduct } from "@/features/products/services/product.api";
-import type { Product } from "@/features/products/types/product.type";
+import type { ProductDetail } from "@/features/products/types/product.type";
 import { useEffect, useState } from "react";
 
 export const useProductDetail = (product_id: string | undefined) => {
     const [loading, setLoading] = useState(true);
-    const [productDetail, setProductDetail] = useState<Product>({
+    const [productDetail, setProductDetail] = useState<ProductDetail>({
         product_id: 0,
         product_name: "",
         product_description: "",
@@ -13,6 +13,8 @@ export const useProductDetail = (product_id: string | undefined) => {
         category: "",
         type: "",
         images: [],
+        status: "",
+        supplier: "",
     });
 
     // Lấy danh sách ảnh

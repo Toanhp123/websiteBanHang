@@ -12,6 +12,7 @@ type ButtonPros = {
     border?: string;
     borderColor?: string;
     type?: "big" | "small" | "icon";
+    disabled?: boolean;
     onClick?: () => Promise<void> | void;
 };
 
@@ -27,13 +28,14 @@ function Button({
     border = "border",
     borderColor = "black",
     type = "big",
+    disabled = false,
     onClick,
 }: ButtonPros) {
     return (
         <button
             onClick={onClick}
             className={clsx(
-                "flex items-center justify-center font-semibold",
+                "disabled:bg-disable flex items-center justify-center font-semibold",
                 type === "big" &&
                     "w-full gap-2 rounded-2xl border-gray-300 p-[5px] px-4 md:rounded-4xl md:py-2",
                 type === "small" && "gap-1 rounded-4xl px-4 py-2 text-[14px]",
@@ -47,6 +49,7 @@ function Button({
                 hoverColor,
                 textColorHover,
             )}
+            disabled={disabled}
         >
             {iconBefore ? (
                 <>

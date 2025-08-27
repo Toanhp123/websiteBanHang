@@ -1,6 +1,6 @@
 import type { FilterState } from "@/features/filters/types/filter.type";
 
-export type Product = {
+export interface Product {
     product_id: number;
     product_name: string;
     product_description: string | null;
@@ -9,7 +9,12 @@ export type Product = {
     category: string;
     type: string;
     images: ProductImage[];
-};
+}
+
+export interface ProductDetail extends Product {
+    status: string;
+    supplier: string;
+}
 
 export type ProductImage = {
     product_id: number;
@@ -34,7 +39,7 @@ export type SlideListProductPros = {
     options: "latest" | "best sell";
 };
 
-export type SortOptions = "latest" | "name decs" | "name up";
+export type SortOptions = "latest" | "best" | "name decs" | "name up";
 
 export type GetProductByConditionParams = {
     filterOption?: FilterState;

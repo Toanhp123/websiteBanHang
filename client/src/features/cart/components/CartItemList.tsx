@@ -1,12 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { selectCart, setItemToCart } from "../redux/cart.slice";
-import { useEffect } from "react";
-import { getCartFromDatabase } from "../services/cart.api";
+import { useAppDispatch } from "@/hooks/useRedux";
 import { Button } from "@/components/shared";
 import { deleteCartAsync, deleteItemInCartSync } from "../redux/cart.thunk";
+import { useItemCartOnLoad } from "@/hooks/useItemCartOnLoad";
 
 function CartItemList() {
-    const cart = useAppSelector(selectCart);
+    const { cart } = useItemCartOnLoad();
     const dispatch = useAppDispatch();
 
     const handleDeleteCart = (): void => {
@@ -17,16 +15,6 @@ function CartItemList() {
         dispatch(deleteItemInCartSync(id_product));
     };
 
-    const handleGetItemCartOnLoad = async (): Promise<void> => {
-        const res = await getCartFromDatabase();
-
-        dispatch(setItemToCart(res));
-    };
-
-    useEffect(() => {
-        handleGetItemCartOnLoad();
-    }, []);
-
     return (
         <div>
             <table className="w-full border-separate border-spacing-0 text-left">
@@ -36,7 +24,7 @@ function CartItemList() {
                         <th className="px-4 py-2">Product</th>
                         <th className="px-4 py-2 text-center">Price</th>
                         <th className="px-4 py-2 text-right">Quantity</th>
-                        <th className="rounded-tr-xl rounded-br-xl px-4 py-2 text-right">
+                        <th className="rounded-tr-xl rounded-br-xl px-6 py-2 text-right">
                             Subtotal
                         </th>
                     </tr>
@@ -79,7 +67,7 @@ function CartItemList() {
                                 <td className="border-b border-gray-300 px-4 py-2 text-right">
                                     {item.quantity}
                                 </td>
-                                <td className="border-b border-gray-300 px-4 py-2 text-right">
+                                <td className="border-b border-gray-300 px-6 py-2 text-right">
                                     {item.price * item.quantity}
                                 </td>
                             </tr>

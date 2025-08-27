@@ -5,9 +5,8 @@ import {
     setCategories,
 } from "@/features/categories/redux/category.slice";
 import { getCategories } from "@/features/categories/services/getCategories.api";
-import type { CategoryState } from "@/features/categories/types/categories.type";
 
-export const useCategories = (): CategoryState => {
+export const useCategories = () => {
     const category = useAppSelector(selectCategories);
     const dispatch = useAppDispatch();
 
