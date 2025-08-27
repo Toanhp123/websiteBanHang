@@ -40,6 +40,15 @@ class ProductController {
 
 		res.json({ availability: productStock });
 	}
+
+	// [GET] product/:product_id
+	async getProductByID(req, res) {
+		const { product_id } = req.params;
+
+		const productDetail = await productService.getProductByID(product_id);
+
+		res.json(productDetail);
+	}
 }
 
 module.exports = new ProductController();

@@ -13,7 +13,10 @@ const publicRoutes = (
         <Route path="/register" element={<RegisterPage />} />
 
         <Route path="/shop" element={<ShopPage />} />
-        <Route path="/shop/productDetail" element={<ProductDetailPage />} />
+        <Route
+            path="/shop/productDetail/:product_id"
+            element={<ProductDetailPage />}
+        />
 
         <Route path="/" element={<HomePage />} />
     </>

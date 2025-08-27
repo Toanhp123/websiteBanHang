@@ -14,6 +14,8 @@ route.get("/status", catchAsync(productController.getProductStatus));
 
 route.get("/stock/:productID", catchAsync(productController.getProductStock));
 
+route.get("/:product_id", catchAsync(productController.getProductByID));
+
 route.get("/", catchAsync(productController.getProductByCondition));
 
 module.exports = route;

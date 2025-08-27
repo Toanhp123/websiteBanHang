@@ -30,6 +30,13 @@ router.delete(
 	catchAsync(accountController.deleteItemInCart)
 );
 
+// [DELETE] /account/cart/:id
+router.delete(
+	"/cart",
+	checkAccessToken,
+	catchAsync(accountController.deleteCart)
+);
+
 // [GET] /account/:username
 router.get(
 	"/:username",

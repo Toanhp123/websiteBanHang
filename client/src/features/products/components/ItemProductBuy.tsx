@@ -1,14 +1,44 @@
-import bakery from "@/assets/images/categories/bakery.png";
 import { Button, ImageProduct, TagItem } from "@/components/shared";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "@/features/loading/components/Loading";
+import { addToCart } from "@/features/cart/redux/cart.slice";
+import { getAccessToken } from "@/stores/authStore";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { useProductDetail } from "@/hooks/useProductDetail";
 
 // TODO: cần thêm chức năng add to cart
 function ItemProductBuy() {
+    const { product_id } = useParams();
+    const [mainImageShow, setMainImageShow] = useState<string>("");
     const [quantity, setQuantity] = useState<number>(0);
     const [page, setPage] = useState<number>(0);
 
-    // TODO: cần lấy dữ liệu từ database
-    const listImage: string[] = [bakery, bakery, bakery, bakery];
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { productDetail, listImage, mainImage, loading } =
+        useProductDetail(product_id);
+
+    const handleAddItemToCart = (): void => {
+        if (getAccessToken()) {
+            dispatch(
+                addToCart({
+                    id_product: productDetail.product_id,
+                    product: productDetail.product_name,
+                    price: productDetail.price,
+                    img: mainImage,
+                    quantity: quantity,
+                }),
+            );
+        } else {
+            navigate("/login");
+        }
+    };
+
+    // TODO: cần thêm logic
+    const handleBuyItemNow = (): void => {
+        navigate("/cart/checkout/${product_id}");
+    };
 
     const handleDecreaseQuantity = (): void => {
         if (quantity > 0) {
@@ -35,9 +65,19 @@ function ItemProductBuy() {
         }
     };
 
+    // Load ảnh
+    useEffect(() => {
+        if (listImage.length > 0) {
+            setMainImageShow(listImage[page] || listImage[0]);
+        }
+    }, [listImage, page]);
+
+    if (loading) return <Loading />;
+
     return (
-        <div className="flex gap-4">
-            <div className="grid flex-1 grid-cols-4 gap-4">
+        <div className="flex gap-8">
+            {/* TODO: giao diện ảnh đang bị lỗi */}
+            <div className="grid flex-2 grid-cols-4 gap-4">
                 <div className="relative col-span-4">
                     <div className="absolute flex h-full w-full items-center justify-between px-4">
                         <Button
@@ -53,46 +93,53 @@ function ItemProductBuy() {
                             onClick={handleNextImageSlide}
                         />
                     </div>
-                    <ImageProduct src={bakery} />
+
+                    <ImageProduct
+                        src={`http://localhost:3000/${mainImageShow}`}
+                    />
                 </div>
 
                 {listImage.map((img, index) => (
                     <ImageProduct
                         key={index}
-                        src={img}
+                        src={`http://localhost:3000/${img}`}
                         selected={index === page}
                     />
                 ))}
             </div>
 
-            <div className="flex flex-1 flex-col justify-center space-y-4">
-                <p className="text-secondary">Fruits</p>
+            <div className="flex flex-3 flex-col justify-center space-y-2">
+                <p className="text-secondary text-xl">
+                    {productDetail.category}
+                </p>
 
                 <div className="flex items-center gap-4">
                     <h1 className="text-2xl font-semibold md:text-3xl">
-                        Fresh Green Apple
+                        {productDetail.product_name}
                     </h1>
 
                     <TagItem
-                        text="test tag item"
+                        text={
+                            productDetail?.totalStock > 0
+                                ? "In Stock"
+                                : "Out Stock"
+                        }
                         isTagOnly={true}
                         type="test"
                     />
                 </div>
 
                 <div className="flex gap-2">
-                    <p className="text-2xl md:text-3xl">$25.00</p>
+                    <p className="text-2xl md:text-3xl">
+                        {productDetail.price}
+                    </p>
                     <p className="text-2xl text-gray-500 line-through md:text-3xl">
                         $50.00
                     </p>
                 </div>
 
                 <p className="text-disable">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Quas, alias delectus vitae similique autem ut nemo
-                    consequatur possimus nam assumenda. Accusantium corporis
-                    eaque eligendi optio praesentium ullam incidunt alias
-                    debitis!
+                    {productDetail.product_description}
                 </p>
 
                 <div className="mt-4 flex gap-4">
@@ -116,12 +163,17 @@ function ItemProductBuy() {
                         </div>
                     </div>
 
-                    <Button text="Add To Cart" textSize="small" />
+                    <Button
+                        text="Add To Cart"
+                        textSize="small"
+                        onClick={() => handleAddItemToCart()}
+                    />
                     <Button
                         text="Buy Now"
                         textColor="text-black"
                         textSize="small"
                         bgColor="bg-surface"
+                        onClick={() => handleBuyItemNow()}
                     />
 
                     <div className="flex items-center justify-center">
@@ -136,6 +188,12 @@ function ItemProductBuy() {
                 </div>
 
                 <div className="my-4 border-b border-gray-300"></div>
+
+                <div className="flex-cols flex gap-2">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Cart, ListCartState } from "../types/cart.type";
 import type { RootState } from "@/stores/store";
 import { saveCartToDatabase } from "../services/cart.api";
+import { deleteCartAsync, deleteItemInCartSync } from "./cart.thunk";
 
 const initialState: ListCartState = {
     items: [],
@@ -13,9 +14,6 @@ export const CartSlice = createSlice({
     reducers: {
         addToCart(state, action: PayloadAction<Cart>) {
             const product = action.payload;
-
-            saveCartToDatabase(product);
-
             const existingItem = state.items.find(
                 (item) => item.id_product === product.id_product,
             );
@@ -31,19 +29,28 @@ export const CartSlice = createSlice({
                     img: product.img,
                 });
             }
+
+            saveCartToDatabase(product);
         },
 
-        setCart(state, action: PayloadAction<Cart[]>) {
+        setItemToCart(state, action: PayloadAction<Cart[]>) {
             state.items = action.payload;
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(deleteCartAsync.fulfilled, (state, action) => {
+            state.items = action.payload;
+        });
 
-        deleteAllCart(state) {
-            state.items = [];
-        },
+        builder.addCase(deleteItemInCartSync.fulfilled, (state, action) => {
+            state.items = state.items.filter(
+                (item) => item.id_product !== action.payload,
+            );
+        });
     },
 });
 
-export const { addToCart, deleteAllCart, setCart } = CartSlice.actions;
+export const { addToCart, setItemToCart } = CartSlice.actions;
 export const selectCart = (state: RootState) => state.cart.items;
 
 export default CartSlice.reducer;

@@ -1,4 +1,5 @@
 import { refreshToken } from "@/features/auth/services/auth.api";
+import Loading from "@/features/loading/components/Loading";
 import { getAccessToken, setAccessToken } from "@/stores/authStore";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
@@ -33,7 +34,7 @@ function RequireAuth() {
         checkAuth();
     }, [accessToken]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loading />;
 
     return authorized ? (
         <Outlet />

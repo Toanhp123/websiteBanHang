@@ -1,35 +1,31 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { deleteAllCart, selectCart, setCart } from "../redux/cart.slice";
+import { selectCart, setItemToCart } from "../redux/cart.slice";
 import { useEffect } from "react";
-import {
-    deleteCartAtDatabase,
-    getCartFromDatabase,
-} from "../services/cart.api";
+import { getCartFromDatabase } from "../services/cart.api";
 import { Button } from "@/components/shared";
+import { deleteCartAsync, deleteItemInCartSync } from "../redux/cart.thunk";
 
 function CartItemList() {
     const cart = useAppSelector(selectCart);
     const dispatch = useAppDispatch();
 
-    const handleDeleteAllCart = (): void => {
-        dispatch(deleteAllCart());
+    const handleDeleteCart = (): void => {
+        dispatch(deleteCartAsync());
     };
 
     const handleDeleteItemCart = async (id_product: number): Promise<void> => {
-        await deleteCartAtDatabase(id_product);
+        dispatch(deleteItemInCartSync(id_product));
+    };
+
+    const handleGetItemCartOnLoad = async (): Promise<void> => {
+        const res = await getCartFromDatabase();
+
+        dispatch(setItemToCart(res));
     };
 
     useEffect(() => {
-        // Chỉ gọi API khi redux cart trống
-        if (!cart || cart.length === 0) {
-            console.log(1);
-
-            (async () => {
-                const res = await getCartFromDatabase();
-                dispatch(setCart(res));
-            })();
-        }
-    }, [cart, dispatch]);
+        handleGetItemCartOnLoad();
+    }, []);
 
     return (
         <div>
@@ -46,9 +42,8 @@ function CartItemList() {
                     </tr>
                 </thead>
 
-                {/* TODO: cần làm thêm về giao diện */}
                 <tbody>
-                    {cart.length !== undefined &&
+                    {cart.length !== 0 &&
                         cart.map((item) => (
                             <tr key={item.id_product}>
                                 <td className="border-b border-gray-300">
@@ -90,7 +85,7 @@ function CartItemList() {
                             </tr>
                         ))}
 
-                    {cart.length === undefined && (
+                    {cart.length === 0 && (
                         <tr>
                             <td>
                                 <div className="ml-2"></div>
@@ -116,7 +111,7 @@ function CartItemList() {
                             {cart.length > 0 && (
                                 <p
                                     className="text-primary font-semibold underline"
-                                    onClick={handleDeleteAllCart}
+                                    onClick={handleDeleteCart}
                                 >
                                     Clear Shopping Cart
                                 </p>

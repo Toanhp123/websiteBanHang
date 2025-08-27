@@ -23,7 +23,7 @@ function ItemProduct({
         .map((img) => img.image_url)[0];
 
     const handleClickItem = (): void => {
-        navigate("/shop/productDetail");
+        navigate(`/shop/productDetail/${product_id}`);
     };
 
     const handleClickButton = () => {
@@ -37,6 +37,8 @@ function ItemProduct({
                     quantity: 1,
                 }),
             );
+        } else {
+            navigate("/login");
         }
     };
 

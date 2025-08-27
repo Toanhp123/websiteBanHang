@@ -1,8 +1,21 @@
 import { Button } from "@/components/shared";
+import { useAppSelector } from "@/hooks/useRedux";
 import { useNavigate } from "react-router-dom";
+import { selectCart } from "../redux/cart.slice";
 
 function CartBill() {
+    const cart = useAppSelector(selectCart);
     const navigate = useNavigate();
+
+    const OrderSummary = {
+        items: Object.entries(cart).reduce((sum, [_, item]) => {
+            return sum + (item.quantity || 0);
+        }, 0),
+
+        subTotal: Object.entries(cart).reduce((sum, [_, item]) => {
+            return sum + (item.price * item.quantity || 0);
+        }, 0),
+    };
 
     const handleClick = (): void => {
         navigate("/cartShop/checkout");
@@ -10,17 +23,17 @@ function CartBill() {
 
     return (
         <div className="w-full space-y-4 rounded-xl border border-gray-300 p-4">
-            <div>Order Summary</div>
+            <div className="text-xl font-bold">Order Summary</div>
 
             <div className="border-b border-gray-300"></div>
 
             <div className="flex justify-between">
                 <p className="text-disable">Items</p>
-                <p className="font-semibold">9</p>
+                <p className="font-semibold">{OrderSummary.items}</p>
             </div>
             <div className="flex justify-between">
                 <p className="text-disable">Sub Total</p>
-                <p className="font-semibold">$85.40</p>
+                <p className="font-semibold">{OrderSummary.subTotal}</p>
             </div>
             <div className="flex justify-between">
                 <p className="text-disable">Shipping</p>
@@ -41,6 +54,7 @@ function CartBill() {
                 <p className="text-disable">Total</p>
                 <p className="font-semibold">74.40$</p>
             </div>
+
             <Button
                 text="Process To Checkout"
                 textSize="small"

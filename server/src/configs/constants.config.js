@@ -51,7 +51,7 @@ module.exports = {
 		ERROR_DELETE_ITEM: "ERROR_DELETE_ITEM_IN_CART",
 		ERROR_ADD_TO_DATABASE: "CART_ERROR_ADD_TO_DATABASE",
 	},
-	ProductStatus: {
+	ProductError: {
 		ERROR_ITEM: "PRODUCT INVALID",
 	},
 };

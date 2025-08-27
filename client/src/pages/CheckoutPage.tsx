@@ -1,6 +1,6 @@
+import { BillingDetails } from "@/features/checkout/components";
 import { Footer, Header, Section, TitleSection } from "@/layouts";
 
-// TODO: cần xem xét nên làm trang này không
 function CheckoutPage() {
     return (
         <div>
@@ -9,7 +9,7 @@ function CheckoutPage() {
             <TitleSection text="Checkout" />
 
             <Section>
-                <div className="flex gap-8">1</div>
+                <BillingDetails />
             </Section>
 
             <Footer />

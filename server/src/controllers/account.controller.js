@@ -52,6 +52,15 @@ class AccountController {
 
 		res.json({ message: "Delete item in cart success" });
 	}
+
+	// [DELETE] /account/cart
+	async deleteCart(req, res) {
+		const { id } = req.user;
+
+		await AccountService.deleteCart(id);
+
+		res.json({ message: "Delete item in cart success" });
+	}
 }
 
 module.exports = new AccountController();

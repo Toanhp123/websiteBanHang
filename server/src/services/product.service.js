@@ -1,3 +1,4 @@
+const { ProductError } = require("../configs/constants.config");
 const {
 	Product,
 	ProductCategory,
@@ -8,6 +9,7 @@ const {
 	Inventory,
 	sequelize,
 } = require("../models");
+const { throwNotFoundError } = require("../utils/errorThrowFunc");
 
 class ProductService {
 	/**
@@ -54,6 +56,13 @@ class ProductService {
 		const productImage = await ProductImage.findAll({
 			attributes: ["image_url", "is_main", "product_id"],
 		});
+
+		if (!product) {
+			throwNotFoundError(
+				`Can't find item product`,
+				ProductError.ERROR_ITEM
+			);
+		}
 
 		const productsWithImage = product.map((p) => {
 			const imgs = productImage.filter(
@@ -114,6 +123,75 @@ class ProductService {
 		);
 
 		return totalStock;
+	}
+
+	/**
+	 * Hàm lấy thông tin chi tiết product
+	 * @returns chi tiết sản phẩm
+	 */
+	async getProductByID(product_id) {
+		const productDetail = await Product.findOne({
+			include: [
+				{
+					model: ProductCategory,
+					attributes: [],
+				},
+				{
+					model: Inventory,
+					attributes: [],
+				},
+				{
+					model: ProductType,
+					attributes: [],
+				},
+				{
+					model: ProductStatus,
+					attributes: [],
+				},
+				{
+					model: Supplier,
+					attributes: [],
+				},
+			],
+			attributes: [
+				"product_id",
+				"product_name",
+				"product_description",
+				"price",
+				[
+					sequelize.fn("SUM", sequelize.col("Inventories.quantity")),
+					"totalStock",
+				],
+				[
+					sequelize.col("ProductCategory.product_category_name"),
+					"category",
+				],
+				[sequelize.col("ProductType.product_type_name"), "type"],
+				[sequelize.col("ProductStatus.product_status_name"), "status"],
+				[sequelize.col("Supplier.supplier_name"), "supplier"],
+			],
+			group: ["Product.product_id"],
+			where: { product_id: product_id },
+		});
+
+		if (!productDetail) {
+			throwNotFoundError(
+				`Can't find item product`,
+				ProductError.ERROR_ITEM
+			);
+		}
+
+		const productImage = await ProductImage.findAll({
+			attributes: ["image_url", "is_main", "product_id"],
+			where: { product_id: product_id },
+		});
+
+		const productsWithImage = {
+			...productDetail.toJSON(),
+			images: productImage,
+		};
+
+		return productsWithImage;
 	}
 }
 

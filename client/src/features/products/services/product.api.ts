@@ -3,7 +3,6 @@ import type {
     GetProductByConditionParams,
     ItemStock,
     Product,
-    SortOptions,
 } from "../types/product.type";
 
 export const getProductByCondition = async ({
@@ -25,12 +24,8 @@ export const getProductByCondition = async ({
     return res.data;
 };
 
-export const getProductSort = async (sortOptions: SortOptions) => {
-    const params: Record<string, string> = {
-        sortOptions,
-    };
-
-    const res = await axios.get<Product[]>("product/bestSeller", params);
+export const getDetailProduct = async (product_id: number) => {
+    const res = await axios.get<Product>(`product/${product_id}`);
 
     return res.data;
 };

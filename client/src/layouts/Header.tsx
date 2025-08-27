@@ -14,6 +14,10 @@ function Header() {
         navigate("/" + location);
     };
 
+    const handleGetListCategory = () => {
+        console.log(1);
+    };
+
     return (
         <header>
             <nav className="bg-primary flex h-16 justify-center gap-4 py-4 lg:h-36">
@@ -70,10 +74,13 @@ function Header() {
                     {width >= 1024 && (
                         <div className="flex flex-1 justify-between">
                             <div className="flex flex-3/4 items-center justify-between px-8">
-                                <div className="bg-surface flex items-center justify-center gap-3 rounded-xl px-4 py-2 font-bold">
+                                <button
+                                    className="bg-surface flex items-center justify-center gap-3 rounded-xl px-4 py-2 font-bold"
+                                    onClick={handleGetListCategory}
+                                >
                                     <i className="fa-solid fa-bars"></i>
                                     <h1>Browse All Categories</h1>
-                                </div>
+                                </button>
 
                                 <NavItem text="Home" to="#" />
                                 <NavItem text="Shop" to="shop" />

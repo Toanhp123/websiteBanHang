@@ -26,16 +26,15 @@ export const getCartFromDatabase = async (): Promise<Cart[]> => {
  * Hàm xóa 1 item trong cart
  * @param id_product id sản phẩm cần xóa
  */
-export const deleteCartAtDatabase = async (
+export const deleteItemInCartAtDatabase = async (
     id_product: number,
 ): Promise<void> => {
     await axios.delete(`/account/cart/${id_product}`);
 };
 
-// TODO: chưa làm xong
 /**
  * Hàm xóa toàn bộ item trong cart người dùng
  */
-export const deleteALLCartAtDatabase = async () => {
+export const deleteCartAtDatabase = async (): Promise<void> => {
     return await axios.delete(`/account/cart`);
 };

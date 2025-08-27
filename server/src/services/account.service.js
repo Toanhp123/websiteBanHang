@@ -58,7 +58,7 @@ class AccountService {
 	 * @returns {Promise<Array>} Trả về danh sách tài
 	 */
 	async putItemToCart(product_id, quantity, account_id) {
-		if (!product_id || !quantity || !account_id) {
+		if (!product_id || !account_id) {
 			throwBadRequest("Error Cart", CartStatus.ERROR_ITEM);
 		}
 
@@ -67,12 +67,12 @@ class AccountService {
 			attributes: ["customer_id"],
 		});
 
-		const customer_id = res.dataValues.customer_id;
-		const transaction = await sequelize.transaction();
-
-		if (!customer_id) {
+		if (!res) {
 			throwBadRequest("Customer ID not found", AccountStatus.NOT_FOUND);
 		}
+
+		const customer_id = res.dataValues.customer_id;
+		const transaction = await sequelize.transaction();
 
 		try {
 			// Tạo Cart mới nếu chưa có
@@ -87,6 +87,9 @@ class AccountService {
 					cart_id: cart.cart_id,
 					product_id: product_id,
 				},
+				defaults: {
+					quantity: quantity > 0 ? quantity : 1,
+				},
 				transaction,
 			});
 
@@ -100,6 +103,8 @@ class AccountService {
 			return cart;
 		} catch (error) {
 			await transaction.rollback();
+
+			console.log(error);
 
 			throwServerError(
 				"Failed to add to cart",
@@ -123,12 +128,11 @@ class AccountService {
 			attributes: ["customer_id"],
 		});
 
-		const customer_id = res.dataValues.customer_id;
-
-		if (!customer_id) {
+		if (!res) {
 			throwBadRequest("Customer ID not found", AccountStatus.NOT_FOUND);
 		}
 
+		const customer_id = res.dataValues.customer_id;
 		const cart = await Cart.findOne({
 			where: { customer_id },
 		});
@@ -145,34 +149,9 @@ class AccountService {
 				type: sequelize.QueryTypes.SELECT, // để trả về list object
 			});
 
-			// TODO: chưa bt giải quyết lỗi tại sao dùng attributes thì chỉ select 1 dữ liệu đã có giải pháp khác để lấy dữ liệu cách này có thể tìm cách giải quyết sau
-			// const cartItem = await CartProduct.findAll({
-			// 	include: [
-			// 		{
-			// 			model: Product,
-			// 			attributes: [],
-			// 			include: [
-			// 				{
-			// 					model: ProductImage,
-			// 					attributes: [],
-			// 					where: { is_main: true },
-			// 				},
-			// 			],
-			// 		},
-			// 	],
-			// 	attributes: [
-			// 		"quantity",
-			// 		[sequelize.col("Product.product_id"), "id_product"],
-			// 		[sequelize.col("Product.product_name"), "product"],
-			// 		[sequelize.col("Product.ProductImages.image_url"), "img"],
-			// 		[sequelize.col("Product.price"), "price"],
-			// 	],
-			// 	where: { cart_id: cart.cart_id },
-			// });
-
 			return cartItem;
 		} else {
-			return {};
+			return [];
 		}
 	}
 
@@ -185,7 +164,7 @@ class AccountService {
 			where: { product_id },
 		});
 
-		if (!res.dataValues) {
+		if (!res) {
 			throwBadRequest("Can't find product in cart", CartStatus.NOT_FOUND);
 		}
 
@@ -215,13 +194,44 @@ class AccountService {
 		} catch (error) {
 			transaction.rollback();
 
-			console.log(error);
-
 			throwServerError(
 				"Failed to delete item in cart",
 				CartStatus.ERROR_DELETE_ITEM
 			);
 		}
+	}
+
+	async deleteCart(account_id) {
+		const res = await Account.findOne({
+			where: { account_id },
+		});
+
+		if (!res) {
+			throwBadRequest("Can't find product in cart", CartStatus.NOT_FOUND);
+		}
+
+		const customer_id = res.dataValues.customer_id;
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Cart.destroy(
+				{
+					where: { customer_id: customer_id },
+				},
+				{ transaction }
+			);
+
+			transaction.commit();
+		} catch (error) {
+			transaction.rollback();
+
+			throwServerError(
+				"Failed to delete  cart",
+				CartStatus.ERROR_DELETE_ITEM
+			);
+		}
+
+		return 1;
 	}
 }
 

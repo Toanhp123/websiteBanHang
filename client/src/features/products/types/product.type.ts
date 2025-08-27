@@ -34,7 +34,7 @@ export type SlideListProductPros = {
     options: "latest" | "best sell";
 };
 
-export type SortOptions = "latest" | "best" | "name decs" | "name up";
+export type SortOptions = "latest" | "name decs" | "name up";
 
 export type GetProductByConditionParams = {
     filterOption?: FilterState;

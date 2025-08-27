@@ -27,7 +27,7 @@ function Input({
         <div className="flex flex-col gap-2 md:text-xl">
             {label !== "" && (
                 <label className="font-semibold">
-                    {label} {required && "*"}
+                    {label} {required ? "*" : "(Optional)"}
                 </label>
             )}
 

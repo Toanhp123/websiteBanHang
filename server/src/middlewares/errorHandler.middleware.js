@@ -4,7 +4,7 @@ const {
 	AccountStatus,
 	ProfileStatus,
 	CartStatus,
-	ProductStatus,
+	ProductError,
 } = require("../configs/constants.config");
 
 const AppError = require("../utils/errorCustom.util");
@@ -47,7 +47,7 @@ const errorHandler = (err, req, res, next) => {
 		CartStatus.ERROR_DELETE_ITEM,
 		CartStatus.ERROR_ADD_TO_DATABASE,
 
-		ProductStatus.ERROR_ITEM,
+		ProductError.ERROR_ITEM,
 	];
 
 	const statusCode = isAppError ? err.statusCode : 500;
