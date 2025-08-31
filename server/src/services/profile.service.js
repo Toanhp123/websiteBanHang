@@ -1,5 +1,4 @@
 const { Customer, Account } = require("../models");
-const { ProfileStatus } = require("../configs/constants.config");
 
 class ProfileService {
 	/**

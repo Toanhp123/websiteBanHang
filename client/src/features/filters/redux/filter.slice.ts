@@ -1,7 +1,7 @@
 import type { RootState } from "@/stores/store";
 import type { FilterState, SetListFilterPayload } from "../types/filter.type";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { TypeFilter } from "@/constants/typeFilter";
+import { TypeFilter } from "@/constants/typeFilter.constants";
 
 // TODO: cầm làm gì đó với biến price
 const initialState: FilterState = {

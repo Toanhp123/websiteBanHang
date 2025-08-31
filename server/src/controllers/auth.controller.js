@@ -2,7 +2,7 @@ const {
 	COOKIE_EXPIRES_IN,
 	COOKIE_EXPIRES_DAY_IN,
 } = require("../configs/env.config");
-const { TokenName } = require("../configs/constants.config");
+const { TokenName } = require("../constants/errorCode.constants");
 const { createCookie, deleteCookie } = require("../utils/cookie.util");
 
 const authService = require("../services/auth.service");
@@ -37,13 +37,13 @@ class AuthController {
 
 	// [POST] /auth/logout
 	async logout(req, res) {
+		console.log(1);
+
 		const id = req.user.id;
 		const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
 		await authService.logout(id, ip);
 
-		// Xóa 2 cookie khi đăng xuất
-		deleteCookie(res, TokenName.ACCESS);
 		deleteCookie(res, TokenName.REFRESH);
 
 		res.status(200).json({ message: "Logout success" });

@@ -2,14 +2,18 @@ const { Account, CartProduct, Cart } = require("../models");
 const {
 	CartStatus,
 	AccountStatus,
-	ProductStatus,
-} = require("../configs/constants.config");
+	ProductError,
+} = require("../constants/errorCode.constants");
 const {
 	throwBadRequest,
 	throwServerError,
 	throwNotFoundError,
 } = require("../utils/errorThrowFunc");
 const sequelize = require("../configs/database.config");
+const {
+	checkPassword,
+	createPasswordHash,
+} = require("../utils/validateUser.util");
 
 class AccountService {
 	/**
@@ -156,7 +160,12 @@ class AccountService {
 				type: sequelize.QueryTypes.SELECT, // để trả về list object
 			});
 
-			return cartItem;
+			const cartItemFormat = cartItem.map((p) => ({
+				...p,
+				price: parseFloat(p.price),
+			}));
+
+			return cartItemFormat;
 		} else {
 			return [];
 		}
@@ -164,7 +173,7 @@ class AccountService {
 
 	async deleteItemInCart(product_id) {
 		if (!product_id) {
-			throwBadRequest("ID account invalid", ProductStatus.ERROR_ITEM);
+			throwBadRequest("ID account invalid", ProductError.ERROR_ITEM);
 		}
 
 		const res = await CartProduct.findOne({
@@ -262,6 +271,37 @@ class AccountService {
 				"Failed to update quantity item in cart",
 				CartStatus.ERROR_UPDATE_QUANTITY
 			);
+		}
+	}
+
+	async changePassword(changePassword, account_id) {
+		const transaction = await sequelize.transaction();
+		const account = await Account.findOne({ where: { account_id } });
+		const { pass, newPass, reNewPass } = changePassword;
+		const pass_hash = account.dataValues.password_hash;
+
+		const check = await checkPassword(pass, pass_hash);
+
+		if (check && newPass === reNewPass) {
+			try {
+				const newPassHash = await createPasswordHash(newPass);
+				await Account.update(
+					{ password_hash: newPassHash },
+					{ where: { account_id } },
+					{ transaction }
+				);
+
+				transaction.commit();
+			} catch (error) {
+				transaction.rollback();
+
+				console.log(error);
+
+				throwServerError(
+					"Can't update password",
+					AccountStatus.ERROR_UPDATE_PASSWORD
+				);
+			}
 		}
 	}
 }

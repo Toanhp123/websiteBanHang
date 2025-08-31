@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ItemProduct from "./ItemProduct";
 import { Pagination } from "@/components/shared";
-import { ITEMS_PER_PAGE } from "@/constants/mics";
+import { ITEMS_PER_PAGE } from "@/constants/mics.constants";
 import Loading from "@/features/loading/components/Loading";
 import { useProduct } from "@/hooks/useProduct";
 

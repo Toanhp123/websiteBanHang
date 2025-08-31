@@ -1,6 +1,7 @@
 import clsx from "clsx";
 
 type ButtonPros = {
+    loading?: boolean;
     text?: string;
     textColor?: string;
     textSize?: "big" | "small";
@@ -17,6 +18,7 @@ type ButtonPros = {
 };
 
 function Button({
+    loading = false,
     text = "",
     textColor = "text-white",
     textSize = "big",
@@ -51,7 +53,9 @@ function Button({
             )}
             disabled={disabled}
         >
-            {iconBefore ? (
+            {loading ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-b-2 border-white"></div>
+            ) : iconBefore ? (
                 <>
                     {icon !== "" && <i className={icon}></i>}
                     {text !== "" && <p>{text}</p>}

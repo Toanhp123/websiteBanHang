@@ -1,5 +1,3 @@
-import type { User } from "@/types/authType";
-
 export type ResponseData = {
     accessToken: string;
     user: User;
@@ -32,3 +30,20 @@ export type RegisterCredentials = {
 export type AuthState = {
     accessToken: string | null;
 };
+
+export type User = {
+    id: number;
+    username: string;
+    role: number;
+};
+
+export type UserInfo = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    address: string;
+    birthday: string;
+    phoneNumber: string;
+};
+
+export type UserRole = "admin" | "customer" | "employee";

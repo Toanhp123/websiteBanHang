@@ -1,14 +1,14 @@
-const ProfileService = require("../services/profile.service");
+const profileService = require("../services/profile.service");
 
-class profileController {
+class ProfileController {
 	// [GET] /profile/:username
 	async getProfile(req, res) {
 		const { id } = req.params;
 
-		const profile = await ProfileService.getProfile(id);
+		const profile = await profileService.getProfile(id);
 
 		res.status(200).json(profile);
 	}
 }
 
-module.exports = new profileController();
+module.exports = new ProfileController();

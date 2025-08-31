@@ -3,16 +3,15 @@ import type { RootState } from "@/stores/store";
 import type { BillDetailState } from "../types/checkout.type";
 
 const initialState: BillDetailState = {
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    streetAddress: "",
+    street_address: "",
     city: "",
     country: "",
-    zipCode: "",
+    zip_code: "",
     phone: "",
-    paymentMethod: "",
-    promotion: "",
+    payment_method: "",
 };
 
 const billDetailSlice = createSlice({
@@ -28,10 +27,14 @@ const billDetailSlice = createSlice({
         ) => {
             state[action.payload.key] = action.payload.value;
         },
+
+        deleteBillDetail: (state) => {
+            Object.assign(state, initialState);
+        },
     },
 });
 
-export const { updateBillDetail } = billDetailSlice.actions;
+export const { updateBillDetail, deleteBillDetail } = billDetailSlice.actions;
 export const selectBillDetail = (state: RootState) => state.billDetail;
 
 export default billDetailSlice.reducer;

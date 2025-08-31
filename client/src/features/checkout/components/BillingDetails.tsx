@@ -1,11 +1,11 @@
-import BillingAddress from "./BillingAddress";
+import ShippingAddress from "./ShippingAddress";
 import PaymentMethod from "./PaymentMethod";
 
 function BillingDetails() {
     return (
-        <div className="space-y-12">
+        <div className="space-y-8">
             <div>
-                <BillingAddress />
+                <ShippingAddress />
             </div>
 
             <div>

@@ -2,7 +2,7 @@ import { refreshToken } from "@/features/auth/services/auth.api";
 import type { RetryRequestConfig } from "@/types/axiosType";
 import { AxiosError } from "axios";
 import axios from "@/utils/axiosInstance";
-import { ErrorCode } from "@/constants/errorCode";
+import { ErrorCode } from "@/constants/errorCode.constants";
 import { clearAccessToken, setAccessToken } from "@/stores/authStore";
 
 // TODO: cân làm hàm xử lý lỗi

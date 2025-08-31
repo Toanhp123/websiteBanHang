@@ -69,6 +69,16 @@ class AccountController {
 		await AccountService.changeQuantityItemCart(id_product, quantity);
 		res.json({ message: "Change quantity in cart success" });
 	}
+
+	// [PUT] /account/password
+	async changePassword(req, res) {
+		const { id } = req.user;
+
+		const { changePassword } = req.body;
+
+		await AccountService.changePassword(changePassword, id);
+		res.json({ message: "Change quantity in cart success" });
+	}
 }
 
 module.exports = new AccountController();

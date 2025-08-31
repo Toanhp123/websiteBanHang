@@ -1,4 +1,4 @@
-const { ProductError } = require("../configs/constants.config");
+const { ProductError } = require("../constants/errorCode.constants");
 const {
 	Product,
 	ProductCategory,

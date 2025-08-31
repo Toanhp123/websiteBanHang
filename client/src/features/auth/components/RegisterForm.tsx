@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { register } from "../services/auth.api";
-import type { RegisterCredentials } from "../types/auth.type";
-import type { UserInfo } from "@/types/authType";
+import type { RegisterCredentials, UserInfo } from "../types/auth.type";
 import { Button, Input } from "@/components/shared";
 import { Link } from "react-router-dom";
 

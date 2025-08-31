@@ -1,5 +1,4 @@
-import { default as AccountOptions } from "./AccountOptions";
 import { default as UpdatePersonalInfo } from "./UpdatePersonalInfo";
-import { default as UpdateMyOrder } from "./UpdateMyOrder";
+import { default as UpdatePassword } from "./UpdatePassword";
 
-export { AccountOptions, UpdatePersonalInfo, UpdateMyOrder };
+export { UpdatePersonalInfo, UpdatePassword };

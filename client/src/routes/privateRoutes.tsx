@@ -1,13 +1,15 @@
 import { Route } from "react-router-dom";
+import { CartPage, CheckoutPage, MyAccountPage, OrderComplete } from "@/pages";
 import { RequireAuth } from "@/components/shared";
-import { CartPage, CheckoutPage, MyAccount } from "@/pages";
 
 const privateRoutes = (
     <Route element={<RequireAuth />}>
-        <Route path="/myAccount" element={<MyAccount />} />
+        <Route path="/myAccount" element={<MyAccountPage />} />
 
         <Route path="/cartShop" element={<CartPage />} />
         <Route path="/cartShop/checkout" element={<CheckoutPage />} />
+
+        <Route path="/orderComplete" element={<OrderComplete />} />
     </Route>
 );
 

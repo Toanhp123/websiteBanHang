@@ -20,6 +20,13 @@ router.put(
 	catchAsync(accountController.putItemToCart)
 );
 
+// [PUT] /account/password
+router.put(
+	"/password",
+	checkAccessToken,
+	catchAsync(accountController.changePassword)
+);
+
 // [GET] /account/cart
 router.get("/cart", checkAccessToken, catchAsync(accountController.getCart));
 

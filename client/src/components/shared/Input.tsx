@@ -3,6 +3,7 @@ import clsx from "clsx";
 type InputPros = {
     name?: string;
     label?: string;
+    labelColor?: string;
     type?: "text" | "radio" | "range";
     inputFormat?: string;
     placeholder?: string;
@@ -18,6 +19,7 @@ type InputPros = {
 function Input({
     name = "",
     label = "",
+    labelColor = "",
     type = "text",
     inputFormat = "text",
     placeholder = "",
@@ -30,8 +32,8 @@ function Input({
     return (
         <div className="flex flex-col gap-2 md:text-xl">
             {label !== "" && (
-                <label className="font-semibold">
-                    {label} {required ? "*" : "(Optional)"}
+                <label className={clsx("font-semibold", labelColor)}>
+                    {label} {required && "*"}
                 </label>
             )}
 

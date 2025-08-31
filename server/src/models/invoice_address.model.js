@@ -8,6 +8,11 @@ const InvoiceAddress = sequelize.define(
 		invoice_address_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
+			autoIncrement: true,
+		},
+		customer_id: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
 		},
 		first_name: {
 			type: DataTypes.STRING,
@@ -40,6 +45,11 @@ const InvoiceAddress = sequelize.define(
 		phone: {
 			type: DataTypes.STRING,
 			allowNull: false,
+		},
+		is_delete: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false,
+			defaultValue: false,
 		},
 	},
 	{

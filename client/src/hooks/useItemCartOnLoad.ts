@@ -11,7 +11,10 @@ export const useItemCartOnLoad = () => {
     const handleGetItemCartOnLoad = async (): Promise<void> => {
         const res = await getCartFromDatabase();
 
-        dispatch(setItemToCart(res));
+        if (res) {
+            dispatch(setItemToCart(res));
+        }
+
         setLoading(false);
     };
 

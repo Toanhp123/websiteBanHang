@@ -109,17 +109,14 @@ function CartItemList() {
 
                 <tfoot>
                     <tr>
-                        {/* TODO: cần làm thêm input và button áp dụng khuyến mãi cho item list */}
-                        <td className="flex">
-                            {/* <Input />
-                            <Button /> */}
-                        </td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td className="text-center">
                             {cart.length > 0 && (
                                 <p
-                                    className="text-primary font-semibold underline"
+                                    className="text-primary mt-5 font-semibold underline"
                                     onClick={handleDeleteCart}
                                 >
                                     Clear Shopping Cart

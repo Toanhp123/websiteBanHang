@@ -1,4 +1,4 @@
-import { AccountOptions } from "@/features/accounts/components";
+import { AccountOptions } from "@/components/sections";
 import { Footer, Header, Section, TitleSection } from "@/layouts";
 
 function MyAccount() {

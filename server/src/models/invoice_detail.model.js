@@ -15,7 +15,7 @@ const InvoiceDetail = sequelize.define(
 		},
 		promotion_id: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			allowNull: true,
 		},
 		quantity: {
 			type: DataTypes.INTEGER,
@@ -29,7 +29,7 @@ const InvoiceDetail = sequelize.define(
 			type: DataTypes.DECIMAL(10, 2),
 			allowNull: true,
 		},
-		unit_final_price: {
+		unit_final_amount: {
 			type: DataTypes.DECIMAL(10, 2),
 			allowNull: false,
 		},

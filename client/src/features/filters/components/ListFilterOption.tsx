@@ -3,7 +3,7 @@ import { getItemType } from "../services/filters.api";
 import ItemFilterOption from "./ItemFilterOption";
 import { useCategories } from "@/hooks/useCategories";
 import type { ItemTypeState } from "../types/filter.type";
-import { TypeFilter } from "@/constants/typeFilter";
+import { TypeFilter } from "@/constants/typeFilter.constants";
 
 // TODO: cần thêm giao diện mobile và cần thêm logic để khi xóa tag sẽ tự động chọn tất cả
 function ListFilterOption() {

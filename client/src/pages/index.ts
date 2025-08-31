@@ -7,7 +7,8 @@ import { default as ProductDetailPage } from "./ProductDetailPage";
 import { default as CartPage } from "./CartPage";
 import { default as CheckoutPage } from "./CheckoutPage";
 import { default as WishList } from "./WishList";
-import { default as MyAccount } from "./MyAccount";
+import { default as MyAccountPage } from "./MyAccountPage";
+import { default as OrderComplete } from "./OrderComplete";
 
 export {
     LoginPage,
@@ -19,5 +20,6 @@ export {
     CartPage,
     CheckoutPage,
     WishList,
-    MyAccount,
+    MyAccountPage,
+    OrderComplete,
 };

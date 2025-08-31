@@ -3,7 +3,7 @@ import type { ItemFilter } from "../types/filter.type";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { deleteFilter, setListFilter } from "../redux/filter.slice";
-import { TypeFilter } from "@/constants/typeFilter";
+import { TypeFilter } from "@/constants/typeFilter.constants";
 
 function ItemFilterOption<T extends object>({
     title,

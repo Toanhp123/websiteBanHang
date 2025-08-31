@@ -7,7 +7,7 @@ function CartBill() {
     const cart = useAppSelector(selectCart);
     const navigate = useNavigate();
 
-    const OrderSummary = {
+    const orderSummary = {
         items: Object.entries(cart).reduce((sum, [_, item]) => {
             return sum + (item.quantity || 0);
         }, 0),
@@ -29,30 +29,22 @@ function CartBill() {
 
             <div className="flex justify-between">
                 <p className="text-disable">Items</p>
-                <p className="font-semibold">{OrderSummary.items}</p>
+                <p className="font-semibold">{orderSummary.items}</p>
             </div>
             <div className="flex justify-between">
                 <p className="text-disable">Sub Total</p>
-                <p className="font-semibold">{OrderSummary.subTotal}</p>
-            </div>
-            <div className="flex justify-between">
-                <p className="text-disable">Shipping</p>
-                <p className="font-semibold">00.00$</p>
+                <p className="font-semibold">{orderSummary.subTotal}</p>
             </div>
             <div className="flex justify-between">
                 <p className="text-disable">Taxes</p>
                 <p className="font-semibold">00.00$</p>
-            </div>
-            <div className="flex justify-between">
-                <p className="text-disable">Coupon Discount</p>
-                <p className="font-semibold">-100.00$</p>
             </div>
 
             <div className="border-b border-gray-300"></div>
 
             <div className="flex justify-between">
                 <p className="text-disable">Total</p>
-                <p className="font-semibold">74.40$</p>
+                <p className="font-semibold">{orderSummary.subTotal}</p>
             </div>
 
             <Button

@@ -4,7 +4,7 @@ const {
 	JWT_EXPIRES_IN,
 	JWT_EXPIRES_DAY_IN,
 } = require("../configs/env.config");
-const { TokenStatus, TokenType } = require("../configs/constants.config");
+const { TokenStatus, TokenType } = require("../constants/errorCode.constants");
 
 const jwt = require("jsonwebtoken");
 const AppError = require("./errorCustom.util");

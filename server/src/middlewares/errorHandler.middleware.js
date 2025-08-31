@@ -5,7 +5,8 @@ const {
 	ProfileStatus,
 	CartStatus,
 	ProductError,
-} = require("../configs/constants.config");
+	BillError,
+} = require("../constants/errorCode.constants");
 
 const AppError = require("../utils/errorCustom.util");
 
@@ -40,6 +41,8 @@ const errorHandler = (err, req, res, next) => {
 		AccountStatus.WRONG_PASSWORD,
 		AccountStatus.WRONG_EMAIL_FORMAT,
 
+		AccountStatus.ERROR_UPDATE_PASSWORD,
+
 		ProfileStatus.NOT_FOUND,
 
 		CartStatus.NOT_FOUND,
@@ -49,6 +52,12 @@ const errorHandler = (err, req, res, next) => {
 		CartStatus.ERROR_UPDATE_QUANTITY,
 
 		ProductError.ERROR_ITEM,
+
+		BillError.ERROR_CREATE,
+		BillError.ERROR_ID,
+		BillError.ERROR_DELETE,
+		BillError.ERROR_ADD_ADDRESS,
+		BillError.ERROR_DELETE_ADDRESS,
 	];
 
 	const statusCode = isAppError ? err.statusCode : 500;

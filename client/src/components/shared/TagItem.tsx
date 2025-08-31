@@ -1,14 +1,19 @@
+import { TypeFilter } from "@/constants/typeFilter.constants";
 import { deleteFilter } from "@/features/filters/redux/filter.slice";
 import { useAppDispatch } from "@/hooks/useRedux";
 import clsx from "clsx";
 
 type ProsTagItem = {
     text: string | null;
-    type: string;
+    type?: string;
     isTagOnly?: boolean;
 };
 
-function TagItem({ text, type, isTagOnly = false }: ProsTagItem) {
+function TagItem({
+    text,
+    type = TypeFilter.ALL,
+    isTagOnly = false,
+}: ProsTagItem) {
     const dispatch = useAppDispatch();
 
     // TODO: cần làm sao để xóa thì bên listFilter sẽ chuyển về tất cả

@@ -1,18 +1,30 @@
+import {
+    UpdatePassword,
+    UpdatePersonalInfo,
+} from "@/features/accounts/components";
+import { Logout } from "@/features/auth/components";
+import {
+    ListInvoice,
+    UpdateAddressShipping,
+} from "@/features/invoice/components";
 import clsx from "clsx";
 import { useState } from "react";
-import type { ListAccountOptions } from "../types/accounts.type";
-import UpdatePersonalInfo from "./UpdatePersonalInfo";
-import UpdateMyOrder from "./UpdateMyOrder";
+import type { ReactNode } from "react";
+
+type ListAccountOptions = {
+    title: string;
+    feature: ReactNode;
+};
 
 function AccountOptions() {
     const [select, setSelect] = useState<number>(0);
     const listOptions: ListAccountOptions[] = [
         { title: "Personal Information", feature: <UpdatePersonalInfo /> },
-        { title: "My Order", feature: <UpdateMyOrder /> },
-        { title: "Manage Address", feature: <UpdatePersonalInfo /> },
+        { title: "My Order", feature: <ListInvoice /> },
+        { title: "Manage Address", feature: <UpdateAddressShipping /> },
         { title: "Payments Method", feature: <UpdatePersonalInfo /> },
-        { title: "Password Manager", feature: <UpdatePersonalInfo /> },
-        { title: "Logout", feature: <UpdatePersonalInfo /> },
+        { title: "Password Manager", feature: <UpdatePassword /> },
+        { title: "Logout", feature: <Logout /> },
     ];
 
     const handleSetSelect = (index: number): void => {

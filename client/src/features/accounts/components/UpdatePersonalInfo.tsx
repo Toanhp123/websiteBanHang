@@ -43,8 +43,8 @@ function UpdatePersonalInfo() {
                 placeholder="Phone Number"
             />
 
-            <div className="w-1/4">
-                <Button text="Update Changes" textSize="small" />
+            <div className="w-55">
+                <Button text="Update Changes" />
             </div>
         </form>
     );

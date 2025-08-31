@@ -5,7 +5,7 @@ const {
 	TokenType,
 	AccountStatus,
 	TokenStatus,
-} = require("../configs/constants.config");
+} = require("../constants/errorCode.constants");
 const {
 	throwBadRequest,
 	throwUnauthorized,

@@ -1,4 +1,3 @@
-import type { UserInfo } from "@/types/authType";
 import axios from "@/utils/axiosInstance";
 import type {
     LoginCredentials,
@@ -6,6 +5,7 @@ import type {
     RefreshResponse,
     RegisterCredentials,
     RegisterResponse,
+    UserInfo,
 } from "../types/auth.type";
 
 /**
@@ -61,11 +61,12 @@ export const register = async (
     return res.data;
 };
 
-/**
- * Hàm xử lý check accessToken còn hạn không
- */
-// export const checkAccessToken = async (accessToken: string) => {
-//     const res = await axios.post<>("/auth/register", {});
-
-//     return res.data;
-// };
+export const logout = async (): Promise<void> => {
+    await axios.post(
+        "/auth/logout",
+        {},
+        {
+            withCredentials: true,
+        },
+    );
+};

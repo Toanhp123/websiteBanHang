@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { deleteAllFilter, selectFilter } from "../redux/filter.slice";
 import { Dropdown, TagItem } from "@/components/shared";
-import { TypeFilter } from "@/constants/typeFilter";
+import { TypeFilter } from "@/constants/typeFilter.constants";
 
 function ListTagFilter() {
     const listFilter = useAppSelector(selectFilter);

@@ -3,7 +3,10 @@ const {
 	createPasswordHash,
 } = require("../utils/validateUser.util");
 const { Account, Customer, SessionLog } = require("../models");
-const { TokenStatus, AccountStatus } = require("../configs/constants.config");
+const {
+	TokenStatus,
+	AccountStatus,
+} = require("../constants/errorCode.constants");
 const { signAccessToken, signRefreshToken } = require("../utils/token.util");
 
 const AppError = require("../utils/errorCustom.util");

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Categories, CategoryState } from "../types/categories.type";
 import type { RootState } from "@/stores/store";
-import { TypeFilter } from "@/constants/typeFilter";
+import { TypeFilter } from "@/constants/typeFilter.constants";
 
 const initialState: CategoryState = {
     type: TypeFilter.CATEGORY,

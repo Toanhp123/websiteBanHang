@@ -11,12 +11,12 @@ function CheckoutPage() {
             <Section>
                 <div className="flex gap-8">
                     {/* Left menu */}
-                    <div className="flex-4">
+                    <div className="flex-1">
                         <BillingDetails />
                     </div>
 
                     {/* Right menu */}
-                    <div className="flex-2">
+                    <div className="">
                         <BillingSummary />
                     </div>
                 </div>
