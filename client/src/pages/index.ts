@@ -9,6 +9,7 @@ import { default as CheckoutPage } from "./CheckoutPage";
 import { default as WishList } from "./WishList";
 import { default as MyAccountPage } from "./MyAccountPage";
 import { default as OrderComplete } from "./OrderComplete";
+import { default as AboutUsPage } from "./AboutUsPage";
 
 export {
     LoginPage,
@@ -22,4 +23,5 @@ export {
     WishList,
     MyAccountPage,
     OrderComplete,
+    AboutUsPage,
 };

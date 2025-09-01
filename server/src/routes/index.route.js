@@ -4,6 +4,7 @@ const accountRoute = require("./account.route");
 const profileRoute = require("./profile.route");
 const productRoute = require("./product.route");
 const promotionRoute = require("./promotion.route");
+const blogRoute = require("./blog.route");
 
 function route(app) {
 	app.get("/", (req, res) => {
@@ -21,6 +22,8 @@ function route(app) {
 	app.use("/invoice", invoiceRoute);
 
 	app.use("/promotion", promotionRoute);
+
+	app.use("/blog", blogRoute);
 }
 
 module.exports = route;
