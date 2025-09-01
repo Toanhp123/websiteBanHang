@@ -44,22 +44,22 @@ function ItemProduct({
 
     return (
         <div className="relative flex flex-col justify-center rounded-2xl border border-gray-200 bg-white p-4">
+            <div className="absolute top-4 left-4 rounded-l-[8px] rounded-r-2xl bg-green-700 px-4 py-1 text-white">
+                50% off
+            </div>
+
+            <div
+                className="shadow-light absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full pt-1 text-xl"
+                onClick={() => setLike((like) => !like)}
+            >
+                {like ? (
+                    <i className="fa-solid fa-heart text-black"></i>
+                ) : (
+                    <i className="fa-regular fa-heart"></i>
+                )}
+            </div>
+
             <div className="h-60" onClick={() => handleClickItem()}>
-                <div className="absolute top-4 left-4 rounded-l-[8px] rounded-r-2xl bg-green-700 px-4 py-1 text-white">
-                    50% off
-                </div>
-
-                <div
-                    className="shadow-light absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full pt-1 text-xl"
-                    onClick={() => setLike((like) => !like)}
-                >
-                    {like ? (
-                        <i className="fa-solid fa-heart text-secondary"></i>
-                    ) : (
-                        <i className="fa-regular fa-heart"></i>
-                    )}
-                </div>
-
                 <div className="p-2">
                     <img
                         src={`http://localhost:3000/${mainImage}`}

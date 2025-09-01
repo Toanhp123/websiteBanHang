@@ -4,25 +4,28 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "./useRedux";
 import { selectFilter } from "@/features/filters/redux/filter.slice";
 import type { Product } from "@/features/products/types/product.type";
+import { selectOptionSortProduct } from "@/features/filters/redux/optionSortProduct.slice";
 
 export const useProduct = () => {
     const productFilter = useAppSelector(selectFilter);
+    const optionSelected = useAppSelector(selectOptionSortProduct);
     const [product, setProduct] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const handleGetProduct = async () => {
-        setProduct(
-            await getProductByCondition({
-                filterOption: normalizeFilter(productFilter),
-            }),
-        );
-
-        setLoading(false);
-    };
-
     useEffect(() => {
+        const handleGetProduct = async () => {
+            setProduct(
+                await getProductByCondition({
+                    filterOption: normalizeFilter(productFilter),
+                    option: optionSelected,
+                }),
+            );
+
+            setLoading(false);
+        };
+
         handleGetProduct();
-    }, [productFilter]);
+    }, [productFilter, optionSelected]);
 
     return { product, loading };
 };

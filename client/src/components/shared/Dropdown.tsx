@@ -1,3 +1,6 @@
+import { setOption } from "@/features/filters/redux/optionSortProduct.slice";
+import type { SortOptions } from "@/features/filters/types/filter.type";
+import { useAppDispatch } from "@/hooks/useRedux";
 import {
     Listbox,
     ListboxButton,
@@ -5,23 +8,29 @@ import {
     ListboxOptions,
     Transition,
 } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 const options = [
-    { id: 1, name: "Tùy chọn 1" },
-    { id: 2, name: "Tùy chọn 2" },
-    { id: 3, name: "Tùy chọn 3" },
+    { id: 1, name: "latest" },
+    { id: 2, name: "oldest" },
+    { id: 3, name: "Price Low To High" },
+    { id: 4, name: "Price High To Low" },
 ];
 
 // TODO: cần làm thêm
 function Dropdown() {
+    const dispatch = useAppDispatch();
     const [selected, setSelected] = useState(options[0]);
+
+    useEffect(() => {
+        dispatch(setOption(selected.name as SortOptions));
+    }, [selected, dispatch]);
 
     return (
         <div>
             <Listbox value={selected} onChange={setSelected}>
                 <div className="relative">
-                    <ListboxButton className="relative flex w-full items-center gap-2 rounded-4xl border border-gray-300 px-6 py-2">
+                    <ListboxButton className="relative flex w-55 items-center justify-between gap-2 rounded-4xl border border-gray-300 px-6 py-2">
                         {selected.name}
                         <i className="fa-solid fa-caret-down"></i>
                     </ListboxButton>
@@ -40,7 +49,7 @@ function Dropdown() {
                                     className={({ active }) =>
                                         `cursor-pointer px-4 py-2 select-none ${
                                             active
-                                                ? "bg-blue-500 text-white"
+                                                ? "bg-primary text-white"
                                                 : "text-gray-900"
                                         }`
                                     }

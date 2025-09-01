@@ -32,3 +32,9 @@ export type ItemTypeState = {
     type: string;
     itemType: ItemType[];
 };
+
+export type SortOptions = "latest" | "best" | "name decs" | "name up";
+
+export type SortOptionsState = {
+    option: SortOptions;
+};

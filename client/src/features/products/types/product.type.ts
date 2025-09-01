@@ -1,4 +1,7 @@
-import type { FilterState } from "@/features/filters/types/filter.type";
+import type {
+    FilterState,
+    SortOptions,
+} from "@/features/filters/types/filter.type";
 
 export interface Product {
     product_id: number;
@@ -38,8 +41,6 @@ export type ItemStock = {
 export type SlideListProductPros = {
     options: "latest" | "best sell";
 };
-
-export type SortOptions = "latest" | "best" | "name decs" | "name up";
 
 export type GetProductByConditionParams = {
     filterOption?: FilterState;

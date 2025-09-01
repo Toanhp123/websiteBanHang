@@ -84,13 +84,11 @@ function Header() {
 
                                 <NavItem text="Home" to="#" />
                                 <NavItem text="Shop" to="shop" />
-                                <NavItem text="Food" to="#" />
-                                <NavItem text="Beverages" to="#" />
                                 <NavItem text="About Us" to="aboutUs" />
                                 <NavItem text="Blog" to="blog" />
                             </div>
 
-                            <div className="text-surface flex flex-1/4 items-center justify-end gap-2 px-8">
+                            <div className="text-surface flex flex-1/4 items-center justify-end gap-2 pr-12">
                                 <p>Recently Viewed</p>
                                 <i className="fa-solid fa-caret-down"></i>
                             </div>

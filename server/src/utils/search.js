@@ -18,6 +18,7 @@ const AccountFilter = (query) => {
 const ProductFilter = (query) => {
 	const where = {};
 	const having = {};
+	const order = [];
 
 	if (query.category) having.category = query.category;
 	if (query.productType) having.type = query.productType;
@@ -29,7 +30,28 @@ const ProductFilter = (query) => {
 		having.totalStock = { [Op.gte]: 0 };
 	}
 
-	return { where, having };
+	if (query.sortBy) {
+		switch (query.sortBy) {
+			case "latest":
+				order.push(["product_date_add", "DESC"]);
+				break;
+			case "oldest":
+				order.push(["product_date_add", "ASC"]);
+				break;
+			case "Price Low To High":
+				order.push(["price", "ASC"]);
+				break;
+			case "Price High To Low":
+				order.push(["price", "DESC"]);
+				break;
+			default:
+				order.push(["product_date_add", "DESC"]); // mặc định latest
+		}
+	} else {
+		order.push(["product_date_add", "DESC"]); // default
+	}
+
+	return { where, having, order };
 };
 
 module.exports = {

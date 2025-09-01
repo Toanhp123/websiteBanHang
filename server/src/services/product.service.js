@@ -17,7 +17,7 @@ class ProductService {
 	 * @return {Promise<Array>} danh sách sản phẩm
 	 */
 	async getProductByCondition(query) {
-		// TODO: cần thêm xét theo sort options và thuật toán tính tiền để suy ra sản phẩm bán chạy
+		// TODO: cần thêm thuật toán tính tiền để suy ra sản phẩm bán chạy
 		const product = await Product.findAll({
 			include: [
 				{
@@ -51,6 +51,7 @@ class ProductService {
 			group: ["Product.product_id"],
 			where: query.where,
 			having: query.having,
+			order: query.order,
 		});
 
 		const productImage = await ProductImage.findAll({

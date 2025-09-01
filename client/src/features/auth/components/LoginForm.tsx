@@ -52,7 +52,7 @@ function LoginForm() {
                     placeholder="Password"
                     value={password}
                     setValue={setPassword}
-                    type="text"
+                    inputFormat="password"
                     required={true}
                 />
 

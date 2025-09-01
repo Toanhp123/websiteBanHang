@@ -57,7 +57,7 @@ function Button({
             type={buttonType}
         >
             {loading ? (
-                <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-b-2 border-white"></div>
+                <div className="h-5 w-5 animate-spin rounded-full border-t-2 border-b-2 border-white"></div>
             ) : iconBefore ? (
                 <>
                     {icon !== "" && <i className={icon}></i>}
