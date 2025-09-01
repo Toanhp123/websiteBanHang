@@ -30,7 +30,9 @@ class InvoiceController {
 
 	// [GET] /invoice/detail
 	async getAllInvoiceDetail(req, res) {
-		const allInvoiceDetail = await InvoiceService.getAllInvoiceDetail();
+		const { id } = req.user;
+
+		const allInvoiceDetail = await InvoiceService.getAllInvoiceDetail(id);
 
 		res.json(allInvoiceDetail);
 	}

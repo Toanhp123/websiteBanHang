@@ -1,32 +1,15 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import {
-    selectShippingAddress,
-    setShippingAddress,
-} from "../redux/shippingAddress.slice";
-import { getAllAddressShipping } from "../services/invoice.api";
-import { useEffect } from "react";
+import { useAppDispatch } from "@/hooks/useRedux";
 import { Button } from "@/components/shared";
 import { deleteShippingAddressAsync } from "../redux/shippingAddress.thunk";
+import { useGetAddressShipping } from "@/hooks/useGetAddressShipping";
 
 function ListAddressShipping() {
-    const shippingAddress = useAppSelector(selectShippingAddress);
+    const shippingAddress = useGetAddressShipping();
     const dispatch = useAppDispatch();
-
-    const handleGetAllAddressShipping = async () => {
-        const res = await getAllAddressShipping();
-
-        if (res) {
-            dispatch(setShippingAddress(res));
-        }
-    };
 
     const handleDeleteAddressShipping = (invoice_address_id: number) => {
         dispatch(deleteShippingAddressAsync(invoice_address_id));
     };
-
-    useEffect(() => {
-        handleGetAllAddressShipping();
-    }, []);
 
     return (
         <div>

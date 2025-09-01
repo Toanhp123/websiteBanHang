@@ -1,11 +1,11 @@
 const { AccountFilter } = require("../utils/search");
 
-const AccountService = require("../services/account.service");
+const accountService = require("../services/account.service");
 
 class AccountController {
 	// [GET] /account
 	async getAccountByCondition(req, res) {
-		const accounts = await AccountService.getAccountByCondition(
+		const accounts = await accountService.getAccountByCondition(
 			AccountFilter(req.query)
 		);
 
@@ -16,7 +16,7 @@ class AccountController {
 	async getAccountByUsername(req, res) {
 		const { username } = req.params;
 
-		const account = await AccountService.getAccountByUsername(username);
+		const account = await accountService.getAccountByUsername(username);
 
 		res.json(account);
 	}
@@ -26,7 +26,7 @@ class AccountController {
 		const { product_id, quantity } = req.body;
 		const account_id = req.user.id;
 
-		const cart = await AccountService.putItemToCart(
+		const cart = await accountService.putItemToCart(
 			product_id,
 			quantity,
 			account_id
@@ -39,7 +39,7 @@ class AccountController {
 	async getCart(req, res) {
 		const account_id = req.user.id;
 
-		const cart = await AccountService.getCart(account_id);
+		const cart = await accountService.getCart(account_id);
 
 		res.json(cart);
 	}
@@ -48,7 +48,7 @@ class AccountController {
 	async deleteItemInCart(req, res) {
 		const { id } = req.params;
 
-		await AccountService.deleteItemInCart(id);
+		await accountService.deleteItemInCart(id);
 
 		res.json({ message: "Delete item in cart success" });
 	}
@@ -57,7 +57,7 @@ class AccountController {
 	async deleteCart(req, res) {
 		const { id } = req.user;
 
-		await AccountService.deleteCart(id);
+		await accountService.deleteCart(id);
 
 		res.json({ message: "Delete item in cart success" });
 	}
@@ -66,7 +66,9 @@ class AccountController {
 	async changeQuantityItemCart(req, res) {
 		const { id_product } = req.params;
 		const { quantity } = req.body;
-		await AccountService.changeQuantityItemCart(id_product, quantity);
+
+		await accountService.changeQuantityItemCart(id_product, quantity);
+
 		res.json({ message: "Change quantity in cart success" });
 	}
 
@@ -76,8 +78,17 @@ class AccountController {
 
 		const { changePassword } = req.body;
 
-		await AccountService.changePassword(changePassword, id);
+		await accountService.changePassword(changePassword, id);
 		res.json({ message: "Change quantity in cart success" });
+	}
+
+	// [POST] /account/reset
+	async resetPassword(req, res) {
+		const { pass, email } = req.body;
+
+		await accountService.resetPassword(pass, email);
+
+		return res.json({ message: "done" });
 	}
 }
 

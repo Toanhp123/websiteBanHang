@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { register } from "../services/auth.api";
+import { registerCustomer } from "../services/auth.api";
 import type { RegisterCredentials, UserInfo } from "../types/auth.type";
 import { Button, Input } from "@/components/shared";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function RegisterForm() {
+    const navigate = useNavigate();
     const [tab, setTab] = useState<number>(1);
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -15,14 +16,12 @@ function RegisterForm() {
     const [birthday, setBirthday] = useState<string>(
         new Date().toISOString().split("T")[0],
     );
-    const [address, setAddress] = useState<string>("");
     const [retypePass, setRetypePass] = useState<string>("");
 
     const userInfo: UserInfo = {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        address: address,
         birthday: birthday,
         phoneNumber: phone,
     };
@@ -33,7 +32,6 @@ function RegisterForm() {
             password === retypePass && password !== "" ? password : undefined,
     };
 
-    //TODO: cần xử lý sự kiện chuyển trang handleNextStep đang bị hiện tượng khi đến step 3 gọi func back step sẽ gọi onSubmit form dẫn đến không lùi được, cần làm nốt sự kiện đăng ký người dùng
     const handleRegister = async (
         e: React.FormEvent<HTMLFormElement>,
     ): Promise<void> => {
@@ -41,9 +39,20 @@ function RegisterForm() {
 
         handleNextTab();
 
-        if (registerCredentials.password === undefined) return;
+        if (registerCredentials.password !== undefined) {
+            try {
+                const res = await registerCustomer(
+                    userInfo,
+                    registerCredentials,
+                );
 
-        const res = await register(userInfo, registerCredentials);
+                if (res) {
+                    navigate("/login");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
     };
 
     const handleNextTab = (): void => {
@@ -53,6 +62,9 @@ function RegisterForm() {
 
     const handleBackTab = (): void => {
         if (tab === 1) return;
+        setPassword("");
+        setRetypePass("");
+
         setTab((tab) => tab - 1);
     };
 
@@ -111,7 +123,7 @@ function RegisterForm() {
                 {/* Trang 2 của from đăng ký */}
                 {tab === 2 && (
                     <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-4">
                             <Input
                                 label="First Name"
                                 placeholder="First Name"
@@ -146,14 +158,6 @@ function RegisterForm() {
                             required={true}
                             inputFormat="date"
                         />
-
-                        <Input
-                            label="Address"
-                            placeholder="Address"
-                            value={address}
-                            setValue={setAddress}
-                            required={true}
-                        />
                     </div>
                 )}
 
@@ -184,7 +188,11 @@ function RegisterForm() {
                 <div className="space-y-3 md:space-y-5">
                     <div className={tab > 1 ? `flex gap-2` : ``}>
                         {tab > 1 && (
-                            <Button text="Back Step" onClick={handleBackTab} />
+                            <Button
+                                text="Back Step"
+                                onClick={handleBackTab}
+                                buttonType="button"
+                            />
                         )}
 
                         <Button text={tab < 3 ? "Next Step" : "Sign Up"} />
@@ -210,7 +218,7 @@ function RegisterForm() {
 
                 <Link
                     to="/login"
-                    className="text-green-700 underline hover:text-green-600"
+                    className="text-green-700 underline underline-offset-2 hover:text-green-600"
                 >
                     Sign In
                 </Link>

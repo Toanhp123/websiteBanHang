@@ -9,12 +9,12 @@ const authService = require("../services/auth.service");
 
 class AuthController {
 	// [POST] /auth/login
-	async login(req, res) {
+	async loginCustomer(req, res) {
 		const { username, password } = req.body;
 		const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
 		// Lấy thông tin người dùng nếu đăng nhập thành công
-		const payload = await authService.login(username, password);
+		const payload = await authService.loginCustomer(username, password);
 
 		// Tạo Cookie Refresh Token trả về client
 		createCookie(
@@ -50,11 +50,11 @@ class AuthController {
 	}
 
 	// [POST] /auth/register
-	async register(req, res) {
+	async registerCustomer(req, res) {
 		const user = req.user;
 
 		// Tạo tài khoản mới
-		await authService.register(user);
+		await authService.registerCustomer(user);
 
 		res.status(200).json({ message: "Register success" });
 	}
@@ -76,6 +76,22 @@ class AuthController {
 			message: "Create Access Token success",
 			accessToken: newAccessToken,
 		});
+	}
+
+	async checkEmailToGetOTP(req, res) {
+		const { email } = req.body;
+
+		const isValid = await authService.checkEmailToGetOTP(email);
+
+		return res.json(isValid);
+	}
+
+	async verifyOtp(req, res) {
+		const { email, otp } = req.body;
+
+		const isValid = await authService.verifyOtp(email, otp);
+
+		return res.json(isValid);
 	}
 }
 

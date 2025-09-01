@@ -14,8 +14,12 @@ const authController = require("../controllers/auth.controller");
 
 const router = express.Router();
 
-// [POST] /auth/login
-router.post("/login", validateUserLogin, catchAsync(authController.login));
+// [POST] /auth/loginCustomer
+router.post(
+	"/loginCustomer",
+	validateUserLogin,
+	catchAsync(authController.loginCustomer)
+);
 
 // [POST] /auth/logout
 router.post(
@@ -27,9 +31,9 @@ router.post(
 
 // [POST] /auth/register
 router.post(
-	"/register",
+	"/registerCustomer",
 	validateUserRegister,
-	catchAsync(authController.register)
+	catchAsync(authController.registerCustomer)
 );
 
 // [POST] /auth/refresh-token
@@ -38,6 +42,15 @@ router.post(
 	checkRefreshToken,
 	catchAsync(authController.getNewAccessToken)
 );
+
+// [POST] /auth/forgotPass/getOTP
+router.post(
+	"/forgotPass/getOTP",
+	catchAsync(authController.checkEmailToGetOTP)
+);
+
+// [POST] /auth/forgotPass/checkOTP
+router.post("/forgotPass/checkOTP", catchAsync(authController.verifyOtp));
 
 // [POST] /auth/fake-cookies
 router.post("/fake-cookies", (req, res) => {

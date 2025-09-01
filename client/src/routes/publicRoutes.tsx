@@ -1,6 +1,7 @@
 import { Route } from "react-router-dom";
 import {
     AboutUsPage,
+    ForgotPasswordPage,
     HomePage,
     LoginPage,
     ProductDetailPage,
@@ -13,6 +14,7 @@ const publicRoutes = (
     <>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
 
         <Route path="/blog" element={<BlogPage />} />
 

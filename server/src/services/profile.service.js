@@ -8,7 +8,7 @@ class ProfileService {
 	 */
 	async getProfile(customer_id) {
 		const customer = await Customer.findOne({
-			attributes: ["first_name", "last_name", "phone_number", "address"],
+			attributes: ["first_name", "last_name", "phone_number"],
 			where: { customer_id },
 			include: [
 				{
@@ -28,7 +28,7 @@ class ProfileService {
 	 */
 	async getProfileByPhone(phone_number) {
 		const customer = await Customer.findOne({
-			attributes: ["first_name", "last_name", "phone_number", "address"],
+			attributes: ["first_name", "last_name", "phone_number"],
 			where: { phone_number },
 			include: [
 				{

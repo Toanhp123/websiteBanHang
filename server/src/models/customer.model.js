@@ -22,10 +22,6 @@ const Customer = sequelize.define(
 			type: DataTypes.STRING(15),
 			allowNull: false,
 		},
-		address: {
-			type: DataTypes.STRING(255),
-			allowNull: false,
-		},
 		customer_type_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,

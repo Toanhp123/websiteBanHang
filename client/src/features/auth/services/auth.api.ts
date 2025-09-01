@@ -14,11 +14,11 @@ import type {
  * @param password mật khẩu đăng nhập
  * @returns trả về dữ liệu người dùng tương ứng kèm theo tin nhắn
  */
-export const login = async ({
+export const loginCustomer = async ({
     username,
     password,
 }: LoginCredentials): Promise<LoginResponse> => {
-    const res = await axios.post<LoginResponse>("/auth/login", {
+    const res = await axios.post<LoginResponse>("/auth/loginCustomer", {
         username,
         password,
     });
@@ -49,11 +49,11 @@ export const refreshToken = async (): Promise<string> => {
  * @param registerCredentials tài khoản mật khẩu người dùng
  * @returns trả về thông báo đăng ký thành công
  */
-export const register = async (
+export const registerCustomer = async (
     user: UserInfo,
     registerCredentials: RegisterCredentials,
 ): Promise<RegisterResponse> => {
-    const res = await axios.post<RegisterResponse>("/auth/register", {
+    const res = await axios.post<RegisterResponse>("/auth/registerCustomer", {
         ...user,
         ...registerCredentials,
     });
@@ -69,4 +69,31 @@ export const logout = async (): Promise<void> => {
             withCredentials: true,
         },
     );
+};
+
+export const checkEmailToGetOTP = async (email: string): Promise<boolean> => {
+    const res = await axios.post("/auth/forgotPass/getOTP", { email });
+
+    return res.data;
+};
+
+export const verifyOtp = async (
+    email: string,
+    otp: string,
+): Promise<{ message: string; valid: string }> => {
+    const res = await axios.post<{ message: string; valid: string }>(
+        "/auth/forgotPass/checkOTP",
+        { email, otp },
+    );
+
+    return res.data;
+};
+
+export const resetPassword = async (
+    pass: string,
+    email: string,
+): Promise<{ message: string; valid: string }> => {
+    const res = await axios.post("/account/reset", { pass, email });
+
+    return res.data;
 };

@@ -13,6 +13,7 @@ type ButtonPros = {
     border?: string;
     borderColor?: string;
     type?: "big" | "small" | "icon";
+    buttonType?: "button" | "submit";
     disabled?: boolean;
     onClick?: () => Promise<void> | void;
 };
@@ -30,6 +31,7 @@ function Button({
     border = "border",
     borderColor = "black",
     type = "big",
+    buttonType = "submit",
     disabled = false,
     onClick,
 }: ButtonPros) {
@@ -52,6 +54,7 @@ function Button({
                 textColorHover,
             )}
             disabled={disabled}
+            type={buttonType}
         >
             {loading ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-b-2 border-white"></div>

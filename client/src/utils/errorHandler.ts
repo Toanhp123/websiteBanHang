@@ -5,7 +5,6 @@ import axios from "@/utils/axiosInstance";
 import { ErrorCode } from "@/constants/errorCode.constants";
 import { clearAccessToken, setAccessToken } from "@/stores/authStore";
 
-// TODO: cân làm hàm xử lý lỗi
 export const handleApiError = async (error: AxiosError) => {
     const originalRequest = error.config as RetryRequestConfig;
     const err = error.response?.data || "Something went wrong";
@@ -36,8 +35,7 @@ export const handleApiError = async (error: AxiosError) => {
             }
 
             break;
-        case ErrorCode.BAD_REQUEST:
-            return Promise.reject(err);
+
         default:
             return Promise.reject(err);
     }

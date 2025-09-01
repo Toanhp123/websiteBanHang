@@ -10,6 +10,7 @@ import { default as WishList } from "./WishList";
 import { default as MyAccountPage } from "./MyAccountPage";
 import { default as OrderComplete } from "./OrderComplete";
 import { default as AboutUsPage } from "./AboutUsPage";
+import { default as ForgotPasswordPage } from "./ForgotPasswordPage";
 
 export {
     LoginPage,
@@ -24,4 +25,5 @@ export {
     MyAccountPage,
     OrderComplete,
     AboutUsPage,
+    ForgotPasswordPage,
 };

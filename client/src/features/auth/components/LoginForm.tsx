@@ -1,7 +1,7 @@
 import { Button, Input } from "@/components/shared";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { login } from "../services/auth.api";
+import { loginCustomer } from "../services/auth.api";
 import type { LoginCredentials } from "../types/auth.type";
 import { setAccessToken } from "@/stores/authStore";
 
@@ -21,7 +21,7 @@ function LoginForm() {
         const from = location.state?.from?.pathname || "/";
 
         try {
-            const res = await login({ username, password });
+            const res = await loginCustomer({ username, password });
             setAccessToken(res.data.accessToken);
             navigate(from, { replace: true });
         } catch (error) {
@@ -65,8 +65,8 @@ function LoginForm() {
 
                     <div>
                         <Link
-                            to="/register"
-                            className="flex-1 font-semibold text-green-700 underline hover:text-green-600"
+                            to="/forgotPassword"
+                            className="flex-1 font-semibold text-green-700 underline underline-offset-2 hover:text-green-600"
                         >
                             Forget password?
                         </Link>

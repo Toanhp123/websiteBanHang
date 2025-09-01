@@ -46,7 +46,6 @@ const validateUserRegister = (req, res, next) => {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		email: req.body.email,
-		address: req.body.address,
 		birthday: req.body.birthday,
 		phoneNumber: req.body.phoneNumber,
 	};
@@ -72,10 +71,6 @@ const validateUserRegister = (req, res, next) => {
 			"Email is incorrect format",
 			AccountStatus.WRONG_EMAIL_FORMAT
 		);
-	}
-
-	if (!user.address.trim()) {
-		throwBadRequest("Missing address", AccountStatus.MISSING_ADDRESS);
 	}
 
 	if (!user.birthday.trim()) {
@@ -104,13 +99,6 @@ const validateUserRegister = (req, res, next) => {
 		throwBadRequest(
 			"Last name length must have more than 1 character",
 			AccountStatus.MISSING_LAST_NAME
-		);
-	}
-
-	if (user.address.trim().length < 6) {
-		throwBadRequest(
-			"Address length must have more than 5 character",
-			AccountStatus.MISSING_ADDRESS
 		);
 	}
 

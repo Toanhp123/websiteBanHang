@@ -34,13 +34,13 @@ class InvoiceService {
 		try {
 			const [item] = await InvoiceAddress.findOrCreate({
 				where: {
-					first_name: billDetail.firstName,
-					last_name: billDetail.lastName,
+					first_name: billDetail.first_name,
+					last_name: billDetail.last_name,
 					email: billDetail.email,
-					street_address: billDetail.streetAddress,
+					street_address: billDetail.street_address,
 					city: billDetail.city,
 					country: billDetail.country,
-					zip_code: billDetail.zipCode,
+					zip_code: billDetail.zip_code,
 					phone: billDetail.phone,
 					customer_id,
 				},
@@ -133,7 +133,10 @@ class InvoiceService {
 		return invoiceDetail;
 	}
 
-	async getAllInvoiceDetail() {
+	async getAllInvoiceDetail(account_id) {
+		const account = await Account.findOne({ where: { account_id } });
+		const customer_id = account.dataValues.customer_id;
+
 		const query = `
 			SELECT
 				-- InvoiceDetail
@@ -159,10 +162,11 @@ class InvoiceService {
 
 			WHERE 
 				pi.is_main = :is_main
+				AND i.customer_id = :customer_id
 		`;
 
 		const invoiceDetail = await sequelize.query(query, {
-			replacements: { is_main: 1 },
+			replacements: { is_main: 1, customer_id },
 			type: sequelize.QueryTypes.SELECT,
 		});
 

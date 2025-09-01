@@ -8,6 +8,7 @@ const {
 	AccountStatus,
 } = require("../constants/errorCode.constants");
 const { signAccessToken, signRefreshToken } = require("../utils/token.util");
+const nodemailer = require("nodemailer");
 
 const AppError = require("../utils/errorCustom.util");
 const sequelize = require("../configs/database.config");
@@ -20,6 +21,9 @@ const {
 	throwServerError,
 	throwConflictError,
 } = require("../utils/errorThrowFunc");
+const { EMAIL_USER, EMAIL_PASS } = require("../configs/env.config");
+
+const otpStore = {};
 
 class AuthService {
 	/**
@@ -32,7 +36,7 @@ class AuthService {
 	 * @param {String} password - Mật khẩu của người dùng
 	 * @return {Promise<Object>} Trả về thông tin người dùng và token
 	 */
-	async login(username, password) {
+	async loginCustomer(username, password) {
 		const user = await accountService.getAccountByUsername(username);
 
 		if (!user) {
@@ -42,6 +46,12 @@ class AuthService {
 				"Account is not active",
 				AccountStatus.NOT_ACTIVE
 			);
+		}
+
+		const customer_id = user.dataValues.customer_id;
+
+		if (!customer_id) {
+			throwNotFoundError("Can't find user", AccountStatus.NOT_FOUND);
 		}
 
 		const isPasswordCorrect = await checkPassword(
@@ -136,7 +146,7 @@ class AuthService {
 	 * - Tạo tài khoản mới
 	 * @param {Object} user - Thông tin người dùng
 	 */
-	async register(user) {
+	async registerCustomer(user) {
 		const transaction = await sequelize.transaction();
 
 		const checkUsername = await accountService.getAccountByUsername(
@@ -178,7 +188,6 @@ class AuthService {
 					first_name: user.firstName,
 					last_name: user.lastName,
 					phone_number: user.phoneNumber,
-					address: user.address,
 					customer_type_id: 1,
 					customer_birthday: user.birthday,
 				},
@@ -195,7 +204,7 @@ class AuthService {
 					customer_id: newCustomer.customer_id,
 					role_id: 3,
 					email: user.email,
-					account_status: "pending",
+					account_status: "approved",
 					create_at: new Date(),
 				},
 				{ transaction }
@@ -317,6 +326,52 @@ class AuthService {
 		});
 
 		return newAccessToken;
+	}
+
+	async checkEmailToGetOTP(email) {
+		const res = await accountService.getAccountByEmail(email);
+		const customer_id = res.dataValues.customer_id;
+
+		if (res && customer_id) {
+			const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6 số
+			const expires = Date.now() + 5 * 60 * 1000; // 5 phút
+
+			otpStore[email] = { code: otp, expires };
+
+			// config transporter
+			const transporter = nodemailer.createTransport({
+				service: "gmail", // hoặc SMTP server riêng
+				auth: {
+					user: EMAIL_USER,
+					pass: EMAIL_PASS,
+				},
+			});
+
+			await transporter.sendMail({
+				from: process.env.EMAIL_USER,
+				to: email,
+				subject: "Mã OTP xác thực",
+				text: `Mã OTP của bạn là: ${otp} (hết hạn sau 5 phút)`,
+			});
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	async verifyOtp(email, otp) {
+		const record = otpStore[email];
+
+		if (!record) return { message: "Chưa gửi OTP" };
+		if (Date.now() > record.expires)
+			return { message: "OTP đã hết hạn", valid: false };
+		if (record.code !== otp)
+			return { message: "OTP không đúng", valid: false };
+
+		// ✅ OTP hợp lệ
+		delete otpStore[email]; // xoá cho an toàn
+		return { message: "Xác thực thành công", valid: true };
 	}
 }
 

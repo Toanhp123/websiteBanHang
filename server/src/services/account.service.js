@@ -35,7 +35,7 @@ class AccountService {
 	 * @returns {Promise<Object>} Trả về thông tin tài khoản theo tên người dùng
 	 */
 	async getAccountByEmail(email) {
-		const account = await Account.findAll({
+		const account = await Account.findOne({
 			where: { email },
 		});
 
@@ -302,6 +302,30 @@ class AccountService {
 					AccountStatus.ERROR_UPDATE_PASSWORD
 				);
 			}
+		}
+	}
+
+	async resetPassword(pass, email) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const newPassHash = await createPasswordHash(pass);
+			await Account.update(
+				{ password_hash: newPassHash },
+				{ where: { email } },
+				{ transaction }
+			);
+
+			transaction.commit();
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't update password",
+				AccountStatus.ERROR_UPDATE_PASSWORD
+			);
 		}
 	}
 }

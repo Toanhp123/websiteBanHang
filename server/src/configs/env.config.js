@@ -23,4 +23,7 @@ module.exports = {
 		.asIntPositive(),
 
 	NODE_ENV: env.get("NODE_ENV").default("production").asString(),
+
+	EMAIL_USER: env.get("EMAIL_USER").required().asString(),
+	EMAIL_PASS: env.get("EMAIL_PASS").required().asString(),
 };

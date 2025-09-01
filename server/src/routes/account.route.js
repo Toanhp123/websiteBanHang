@@ -58,4 +58,7 @@ router.get(
 	catchAsync(accountController.getAccountByUsername)
 );
 
+// [POST] /account/reset
+router.post("/reset", catchAsync(accountController.resetPassword));
+
 module.exports = router;
