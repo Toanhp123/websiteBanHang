@@ -1,22 +1,40 @@
 import { refreshToken } from "@/features/auth/services/auth.api";
+import type { UserRole } from "@/features/auth/types/auth.type";
 import { getAccessToken, setAccessToken } from "@/stores/authStore";
 import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+    username: string;
+    role: UserRole;
+    exp: number;
+    iat: number;
+}
 
 export const useAuth = () => {
     const [loading, setLoading] = useState(true);
     const [authorized, setAuthorized] = useState(false);
+    const [role, setRole] = useState<UserRole | null>(null);
     const accessToken = getAccessToken();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                if (!accessToken) {
-                    const newAccessToken = await refreshToken();
+                let token = accessToken;
 
-                    setAccessToken(newAccessToken);
+                if (!token) {
+                    token = await refreshToken();
+                    setAccessToken(token);
+                }
+
+                if (token) {
+                    const decoded = jwtDecode<JwtPayload>(token);
+
+                    setRole(decoded.role);
                     setAuthorized(true);
                 } else {
-                    setAuthorized(true);
+                    setRole(null);
+                    setAuthorized(false);
                 }
             } catch (err) {
                 console.log(err);
@@ -30,5 +48,5 @@ export const useAuth = () => {
         checkAuth();
     }, [accessToken]);
 
-    return { loading, authorized };
+    return { loading, authorized, role };
 };

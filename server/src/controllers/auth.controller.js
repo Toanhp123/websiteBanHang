@@ -9,12 +9,12 @@ const authService = require("../services/auth.service");
 
 class AuthController {
 	// [POST] /auth/login
-	async loginCustomer(req, res) {
+	async login(req, res) {
 		const { username, password } = req.body;
 		const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
 		// Lấy thông tin người dùng nếu đăng nhập thành công
-		const payload = await authService.loginCustomer(username, password);
+		const payload = await authService.login(username, password);
 
 		// Tạo Cookie Refresh Token trả về client
 		createCookie(

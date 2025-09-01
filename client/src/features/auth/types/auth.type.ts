@@ -45,4 +45,8 @@ export type UserInfo = {
     phoneNumber: string;
 };
 
-export type UserRole = "admin" | "customer" | "employee";
+export type UserRole = "Admin" | "Customer" | "Employee";
+
+export const isUserRole = (role: unknown): role is UserRole => {
+    return role === "Admin" || role === "Customer" || role === "Employee";
+};

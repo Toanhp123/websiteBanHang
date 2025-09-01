@@ -18,7 +18,7 @@ export const loginCustomer = async ({
     username,
     password,
 }: LoginCredentials): Promise<LoginResponse> => {
-    const res = await axios.post<LoginResponse>("/auth/loginCustomer", {
+    const res = await axios.post<LoginResponse>("/auth/login", {
         username,
         password,
     });

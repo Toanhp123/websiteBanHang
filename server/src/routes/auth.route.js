@@ -14,12 +14,8 @@ const authController = require("../controllers/auth.controller");
 
 const router = express.Router();
 
-// [POST] /auth/loginCustomer
-router.post(
-	"/loginCustomer",
-	validateUserLogin,
-	catchAsync(authController.loginCustomer)
-);
+// [POST] /auth/login
+router.post("/login", validateUserLogin, catchAsync(authController.login));
 
 // [POST] /auth/logout
 router.post(

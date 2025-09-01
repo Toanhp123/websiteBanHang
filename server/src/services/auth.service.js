@@ -36,7 +36,7 @@ class AuthService {
 	 * @param {String} password - Mật khẩu của người dùng
 	 * @return {Promise<Object>} Trả về thông tin người dùng và token
 	 */
-	async loginCustomer(username, password) {
+	async login(username, password) {
 		const user = await accountService.getAccountByUsername(username);
 
 		if (!user) {
@@ -46,12 +46,6 @@ class AuthService {
 				"Account is not active",
 				AccountStatus.NOT_ACTIVE
 			);
-		}
-
-		const customer_id = user.dataValues.customer_id;
-
-		if (!customer_id) {
-			throwNotFoundError("Can't find user", AccountStatus.NOT_FOUND);
 		}
 
 		const isPasswordCorrect = await checkPassword(
@@ -69,7 +63,7 @@ class AuthService {
 		const payload = {
 			id: user.account_id,
 			username: user.username,
-			role: user.role_id,
+			role: user.dataValues.role_name,
 		};
 
 		// Tạo Access Token từ thông tin người dùng
@@ -84,7 +78,7 @@ class AuthService {
 			user: {
 				id: user.account_id,
 				username: user.username,
-				role: user.role_id,
+				role: user.dataValues.role_name,
 			},
 		};
 	}
@@ -322,7 +316,7 @@ class AuthService {
 		const newAccessToken = signAccessToken({
 			id: payload.id,
 			username: payload.username,
-			role: payload.role_id,
+			role: payload.role,
 		});
 
 		return newAccessToken;

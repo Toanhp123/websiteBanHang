@@ -2,7 +2,7 @@ import { Button, Input } from "@/components/shared";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginCustomer } from "../services/auth.api";
-import type { LoginCredentials } from "../types/auth.type";
+import { isUserRole, type LoginCredentials } from "../types/auth.type";
 import { setAccessToken } from "@/stores/authStore";
 
 function LoginForm() {
@@ -22,8 +22,14 @@ function LoginForm() {
 
         try {
             const res = await loginCustomer({ username, password });
-            setAccessToken(res.data.accessToken);
-            navigate(from, { replace: true });
+
+            if (
+                isUserRole(res.data.user.role) &&
+                res.data.user.role === "Customer"
+            ) {
+                setAccessToken(res.data.accessToken);
+                navigate(from, { replace: true });
+            }
         } catch (error) {
             console.log(error);
         }
@@ -56,13 +62,7 @@ function LoginForm() {
                     required={true}
                 />
 
-                <div className="flex">
-                    {/* TODO: need to make checkbox  */}
-                    {/* <div className="flex flex-1 items-center justify-center gap-1">
-                            <Input type="checkbox" />
-                            <p>Remember me</p>
-                        </div> */}
-
+                <div className="flex items-center justify-end">
                     <div>
                         <Link
                             to="/forgotPassword"

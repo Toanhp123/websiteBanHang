@@ -1,4 +1,4 @@
-const { Account, CartProduct, Cart } = require("../models");
+const { Account, AccountRole, CartProduct, Cart } = require("../models");
 const {
 	CartStatus,
 	AccountStatus,
@@ -23,6 +23,19 @@ class AccountService {
 	 */
 	async getAccountByUsername(username) {
 		const account = await Account.findOne({
+			include: [{ model: AccountRole, attributes: [] }],
+			attributes: [
+				"account_id",
+				"account_status",
+				"username",
+				"password_hash",
+				"account_type",
+				"employee_id",
+				"customer_id",
+				"email",
+				"create_at",
+				[sequelize.col("AccountRole.role_name"), "role_name"],
+			],
 			where: { username },
 		});
 
