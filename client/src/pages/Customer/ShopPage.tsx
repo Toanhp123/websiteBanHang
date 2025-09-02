@@ -1,4 +1,4 @@
-import { Footer, Header, Section, TitleSection } from "@/layouts";
+import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 import { ListFilterOption, ListTagFilter } from "@/features/filters/components";
 import { ListProduct } from "@/features/products/components";
 

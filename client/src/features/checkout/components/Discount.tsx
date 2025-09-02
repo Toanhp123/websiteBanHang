@@ -1,5 +1,5 @@
 import { Button, Input } from "@/components/shared";
-import { FormCheckoutSection } from "@/layouts";
+import { FormCheckoutSection } from "@/layouts/Customer";
 import { useEffect, useState } from "react";
 import { checkPromotionCanApply, getPromotion } from "../services/checkout.api";
 import { useAppDispatch } from "@/hooks/useRedux";

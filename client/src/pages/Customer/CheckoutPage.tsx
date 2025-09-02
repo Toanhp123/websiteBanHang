@@ -1,5 +1,5 @@
 import { BillingDetails, BillingSummary } from "@/features/checkout/components";
-import { Footer, Header, Section, TitleSection } from "@/layouts";
+import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 
 function CheckoutPage() {
     return (

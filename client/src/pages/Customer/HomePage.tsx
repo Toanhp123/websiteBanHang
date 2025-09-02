@@ -4,7 +4,7 @@ import {
     FeatureProduct,
     Hero,
 } from "@/components/sections";
-import { Footer, Header, Section } from "@/layouts";
+import { Footer, Header, Section } from "@/layouts/Customer";
 
 function HomePage() {
     return (

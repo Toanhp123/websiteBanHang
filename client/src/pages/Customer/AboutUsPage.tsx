@@ -1,4 +1,4 @@
-import { Footer, Header, Section, TitleSection } from "@/layouts";
+import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 
 // TODO: làm sau không quan trọng
 function AboutUsPage() {

@@ -1,5 +1,5 @@
 import { AccountOptions } from "@/components/sections";
-import { Footer, Header, Section, TitleSection } from "@/layouts";
+import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 
 function MyAccount() {
     return (

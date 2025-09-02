@@ -2,7 +2,7 @@ import {
     ItemProductBuy,
     ItemProductDescription,
 } from "@/features/products/components";
-import { Footer, Header, Section, TitleSection } from "@/layouts";
+import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 
 function ProductDetailPage() {
     return (

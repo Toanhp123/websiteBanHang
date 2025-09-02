@@ -2,7 +2,7 @@ import { Button, SelectQuantity } from "@/components/shared";
 import { deleteItemInCartSync } from "@/features/cart/redux/cart.thunk";
 import { useItemCartOnLoad } from "@/hooks/useItemCartOnLoad";
 import { useAppDispatch } from "@/hooks/useRedux";
-import { FormCheckoutSection } from "@/layouts";
+import { FormCheckoutSection } from "@/layouts/Customer";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 

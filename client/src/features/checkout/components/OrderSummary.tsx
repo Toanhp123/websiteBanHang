@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { selectBillDetail } from "../redux/billingDetail.slice";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/shared";
-import { FormCheckoutSection } from "@/layouts";
+import { FormCheckoutSection } from "@/layouts/Customer";
 import { selectPromotion } from "../redux/promotion.slice";
 import { selectFinalTotal } from "../redux/price.slice";
 import { useNavigate } from "react-router-dom";

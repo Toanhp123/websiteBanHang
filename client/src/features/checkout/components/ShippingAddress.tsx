@@ -6,7 +6,7 @@ import {
     selectBillDetail,
     updateBillDetail,
 } from "../redux/billingDetail.slice";
-import { FormCheckoutSection } from "@/layouts";
+import { FormCheckoutSection } from "@/layouts/Customer";
 import { useGetAddressShipping } from "@/hooks/useGetAddressShipping";
 import { useEffect, useState } from "react";
 import type { BillDetailState } from "../types/checkout.type";

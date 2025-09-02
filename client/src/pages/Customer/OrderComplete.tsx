@@ -1,6 +1,6 @@
 import { InvoiceCompleteOrder } from "@/features/invoice/components";
 import type { Invoice } from "@/features/invoice/types/invoice.type";
-import { Footer, Header, Section, TitleSection } from "@/layouts";
+import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 import { Navigate, useLocation } from "react-router-dom";
 
 function OrderComplete() {
