@@ -1,5 +1,20 @@
+import { MainLayout } from "@/layouts/Employee";
+
 function DashboardHome() {
-    return <div>DashboardHome</div>;
+    return (
+        <MainLayout>
+            <div className="space-y-8">
+                <div className="space-y-1">
+                    <h1 className="text-2xl font-semibold">Dashboard</h1>
+                    <p className="text-disable">
+                        Whole data about your business here
+                    </p>
+                </div>
+
+                <div>1</div>
+            </div>
+        </MainLayout>
+    );
 }
 
 export default DashboardHome;

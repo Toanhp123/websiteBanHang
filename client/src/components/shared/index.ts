@@ -9,6 +9,7 @@ import { default as PaginationButton } from "./PaginationButton";
 import { default as ImageProduct } from "./ImageProduct";
 import { default as SelectQuantity } from "./SelectQuantity";
 import { default as InputOTP } from "./InputOTP";
+import { default as ButtonSidebarDashboard } from "./ButtonSidebarDashboard";
 
 export {
     Button,
@@ -22,4 +23,5 @@ export {
     ImageProduct,
     SelectQuantity,
     InputOTP,
+    ButtonSidebarDashboard,
 };
