@@ -120,8 +120,8 @@ class AuthService {
 						account_id: id,
 						ip_address: ip,
 					},
-				},
-				{ transaction }
+					transaction,
+				}
 			);
 
 			await transaction.commit();
@@ -251,8 +251,8 @@ class AuthService {
 								ip_address: ip,
 								isValid: false,
 							},
-						},
-						{ transaction }
+							transaction,
+						}
 					);
 				}
 			}

@@ -5,8 +5,9 @@ const {
 	InvoiceAddress,
 	Invoice,
 	InvoiceDetail,
-	Product,
-	ProductImage,
+	Inventory,
+	Cart,
+	Warehouse,
 } = require("../models");
 const {
 	throwServerError,
@@ -76,7 +77,38 @@ class InvoiceService {
 					},
 					{ transaction }
 				);
+
+				let qtyToDeduct = item.quantity;
+
+				const inventories = await Inventory.findAll({
+					include: [{ model: Warehouse, attributes: [] }],
+					attributes: [
+						"product_id",
+						"quantity",
+						"warehouse_id",
+						"last_checked_at",
+						[
+							sequelize.col("Warehouse.priority"),
+							"warehouse_priority",
+						],
+					],
+					where: { product_id: item.id_product },
+					order: [["warehouse_priority", "ASC"]],
+					transaction,
+				});
+
+				for (let inv of inventories) {
+					if (qtyToDeduct <= 0) break;
+
+					const deduct = Math.min(inv.quantity, qtyToDeduct);
+
+					await inv.decrement({ quantity: deduct }, { transaction });
+
+					qtyToDeduct -= deduct;
+				}
 			}
+
+			await Cart.destroy({ where: { customer_id }, transaction });
 
 			transaction.commit();
 
@@ -208,7 +240,7 @@ class InvoiceService {
 		const transaction = await sequelize.transaction();
 
 		try {
-			await Invoice.destroy({ where: { invoice_id } });
+			await Invoice.destroy({ where: { invoice_id }, transaction });
 
 			transaction.commit();
 		} catch (error) {
@@ -224,7 +256,12 @@ class InvoiceService {
 		const account = await Account.findOne({ where: { account_id } });
 		const customer_id = account.customer_id;
 
+		const attributes = Object.keys(InvoiceAddress.getAttributes()).filter(
+			(attr) => attr !== "is_delete"
+		);
+
 		const invoiceAddress = await InvoiceAddress.findAll({
+			attributes,
 			where: { customer_id, is_delete: false },
 		});
 
@@ -261,10 +298,9 @@ class InvoiceService {
 		const transaction = await sequelize.transaction();
 
 		try {
-			const res = await InvoiceAddress.update(
+			await InvoiceAddress.update(
 				{ is_delete: true },
-				{ where: { invoice_address_id } },
-				{ transaction }
+				{ where: { invoice_address_id }, transaction }
 			);
 
 			transaction.commit();

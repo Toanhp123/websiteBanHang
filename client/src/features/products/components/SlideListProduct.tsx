@@ -40,6 +40,7 @@ function SlideListProduct({ options }: SlideListProductPros) {
                         price={item.price}
                         totalStock={item.totalStock}
                         images={item.images}
+                        Inventories={item.Inventories}
                     />
                 </SwiperSlide>
             ))}

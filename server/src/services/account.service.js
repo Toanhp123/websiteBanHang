@@ -1,4 +1,12 @@
-const { Account, AccountRole, CartProduct, Cart } = require("../models");
+const {
+	Account,
+	AccountRole,
+	CartProduct,
+	Cart,
+	Product,
+	ProductImage,
+	Inventory,
+} = require("../models");
 const {
 	CartStatus,
 	AccountStatus,
@@ -14,6 +22,8 @@ const {
 	checkPassword,
 	createPasswordHash,
 } = require("../utils/validateUser.util");
+const { where } = require("sequelize");
+const { getProductStock } = require("./product.service");
 
 class AccountService {
 	/**
@@ -162,18 +172,50 @@ class AccountService {
 		});
 
 		if (cart) {
-			const query =
-				"SELECT cp.quantity, p.product_id AS id_product, p.product_name AS product, pi.image_url AS img, p.price " +
-				"FROM cart_product cp " +
-				"INNER JOIN product p ON cp.product_id = p.product_id " +
-				"LEFT JOIN product_image pi ON pi.product_id = p.product_id AND pi.is_main = TRUE " +
-				"WHERE cp.cart_id = :cart_id";
+			const query = `
+			SELECT
+    			cp.quantity,
+    			p.product_id AS id_product,
+    			p.product_name AS product,
+    			pi.image_url AS img,
+    			p.price,
+    			JSON_ARRAYAGG(
+        			JSON_OBJECT(
+            			'warehouse_id', inv.warehouse_id,
+            			'stock', inv.quantity
+        			)
+    			) AS Inventories
+			FROM cart_product cp
+				INNER JOIN product p
+			    	ON cp.product_id = p.product_id
+				LEFT JOIN product_image pi
+			    	ON pi.product_id = p.product_id
+			    	AND pi.is_main = TRUE
+				LEFT JOIN inventory inv
+			    	ON inv.product_id = p.product_id
+			WHERE 
+				cp.cart_id = :cart_id
+			GROUP BY 
+    			p.product_id, pi.image_url
+			`;
+
 			const cartItem = await sequelize.query(query, {
-				replacements: { cart_id: cart.cart_id }, // gán giá trị cho :cart_id
-				type: sequelize.QueryTypes.SELECT, // để trả về list object
+				replacements: { cart_id: cart.cart_id },
+				type: sequelize.QueryTypes.SELECT,
 			});
 
-			const cartItemFormat = cartItem.map((p) => ({
+			const cartItemsWithStock = await Promise.all(
+				cartItem.map(async (item) => {
+					const totalStock = await getProductStock(item.id_product);
+
+					return {
+						...item,
+						totalStock,
+					};
+				})
+			);
+
+			const cartItemFormat = cartItemsWithStock.map((p) => ({
 				...p,
 				price: parseFloat(p.price),
 			}));
@@ -214,12 +256,10 @@ class AccountService {
 			const cartProduct = await CartProduct.findAll({ transaction });
 
 			if (cartProduct.length === 0) {
-				await Cart.destroy(
-					{
-						where: { cart_id: cart_id },
-					},
-					{ transaction }
-				);
+				await Cart.destroy({
+					where: { cart_id: cart_id },
+					transaction,
+				});
 			}
 
 			transaction.commit();
@@ -246,12 +286,10 @@ class AccountService {
 		const transaction = await sequelize.transaction();
 
 		try {
-			await Cart.destroy(
-				{
-					where: { customer_id: customer_id },
-				},
-				{ transaction }
-			);
+			await Cart.destroy({
+				where: { customer_id: customer_id },
+				transaction,
+			});
 
 			transaction.commit();
 		} catch (error) {
@@ -272,8 +310,8 @@ class AccountService {
 				{ quantity },
 				{
 					where: { product_id },
-				},
-				{ transaction }
+					transaction,
+				}
 			);
 
 			transaction.commit();
@@ -300,8 +338,7 @@ class AccountService {
 				const newPassHash = await createPasswordHash(newPass);
 				await Account.update(
 					{ password_hash: newPassHash },
-					{ where: { account_id } },
-					{ transaction }
+					{ where: { account_id }, transaction }
 				);
 
 				transaction.commit();
@@ -325,8 +362,7 @@ class AccountService {
 			const newPassHash = await createPasswordHash(pass);
 			await Account.update(
 				{ password_hash: newPassHash },
-				{ where: { email } },
-				{ transaction }
+				{ where: { email }, transaction }
 			);
 
 			transaction.commit();

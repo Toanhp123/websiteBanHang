@@ -3,6 +3,11 @@ import type {
     SortOptions,
 } from "@/features/filters/types/filter.type";
 
+export type Inventory = {
+    warehouse_id: number;
+    quantity: number;
+};
+
 export interface Product {
     product_id: number;
     product_name: string;
@@ -12,6 +17,7 @@ export interface Product {
     category: string;
     type: string;
     images: ProductImage[];
+    Inventories: Inventory[];
 }
 
 export interface ProductDetail extends Product {
@@ -32,6 +38,7 @@ export type ItemProductPros = {
     price: number;
     category: string;
     totalStock: number;
+    Inventories: Inventory[];
 };
 
 export type ItemStock = {

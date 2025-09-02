@@ -13,6 +13,7 @@ function ItemProduct({
     price,
     category,
     images,
+    Inventories,
 }: ItemProductPros) {
     const [like, setLike] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -35,6 +36,8 @@ function ItemProduct({
                     price,
                     img: mainImage,
                     quantity: 1,
+                    Inventories,
+                    totalStock: totalStock,
                 }),
             );
         } else {
@@ -81,7 +84,7 @@ function ItemProduct({
                         <p className="font-semibold text-gray-500 line-through">
                             $50.00
                         </p>
-                        <p className="font-semibold">{price}</p>
+                        <p className="font-semibold">{Number(price)}</p>
                     </div>
 
                     <Button

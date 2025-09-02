@@ -82,6 +82,7 @@ function CartItemList() {
                                 </td>
                                 <td className="border-b border-gray-300 px-4 py-2 text-center">
                                     <SelectQuantity
+                                        max={item.totalStock}
                                         product_id={item.id_product}
                                         quantity={quantities[item.id_product]}
                                         setQuantityInList={setQuantities}

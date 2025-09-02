@@ -96,6 +96,7 @@ function OrderReview() {
 
                                 <div className="flex items-center justify-between gap-6 pr-4">
                                     <SelectQuantity
+                                        max={item.totalStock}
                                         product_id={item.id_product}
                                         quantity={quantities[item.id_product]}
                                         setQuantityInList={setQuantities}

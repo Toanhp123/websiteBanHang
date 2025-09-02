@@ -33,6 +33,8 @@ function ItemProductBuy() {
                     price: productDetail.price,
                     img: mainImage,
                     quantity: quantity,
+                    Inventories: productDetail.Inventories,
+                    totalStock: productDetail.totalStock,
                 }),
             );
         } else {
@@ -60,7 +62,6 @@ function ItemProductBuy() {
         }
     };
 
-    // Load ảnh
     useEffect(() => {
         if (listImage.length > 0) {
             setMainImageShow(listImage[page] || listImage[0]);
@@ -126,7 +127,7 @@ function ItemProductBuy() {
 
                 <div className="flex gap-2">
                     <p className="text-2xl md:text-3xl">
-                        {productDetail.price}
+                        {Number(productDetail.price)}
                     </p>
                     <p className="text-2xl text-gray-500 line-through md:text-3xl">
                         $50.00
@@ -139,6 +140,7 @@ function ItemProductBuy() {
 
                 <div className="mt-4 flex gap-4">
                     <SelectQuantity
+                        max={productDetail.totalStock}
                         product_id={productDetail.product_id}
                         quantity={quantity}
                         setQuantity={setQuantity}

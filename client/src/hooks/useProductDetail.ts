@@ -15,6 +15,7 @@ export const useProductDetail = (product_id: string | undefined) => {
         images: [],
         status: "",
         supplier: "",
+        Inventories: [],
     });
 
     // Lấy danh sách ảnh
@@ -32,6 +33,7 @@ export const useProductDetail = (product_id: string | undefined) => {
     ): Promise<void> => {
         const productId = Number(product_id);
         const res = await getDetailProduct(productId);
+
         setProductDetail(res);
         setLoading(false);
     };

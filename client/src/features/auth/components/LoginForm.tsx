@@ -30,6 +30,14 @@ function LoginForm() {
                 setAccessToken(res.data.accessToken);
                 navigate(from, { replace: true });
             }
+
+            if (
+                isUserRole(res.data.user.role) &&
+                res.data.user.role === "Admin"
+            ) {
+                setAccessToken(res.data.accessToken);
+                navigate("/dashboard");
+            }
         } catch (error) {
             console.log(error);
         }

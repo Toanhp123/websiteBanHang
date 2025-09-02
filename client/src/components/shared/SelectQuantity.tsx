@@ -5,6 +5,7 @@ type SelectQuantityPros = {
     saveChangeCartToDatabase?: boolean;
     product_id: number;
     quantity: number;
+    max: number;
     setQuantity?: React.Dispatch<React.SetStateAction<number>>;
     setQuantityInList?: React.Dispatch<
         React.SetStateAction<Record<number, number>>
@@ -16,6 +17,7 @@ function SelectQuantity({
     saveChangeCartToDatabase = false,
     product_id,
     quantity,
+    max,
     setQuantity,
     setQuantityInList,
 }: SelectQuantityPros) {
@@ -46,11 +48,11 @@ function SelectQuantity({
     };
 
     const handleIncreaseQuantity = (): void => {
-        if (setQuantity) {
+        if (setQuantity && quantity < max) {
             setQuantity((q) => q + 1);
         }
 
-        if (setQuantityInList) {
+        if (setQuantityInList && quantity < max) {
             const newQuantity = quantity + 1;
 
             setQuantityInList((prev) => ({

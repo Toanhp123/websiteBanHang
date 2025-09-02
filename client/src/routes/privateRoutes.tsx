@@ -1,6 +1,12 @@
 import { Route } from "react-router-dom";
-import { CartPage, CheckoutPage, MyAccountPage, OrderComplete } from "@/pages";
+import {
+    CartPage,
+    CheckoutPage,
+    MyAccountPage,
+    OrderComplete,
+} from "@/pages/Customer";
 import { RequireAuth } from "@/components/shared";
+import { DashboardHome } from "@/pages/Employee";
 
 const privateRoutes = (
     <>
@@ -15,7 +21,9 @@ const privateRoutes = (
         </Route>
 
         {/* Route cho admin */}
-        <Route element={<RequireAuth allowedRoles={["Admin"]} />}></Route>
+        <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
+            <Route path="/dashboard" element={<DashboardHome />} />
+        </Route>
     </>
 );
 

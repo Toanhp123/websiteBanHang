@@ -1,8 +1,8 @@
-import { NotFoundPage } from '@/pages';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { NotFoundPage } from "@/pages/Customer";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import publicRoutes from './publicRoutes';
-import privateRoutes from './privateRoutes';
+import publicRoutes from "./publicRoutes";
+import privateRoutes from "./privateRoutes";
 
 function AppRoute() {
     return (

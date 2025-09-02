@@ -31,6 +31,7 @@ function ListProduct() {
                             images={item.images}
                             price={item.price}
                             category={item.category}
+                            Inventories={item.Inventories}
                         />
                     </li>
                 ))}

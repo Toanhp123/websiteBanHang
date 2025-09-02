@@ -8,6 +8,7 @@ const {
 	ProductType,
 	Inventory,
 	sequelize,
+	Warehouse,
 } = require("../models");
 const { throwNotFoundError } = require("../utils/errorThrowFunc");
 
@@ -20,18 +21,9 @@ class ProductService {
 		// TODO: cần thêm thuật toán tính tiền để suy ra sản phẩm bán chạy
 		const product = await Product.findAll({
 			include: [
-				{
-					model: ProductCategory,
-					attributes: [],
-				},
-				{
-					model: Inventory,
-					attributes: [],
-				},
-				{
-					model: ProductType,
-					attributes: [],
-				},
+				{ model: ProductCategory, attributes: [] },
+				{ model: ProductType, attributes: [] },
+				{ model: Inventory, attributes: [] },
 			],
 			attributes: [
 				"product_id",
@@ -48,6 +40,7 @@ class ProductService {
 				],
 				[sequelize.col("ProductType.product_type_name"), "type"],
 			],
+
 			group: ["Product.product_id"],
 			where: query.where,
 			having: query.having,
@@ -58,6 +51,8 @@ class ProductService {
 			attributes: ["image_url", "is_main", "product_id"],
 		});
 
+		const inventories = await Inventory.findAll();
+
 		if (!product) {
 			throwNotFoundError(
 				`Can't find item product`,
@@ -65,18 +60,23 @@ class ProductService {
 			);
 		}
 
-		const productsWithImage = product.map((p) => {
+		const productsWithImageAndInventory = product.map((p) => {
 			const imgs = productImage.filter(
 				(img) => img.product_id === p.product_id
+			);
+
+			const Inventories = inventories.filter(
+				(inv) => inv.product_id === p.product_id
 			);
 
 			return {
 				...p.toJSON(),
 				images: imgs,
+				Inventories: Inventories,
 			};
 		});
 
-		return productsWithImage;
+		return productsWithImageAndInventory;
 	}
 
 	/**
@@ -187,12 +187,17 @@ class ProductService {
 			where: { product_id: product_id },
 		});
 
-		const productsWithImage = {
+		const inventories = await Inventory.findAll({
+			where: { product_id: product_id },
+		});
+
+		const productsWithImageAndInventory = {
 			...productDetail.toJSON(),
 			images: productImage,
+			Inventories: inventories,
 		};
 
-		return productsWithImage;
+		return productsWithImageAndInventory;
 	}
 }
 

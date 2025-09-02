@@ -16,7 +16,7 @@ function OrderSummary() {
     const navigate = useNavigate();
     const { cart } = useItemCartOnLoad();
     const { discount, final_total } = useAppSelector(selectFinalTotal);
-    const billDetailSlice = useAppSelector(selectBillDetail);
+    const billDetail = useAppSelector(selectBillDetail);
     const promotionDetail = useAppSelector(selectPromotion);
     const [loading, setLoading] = useState<boolean>(false);
     const [orderSummary, setOrderSummary] = useState({
@@ -48,7 +48,7 @@ function OrderSummary() {
         try {
             const invoice = await createBill(
                 cart,
-                billDetailSlice,
+                billDetail,
                 promotionDetail.promotion_id,
                 discount,
                 final_total,
@@ -106,7 +106,13 @@ function OrderSummary() {
                 text="Process To Checkout"
                 textSize="small"
                 onClick={handleCreateBill}
-                disabled={cart.length === 0}
+                disabled={
+                    cart.length === 0 ||
+                    Object.entries(billDetail).some(
+                        ([key, value]) =>
+                            key !== "payment_method" && value === "",
+                    )
+                }
             />
         </FormCheckoutSection>
     );

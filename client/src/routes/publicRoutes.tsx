@@ -7,8 +7,8 @@ import {
     ProductDetailPage,
     RegisterPage,
     ShopPage,
-} from "@/pages";
-import BlogPage from "@/pages/BlogPage";
+} from "@/pages/Customer";
+import BlogPage from "@/pages/Customer/BlogPage";
 
 const publicRoutes = (
     <>

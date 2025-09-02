@@ -12,6 +12,7 @@ const initialState: ListCartState = {
     items: [],
 };
 
+// TODO: phải làm lại hệ thống mua cần thêm Inventory vào product rồi add vào Cart
 export const CartSlice = createSlice({
     name: "cart",
     initialState,
@@ -31,6 +32,8 @@ export const CartSlice = createSlice({
                     quantity: product.quantity,
                     price: product.price,
                     img: product.img,
+                    Inventories: product.Inventories,
+                    totalStock: product.totalStock,
                 });
             }
 

@@ -13,7 +13,7 @@ import type { BillDetailState } from "../types/checkout.type";
 
 function ShippingAddress() {
     const [selectOption, setSelectOption] = useState<string>("");
-    const billDetailSlice = useAppSelector(selectBillDetail);
+    const billDetail = useAppSelector(selectBillDetail);
     const listShippingAddress = useGetAddressShipping();
     const dispatch = useDispatch();
 
@@ -22,7 +22,7 @@ function ShippingAddress() {
 
         dispatch(
             updateBillDetail({
-                key: name as keyof typeof billDetailSlice,
+                key: name as keyof typeof billDetail,
                 value,
             }),
         );
@@ -34,10 +34,12 @@ function ShippingAddress() {
         }
 
         if (Number(selectOption)) {
-            const shippingAddress = listShippingAddress.filter(
-                (shippingAddress) =>
-                    shippingAddress.invoice_address_id === Number(selectOption),
-            )[0];
+            const { customer_id, invoice_address_id, ...shippingAddress } =
+                listShippingAddress.find(
+                    (shippingAddress) =>
+                        shippingAddress.invoice_address_id ===
+                        Number(selectOption),
+                ) || {};
 
             Object.entries(shippingAddress).map(([key, value]) => {
                 dispatch(
@@ -56,7 +58,7 @@ function ShippingAddress() {
                 <h1 className="text-xl font-bold">Exits Shipping Address</h1>
 
                 <div className="grid grid-cols-1 gap-4 divide-y divide-gray-300 rounded-2xl border border-gray-300 px-4 pt-4">
-                    <div className="h-30 overflow-auto">
+                    <div className="max-h-30 overflow-auto">
                         {listShippingAddress.map((address) => (
                             <label
                                 key={address.invoice_address_id}
@@ -118,7 +120,7 @@ function ShippingAddress() {
                             <Input
                                 name="first_name"
                                 setValueList={handleChange}
-                                value={billDetailSlice.first_name}
+                                value={billDetail.first_name}
                                 label="First Name"
                                 required={true}
                                 labelColor="text-disable"
@@ -127,7 +129,7 @@ function ShippingAddress() {
                             <Input
                                 name="last_name"
                                 setValueList={handleChange}
-                                value={billDetailSlice.last_name}
+                                value={billDetail.last_name}
                                 label="Last Name"
                                 required={true}
                                 labelColor="text-disable"
@@ -138,7 +140,7 @@ function ShippingAddress() {
                         <Input
                             name="email"
                             setValueList={handleChange}
-                            value={billDetailSlice.email}
+                            value={billDetail.email}
                             label="Email Address"
                             required={true}
                             labelColor="text-disable"
@@ -148,7 +150,7 @@ function ShippingAddress() {
                         <Input
                             name="street_address"
                             setValueList={handleChange}
-                            value={billDetailSlice.street_address}
+                            value={billDetail.street_address}
                             label="Street Address"
                             required={true}
                             labelColor="text-disable"
@@ -159,7 +161,7 @@ function ShippingAddress() {
                             <Input
                                 name="country"
                                 setValueList={handleChange}
-                                value={billDetailSlice.country}
+                                value={billDetail.country}
                                 label="Country"
                                 required={true}
                                 labelColor="text-disable"
@@ -168,7 +170,7 @@ function ShippingAddress() {
                             <Input
                                 name="city"
                                 setValueList={handleChange}
-                                value={billDetailSlice.city}
+                                value={billDetail.city}
                                 label="City"
                                 required={true}
                                 labelColor="text-disable"
@@ -177,7 +179,7 @@ function ShippingAddress() {
                             <Input
                                 name="zip_code"
                                 setValueList={handleChange}
-                                value={billDetailSlice.zip_code}
+                                value={billDetail.zip_code}
                                 label="Zip Code"
                                 required={true}
                                 labelColor="text-disable"
@@ -186,7 +188,7 @@ function ShippingAddress() {
                             <Input
                                 name="phone"
                                 setValueList={handleChange}
-                                value={billDetailSlice.phone}
+                                value={billDetail.phone}
                                 label="Phone Number"
                                 required={true}
                                 labelColor="text-disable"
