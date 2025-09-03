@@ -49,7 +49,7 @@ function Dropdown() {
                                     className={({ active }) =>
                                         `cursor-pointer px-4 py-2 select-none ${
                                             active
-                                                ? "bg-primary text-white"
+                                                ? "bg-main-primary text-white"
                                                 : "text-gray-900"
                                         }`
                                     }

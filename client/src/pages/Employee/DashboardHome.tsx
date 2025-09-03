@@ -1,4 +1,4 @@
-import { Overview } from "@/features/dashboard/components";
+import { SaleStatistics, Summary } from "@/features/dashboard/components";
 import { MainLayout } from "@/layouts/Employee";
 
 function DashboardHome() {
@@ -12,7 +12,9 @@ function DashboardHome() {
                     </p>
                 </div>
 
-                <Overview />
+                <Summary />
+
+                <SaleStatistics />
             </div>
         </MainLayout>
     );

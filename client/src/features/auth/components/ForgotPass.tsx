@@ -92,7 +92,7 @@ function ForgotPass() {
                     {tab === 2 && (
                         <p className="text-disable">
                             Please enter the code we just send to email{" "}
-                            <span className="text-primary font-semibold">
+                            <span className="text-main-primary font-semibold">
                                 {email}
                             </span>
                         </p>

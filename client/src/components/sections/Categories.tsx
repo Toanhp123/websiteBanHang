@@ -7,7 +7,7 @@ function Categories() {
                 <p className="text-xl font-semibold">Categories</p>
                 <h1 className="text-2xl font-bold md:text-3xl">
                     Featured
-                    <span className="text-primary"> Categories</span>
+                    <span className="text-main-primary"> Categories</span>
                 </h1>
             </div>
 

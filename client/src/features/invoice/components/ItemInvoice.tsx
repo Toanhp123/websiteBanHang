@@ -73,7 +73,7 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                             </p>
 
                             <p
-                                className="text-primary font-semibold"
+                                className="text-main-primary font-semibold"
                                 onClick={() =>
                                     handleDeleteInvoice(invoice.invoice_id)
                                 }

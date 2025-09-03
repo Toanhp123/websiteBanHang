@@ -27,7 +27,7 @@ function PaginationButton({
         <button
             className={clsx(
                 "flex h-10 w-10 items-center justify-center rounded-full font-semibold",
-                text === currentPage && "bg-primary text-white",
+                text === currentPage && "bg-main-primary text-white",
             )}
             disabled={disable}
             onClick={() => handleSetPage(currentPage, text)}

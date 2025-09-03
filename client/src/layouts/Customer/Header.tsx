@@ -20,7 +20,7 @@ function Header() {
 
     return (
         <header>
-            <nav className="bg-primary flex h-16 justify-center gap-4 py-4 lg:h-36">
+            <nav className="bg-main-primary flex h-16 justify-center gap-4 py-4 lg:h-36">
                 {/* Sidebar */}
                 {sideBar && <SideBar />}
 

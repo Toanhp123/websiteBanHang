@@ -1,3 +1,4 @@
-import { default as Overview } from "./Overview";
+import { default as Summary } from "./Summary";
+import { default as SaleStatistics } from "./SaleStatistics";
 
-export { Overview };
+export { Summary, SaleStatistics };

@@ -95,7 +95,7 @@ function ItemProduct({
                         type="small"
                         icon="fa-solid fa-bag-shopping"
                         bgColor="bg-secondary-light"
-                        textColor="text-primary"
+                        textColor="text-main-primary"
                         border=""
                         onClick={handleClickButton}
                     />

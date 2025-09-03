@@ -1,6 +1,6 @@
 function FooterInfo() {
     return (
-        <div className="bg-primary space-y-12 rounded-2xl px-8 py-12">
+        <div className="bg-main-primary space-y-12 rounded-2xl px-8 py-12">
             <div className="grid grid-cols-2 gap-4 text-gray-200 md:grid-cols-3 xl:grid-cols-5">
                 <ul className="space-y-2">
                     <li className="mb-4 text-xl font-bold text-white">Logo</li>

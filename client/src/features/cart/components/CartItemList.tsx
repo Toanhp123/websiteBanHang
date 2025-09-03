@@ -117,7 +117,7 @@ function CartItemList() {
                         <td className="text-center">
                             {cart.length > 0 && (
                                 <p
-                                    className="text-primary mt-5 font-semibold underline"
+                                    className="text-main-primary mt-5 font-semibold underline"
                                     onClick={handleDeleteCart}
                                 >
                                     Clear Shopping Cart

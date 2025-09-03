@@ -10,7 +10,7 @@ function BestSeller() {
                 </p>
                 <div className="flex items-center">
                     <h1 className="flex-1 text-2xl font-bold sm:flex-4 md:text-3xl">
-                        <span className="text-primary">Best Seller </span>
+                        <span className="text-main-primary">Best Seller </span>
                         Products
                     </h1>
 

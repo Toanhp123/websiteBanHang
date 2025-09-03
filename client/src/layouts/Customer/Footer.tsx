@@ -15,7 +15,7 @@ function Footer() {
                 <h1 className="text-center text-2xl font-bold md:text-3xl">
                     Subscribe to Our Newsletter to <br />
                     Get{" "}
-                    <span className="text-primary">
+                    <span className="text-main-primary">
                         Update on Our Latest Offers
                     </span>
                 </h1>

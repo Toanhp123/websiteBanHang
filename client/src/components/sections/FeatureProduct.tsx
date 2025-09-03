@@ -10,7 +10,8 @@ function FeatureProduct() {
                 </p>
                 <div className="flex items-center">
                     <h1 className="flex-1 text-2xl font-bold sm:flex-4 md:text-3xl">
-                        Feature <span className="text-primary">Products</span>
+                        Feature{" "}
+                        <span className="text-main-primary">Products</span>
                     </h1>
 
                     <div className="flex-1">

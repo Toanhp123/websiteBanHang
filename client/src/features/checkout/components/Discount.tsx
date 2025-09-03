@@ -71,7 +71,7 @@ function Discount() {
                 {isValid === "nothing" ? (
                     ""
                 ) : isValid ? (
-                    <div className="text-primary">
+                    <div className="text-main-primary">
                         Áp mã khuyến mãi thành công.
                     </div>
                 ) : (

@@ -105,7 +105,7 @@ function ItemProductBuy() {
             </div>
 
             <div className="flex flex-3 flex-col justify-center space-y-2">
-                <p className="text-secondary text-xl">
+                <p className="text-main-secondary text-xl">
                     {productDetail.category}
                 </p>
 

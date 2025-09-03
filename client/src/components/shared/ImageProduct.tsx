@@ -10,7 +10,7 @@ function ImageProduct({ src, selected = false }: ProsImageProduct) {
         <div
             className={clsx(
                 "flex items-center justify-center rounded-2xl border p-6",
-                selected ? "border-primary border-3" : "border-gray-300",
+                selected ? "border-main-primary border-3" : "border-gray-300",
             )}
         >
             <img src={src} alt="image" />

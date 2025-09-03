@@ -26,7 +26,7 @@ function TagItem({
             {!isTagOnly ? (
                 <div
                     className={clsx(
-                        "bg-secondary rounded-4xl px-4 py-1",
+                        "bg-main-secondary rounded-4xl px-4 py-1",
                         text ? "flex items-center gap-2" : "hidden",
                     )}
                 >
@@ -39,7 +39,7 @@ function TagItem({
             ) : (
                 <div
                     className={clsx(
-                        "bg-secondary-light border-secondary text-secondary gap-1 rounded-4xl border px-4 py-1 text-[14px] font-semibold",
+                        "bg-secondary-light border-main-primary text-main-secondary gap-1 rounded-4xl border px-4 py-1 text-[14px] font-semibold",
                     )}
                 >
                     <p>{text}</p>

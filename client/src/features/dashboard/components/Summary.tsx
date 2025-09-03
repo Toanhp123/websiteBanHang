@@ -1,11 +1,23 @@
 import { CardItem } from "@/components/shared";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getOverview } from "../services/dashboard.api";
+import type { Overview } from "../types/dashboard.type";
 
-function Overview() {
+function Summary() {
+    const [overview, setOverview] = useState<Overview>({
+        revenue: 0,
+        totalProducts: 0,
+        orderStats: [],
+    });
+    const orderComplete = overview.orderStats.filter(
+        (order) => order.status === "paid",
+    );
+
     useEffect(() => {
         const handleGetOverview = async () => {
             const res = await getOverview();
+
+            setOverview(res);
         };
 
         handleGetOverview();
@@ -16,22 +28,22 @@ function Overview() {
             <CardItem
                 text="Revenue"
                 icon="fa-solid fa-dollar-sign"
-                value="10"
+                value={overview.revenue}
             />
 
             <CardItem
                 text="Orders"
                 icon="fa-solid fa-bag-shopping"
-                value="10"
+                value={orderComplete[0]?.count | 0}
             />
 
             <CardItem
                 text="Products"
                 icon="fa-solid fa-cart-shopping"
-                value="10"
+                value={overview.totalProducts}
             />
         </div>
     );
 }
 
-export default Overview;
+export default Summary;

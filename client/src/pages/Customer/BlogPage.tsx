@@ -15,7 +15,10 @@ function BlogPage() {
 
                         <h1 className="text-2xl font-bold md:text-3xl">
                             Our Latest
-                            <span className="text-primary"> New & Blogs</span>
+                            <span className="text-main-primary">
+                                {" "}
+                                New & Blogs
+                            </span>
                         </h1>
                     </div>
 

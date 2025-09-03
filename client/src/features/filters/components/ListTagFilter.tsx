@@ -42,7 +42,7 @@ function ListTagFilter() {
                     .filter(([_, value]) => value !== TypeFilter.ALL)
                     .some((value) => value[1] !== null && value[1] !== "") && (
                     <p
-                        className="text-primary font-semibold underline"
+                        className="text-main-primary font-semibold underline"
                         onClick={handleDeleteFilterOption}
                     >
                         Clear All

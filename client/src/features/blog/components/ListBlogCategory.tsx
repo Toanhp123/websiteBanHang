@@ -41,7 +41,7 @@ function ListBlogCategory() {
                     {categories.map((category) => (
                         <button
                             key={category.category_id}
-                            className="hover:bg-primary rounded-xl border border-gray-300 px-4 py-3"
+                            className="hover:bg-main-primary rounded-xl border border-gray-300 px-4 py-3"
                         >
                             <p className="text-start font-semibold">
                                 {category.name}

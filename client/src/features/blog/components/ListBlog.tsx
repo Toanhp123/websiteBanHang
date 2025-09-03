@@ -36,7 +36,7 @@ function ListBlog() {
                             <p className="text-disable text-[18px] font-semibold">
                                 {blog.author}
                             </p>
-                            <div className="bg-primary h-3 w-3 rounded-full"></div>
+                            <div className="bg-main-primary h-3 w-3 rounded-full"></div>
                             <p className="text-disable text-[18px] font-semibold">
                                 {formatDate(blog.updated_at)}
                             </p>
@@ -48,7 +48,7 @@ function ListBlog() {
                             {blog.excerpt}
                         </p>
 
-                        <div className="text-primary font-semibold underline underline-offset-4">
+                        <div className="text-main-primary font-semibold underline underline-offset-4">
                             Read More
                         </div>
                     </div>

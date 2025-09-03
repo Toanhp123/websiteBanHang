@@ -20,7 +20,8 @@ function ItemProductDescription() {
                 <h1
                     className={clsx(
                         "pb-2 text-2xl font-semibold md:text-3xl",
-                        tab === 1 && "border-primary text-primary border-b-3",
+                        tab === 1 &&
+                            "border-main-primary text-main-primary border-b-3",
                     )}
                     onClick={() => setTab(1)}
                 >
@@ -30,7 +31,8 @@ function ItemProductDescription() {
                 <h1
                     className={clsx(
                         "pb-2 text-2xl font-semibold md:text-3xl",
-                        tab === 2 && "border-primary text-primary border-b-3",
+                        tab === 2 &&
+                            "border-primary text-main-primary border-b-3",
                     )}
                     onClick={() => setTab(2)}
                 >
