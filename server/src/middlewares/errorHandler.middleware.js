@@ -58,6 +58,7 @@ const errorHandler = (err, req, res, next) => {
 		BillError.ERROR_DELETE,
 		BillError.ERROR_ADD_ADDRESS,
 		BillError.ERROR_DELETE_ADDRESS,
+		BillError.ERROR_UPDATE_STATUS,
 	];
 
 	const statusCode = isAppError ? err.statusCode : 500;

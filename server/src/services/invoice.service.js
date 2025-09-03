@@ -76,36 +76,6 @@ class InvoiceService {
 					},
 					{ transaction }
 				);
-
-				// TODO: cần xem lại về việc hàng hàng
-				// let qtyToDeduct = item.quantity;
-
-				// const inventories = await Inventory.findAll({
-				// 	include: [{ model: Warehouse, attributes: [] }],
-				// 	attributes: [
-				// 		"product_id",
-				// 		"quantity",
-				// 		"warehouse_id",
-				// 		"last_checked_at",
-				// 		[
-				// 			sequelize.col("Warehouse.priority"),
-				// 			"warehouse_priority",
-				// 		],
-				// 	],
-				// 	where: { product_id: item.id_product },
-				// 	order: [["warehouse_priority", "ASC"]],
-				// 	transaction,
-				// });
-
-				// for (let inv of inventories) {
-				// 	if (qtyToDeduct <= 0) break;
-
-				// 	const deduct = Math.min(inv.quantity, qtyToDeduct);
-
-				// 	await inv.decrement({ quantity: deduct }, { transaction });
-
-				// 	qtyToDeduct -= deduct;
-				// }
 			}
 
 			await Cart.destroy({ where: { customer_id }, transaction });
@@ -319,6 +289,99 @@ class InvoiceService {
 			throwServerError(
 				"Can't delete address",
 				BillError.ERROR_DELETE_ADDRESS
+			);
+		}
+	}
+
+	async getOrdersList() {
+		const queryOderList = `
+			SELECT
+				i.invoice_id,
+				i.total_final_amount,
+				i.status,
+				i.invoice_date,
+
+				a.email
+			FROM invoice i
+			LEFT JOIN customer c
+				ON i.customer_id = c.customer_id
+			LEFT JOIN account a
+				ON c.customer_id = a.customer_id
+			ORDER BY i.invoice_date DESC
+			LIMIT 5;
+		`;
+
+		const orderList = await sequelize.query(queryOderList, {
+			type: sequelize.QueryTypes.SELECT,
+		});
+
+		return orderList;
+	}
+
+	async updateOrderStatus(status, invoice_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			// Lấy invoice và chi tiết sản phẩm của nó
+			const invoice = await Invoice.findOne({
+				where: { invoice_id },
+				include: [{ model: InvoiceDetail }],
+				transaction,
+			});
+
+			if (!invoice) {
+				throwNotFoundError("Can't find invoice", BillError.ERROR_ID);
+			}
+
+			await Invoice.update(
+				{ status },
+				{ where: { invoice_id }, transaction }
+			);
+			if (status === "paid") {
+				for (let item of invoice.InvoiceDetails) {
+					let qtyToDeduct = item.quantity;
+
+					const inventories = await Inventory.findAll({
+						include: [{ model: Warehouse, attributes: [] }],
+						attributes: [
+							"product_id",
+							"quantity",
+							"warehouse_id",
+							"last_checked_at",
+							[
+								sequelize.col("Warehouse.priority"),
+								"warehouse_priority",
+							],
+						],
+						where: { product_id: item.product_id },
+						order: [["warehouse_priority", "ASC"]],
+						transaction,
+					});
+
+					for (let inv of inventories) {
+						if (qtyToDeduct <= 0) break;
+
+						const deduct = Math.min(inv.quantity, qtyToDeduct);
+
+						await inv.decrement(
+							{ quantity: deduct },
+							{ transaction }
+						);
+
+						qtyToDeduct -= deduct;
+					}
+				}
+			}
+
+			await transaction.commit();
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't update status invoice",
+				BillError.ERROR_UPDATE_STATUS
 			);
 		}
 	}

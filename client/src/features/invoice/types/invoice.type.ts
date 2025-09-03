@@ -5,7 +5,7 @@ export interface Invoice {
     customer_id: number | null;
     invoice_address_id: number | null;
     invoice_date: string;
-    status: "pending" | "paid" | "canceled" | "refunded";
+    status: "pending" | "paid" | "cancelled" | "refunded";
     promotion_id?: number | null;
     discount_amount: number;
     total_amount: number;
@@ -30,7 +30,7 @@ export interface AllInvoiceDetail {
     invoice_id: number;
     discount_amount: string;
     total_final_amount: string;
-    status: "pending" | "paid" | "canceled" | "refunded";
+    status: "pending" | "paid" | "cancelled" | "refunded";
     invoice_date: string;
     products: InvoiceDetail[];
 }
@@ -47,4 +47,23 @@ export interface InvoiceAddress
 
 export type InvoiceAddressState = {
     items: InvoiceAddress[];
+};
+
+export type OrdersItem = {
+    invoice_id: number;
+    email: string;
+    total_final_amount: number;
+    status: "pending" | "paid" | "cancelled" | "refunded";
+    invoice_date: string;
+};
+
+export type OrderStatus = "pending" | "paid" | "cancelled" | "refunded";
+
+export const isOrderStatus = (status: unknown): status is OrderStatus => {
+    return (
+        status === "pending" ||
+        status === "paid" ||
+        status === "cancelled" ||
+        status === "refunded"
+    );
 };

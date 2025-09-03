@@ -17,6 +17,7 @@ router.get(
 	dashboardController.getOverview
 );
 
+// [GET] /dashboard/saleStatistics
 router.get(
 	"/saleStatistics",
 	checkAccessToken,

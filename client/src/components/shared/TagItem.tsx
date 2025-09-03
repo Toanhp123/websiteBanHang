@@ -31,6 +31,7 @@ function TagItem({
                     )}
                 >
                     <p className="text-white">{text}</p>
+
                     <button
                         className="fa-solid fa-x text-[10px] text-white"
                         onClick={() => handleDeleteFilter(type)}
@@ -39,7 +40,10 @@ function TagItem({
             ) : (
                 <div
                     className={clsx(
-                        "bg-secondary-light border-main-primary text-main-secondary gap-1 rounded-4xl border px-4 py-1 text-[14px] font-semibold",
+                        "text-[14px] font-semibold",
+                        "rounded-4xl border px-4 py-1",
+                        "inline-flex",
+                        "bg-secondary-light border-main-primary text-main-secondary",
                     )}
                 >
                     <p>{text}</p>

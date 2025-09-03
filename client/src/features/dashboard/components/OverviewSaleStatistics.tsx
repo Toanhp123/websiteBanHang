@@ -20,7 +20,7 @@ import Loading from "@/features/loading/components/Loading";
 
 const COLORS = ["#4CAF50", "#FFC107", "#F44336"];
 
-function SaleStatistics() {
+function OverviewSaleStatistics() {
     const [loading, setLoading] = useState(false);
     const [saleStatistics, setSaleStatistics] = useState<SaleStatistics>({
         revenueByMonth: [],
@@ -47,8 +47,6 @@ function SaleStatistics() {
 
         handleGetSaleStatistics();
     }, []);
-
-    console.log(saleStatistics);
 
     if (loading) return <Loading />;
 
@@ -176,4 +174,4 @@ function SaleStatistics() {
     );
 }
 
-export default SaleStatistics;
+export default OverviewSaleStatistics;

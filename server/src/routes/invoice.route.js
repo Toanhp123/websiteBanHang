@@ -1,4 +1,7 @@
-const { checkAccessToken } = require("../middlewares/auth.middleware");
+const {
+	checkAccessToken,
+	checkRole,
+} = require("../middlewares/auth.middleware");
 
 const express = require("express");
 const catchAsync = require("../utils/catchAsync");
@@ -27,6 +30,14 @@ router.get(
 	catchAsync(invoiceController.getInvoiceDetail)
 );
 
+// [GET] /invoice/ordersList
+router.get(
+	"/ordersList",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(invoiceController.getOrdersList)
+);
+
 // [GET] /invoice
 router.get(
 	"/:invoice_id",
@@ -43,6 +54,14 @@ router.post(
 
 // [POST] /invoice
 router.post("/", checkAccessToken, catchAsync(invoiceController.createInvoice));
+
+// [POST] /invoice/order/:invoice_id
+router.patch(
+	"/orders/:invoice_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(invoiceController.updateOrderStatus)
+);
 
 // [DELETE] /invoice/:invoice_id
 router.delete(

@@ -8,7 +8,7 @@ type Props = {
 
 function MainLayout({ children }: Props) {
     return (
-        <div className="flex">
+        <div className="flex h-screen overflow-hidden">
             <div className="">
                 <Sidebar />
             </div>
@@ -16,7 +16,9 @@ function MainLayout({ children }: Props) {
             <div className="flex flex-1 flex-col">
                 <Header />
 
-                <div className="flex-1 bg-gray-100 p-6">{children}</div>
+                <div className="flex-1 overflow-y-auto bg-gray-100 p-6">
+                    {children}
+                </div>
             </div>
         </div>
     );

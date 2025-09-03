@@ -4,6 +4,7 @@ import type {
     Invoice,
     InvoiceAddress,
     InvoiceDetail,
+    OrdersItem,
 } from "../types/invoice.type";
 
 export const getInvoice = async (invoice_id: number): Promise<Invoice> => {
@@ -50,4 +51,16 @@ export const deleteAddressShipping = async (invoice_address_id: number) => {
     await axios.delete<InvoiceAddress>(
         `/invoice/address/${invoice_address_id}`,
     );
+};
+
+export const getOrderList = async (): Promise<OrdersItem[]> => {
+    const res = await axios.get("/invoice/ordersList");
+
+    return res.data;
+};
+
+export const updateOrderStatus = async (status: string, invoice_id: number) => {
+    console.log(status, invoice_id);
+
+    await axios.patch(`/invoice/orders/${invoice_id}`, { status });
 };

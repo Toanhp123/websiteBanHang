@@ -85,6 +85,23 @@ class InvoiceController {
 
 		res.json({ message: "ok" });
 	}
+
+	// [GET] /invoice/ordersList
+	async getOrdersList(req, res) {
+		const ordersList = await InvoiceService.getOrdersList();
+
+		res.json(ordersList);
+	}
+
+	// [PATCH] /invoice/orders/:invoice_id
+	async updateOrderStatus(req, res) {
+		const { status } = req.body;
+		const { invoice_id } = req.params;
+
+		await InvoiceService.updateOrderStatus(status, invoice_id);
+
+		res.json({ message: "ok" });
+	}
 }
 
 module.exports = new InvoiceController();
