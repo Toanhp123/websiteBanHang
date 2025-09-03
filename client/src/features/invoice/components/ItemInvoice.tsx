@@ -1,13 +1,10 @@
-import { useEffect } from "react";
 import type { AllInvoiceDetail } from "../types/invoice.type";
-import { getInvoice } from "../services/invoice.api";
-import { selectInvoice, setInvoice } from "../redux/invoice.slice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useAppDispatch } from "@/hooks/useRedux";
 import { TagItem } from "@/components/shared";
 import { deleteOneItemInvoice } from "../redux/allInvoiceDetail.thunk";
+import { formatDate } from "@/utils/formatDate";
 
 function ItemInvoice(invoice: AllInvoiceDetail) {
-    const basicInfoInvoice = useAppSelector(selectInvoice);
     const dispatch = useAppDispatch();
 
     const handleDeleteInvoice = async (invoice_id: number | null) => {
@@ -15,18 +12,6 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
             dispatch(deleteOneItemInvoice(invoice_id));
         }
     };
-
-    useEffect(() => {
-        const handleGetBasicInvoiceInfo = async () => {
-            const res = await getInvoice(invoice.invoice_id);
-
-            if (res && res.invoice_id) {
-                dispatch(setInvoice(res));
-            }
-        };
-
-        handleGetBasicInvoiceInfo();
-    }, []);
 
     return (
         <div className="overflow-hidden rounded-2xl border border-gray-300">
@@ -42,9 +27,7 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                 <div className="px-8">
                     <p className="text-disable">Order Date</p>
                     <p className="font-bold">
-                        {new Date(
-                            basicInfoInvoice.invoice_date,
-                        ).toLocaleDateString("vi-VN")}
+                        {formatDate(invoice.invoice_date)}
                     </p>
                 </div>
             </div>
@@ -76,14 +59,14 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
 
             <div className="px-8 py-4">
                 <div className="flex items-center gap-4">
-                    <TagItem text={basicInfoInvoice.status} isTagOnly={true} />
+                    <TagItem text={invoice.status} isTagOnly={true} />
 
-                    {basicInfoInvoice.status === "canceled" && (
+                    {invoice.status === "canceled" && (
                         <p className="font-semibold">
                             Your order has been canceled
                         </p>
                     )}
-                    {basicInfoInvoice.status === "pending" && (
+                    {invoice.status === "pending" && (
                         <div className="flex flex-1 justify-between">
                             <p className="font-semibold">
                                 Your order is being process
@@ -99,23 +82,12 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                             </p>
                         </div>
                     )}
-                    {basicInfoInvoice.status === "paid" && (
-                        <div className="flex">
-                            <p className="font-semibold">
-                                Your order has been accepted
-                            </p>
-
-                            <p
-                                className="text-primary font-semibold"
-                                onClick={() =>
-                                    handleDeleteInvoice(invoice.invoice_id)
-                                }
-                            >
-                                Cancel Order
-                            </p>
-                        </div>
+                    {invoice.status === "paid" && (
+                        <p className="font-semibold">
+                            Your order has been accepted
+                        </p>
                     )}
-                    {basicInfoInvoice.status === "refunded" && (
+                    {invoice.status === "refunded" && (
                         <p className="font-semibold">
                             Your order has been refunded
                         </p>

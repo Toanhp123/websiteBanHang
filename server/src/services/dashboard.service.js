@@ -13,7 +13,9 @@ class DashboardService {
 
 		console.log(orderStats.map((r) => r.toJSON()));
 
-		// const revenue = await
+		const revenue = await Invoice.sum("total_final_amount", {
+			where: { status: "paid" },
+		});
 	}
 }
 

@@ -12,6 +12,10 @@ export interface Invoice {
     total_final_amount: number;
 }
 
+export type InvoiceState = {
+    items: Invoice[];
+};
+
 export type InvoiceDetail = {
     invoice_id: number;
     quantity: number;
@@ -26,6 +30,8 @@ export interface AllInvoiceDetail {
     invoice_id: number;
     discount_amount: string;
     total_final_amount: string;
+    status: "pending" | "paid" | "canceled" | "refunded";
+    invoice_date: string;
     products: InvoiceDetail[];
 }
 

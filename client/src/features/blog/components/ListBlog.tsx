@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllBlogByCondition } from "../services/blog.api";
 import type { Blog } from "../types/blog.type";
-import { formatData } from "@/utils/formatData";
+import { formatDate } from "@/utils/formatDate";
 
 function ListBlog() {
     const [listBlog, setListBlog] = useState<Blog[]>([]);
@@ -38,7 +38,7 @@ function ListBlog() {
                             </p>
                             <div className="bg-primary h-3 w-3 rounded-full"></div>
                             <p className="text-disable text-[18px] font-semibold">
-                                {formatData(blog.updated_at)}
+                                {formatDate(blog.updated_at)}
                             </p>
                         </div>
 

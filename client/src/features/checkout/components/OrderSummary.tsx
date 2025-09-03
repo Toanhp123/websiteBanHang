@@ -1,7 +1,7 @@
 import Loading from "@/features/loading/components/Loading";
 import { createBill } from "../services/checkout.api";
 import { useItemCartOnLoad } from "@/hooks/useItemCartOnLoad";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useAppSelector } from "@/hooks/useRedux";
 import { selectBillDetail } from "../redux/billingDetail.slice";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/shared";
@@ -9,10 +9,8 @@ import { FormCheckoutSection } from "@/layouts/Customer";
 import { selectPromotion } from "../redux/promotion.slice";
 import { selectFinalTotal } from "../redux/price.slice";
 import { useNavigate } from "react-router-dom";
-import { setInvoice } from "@/features/invoice/redux/invoice.slice";
 
 function OrderSummary() {
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { cart } = useItemCartOnLoad();
     const { discount, final_total } = useAppSelector(selectFinalTotal);
@@ -55,8 +53,6 @@ function OrderSummary() {
             );
 
             if (invoice) {
-                dispatch(setInvoice(invoice));
-
                 navigate("/OrderComplete", { state: { invoice } });
             }
         } catch (error) {

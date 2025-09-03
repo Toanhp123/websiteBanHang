@@ -5,7 +5,6 @@ import cartReducer from "@/features/cart/redux/cart.slice";
 import priceReducer from "@/features/checkout/redux/price.slice";
 import billDetailReducer from "@/features/checkout/redux/billingDetail.slice";
 import promotionReducer from "@/features/checkout/redux/promotion.slice";
-import invoiceReducer from "@/features/invoice/redux/invoice.slice";
 import allInvoiceDetailReducer from "@/features/invoice/redux/allInvoiceDetail.slice";
 import shippingAddressReducer from "@/features/invoice/redux/shippingAddress.slice";
 import optionSortProductReducer from "@/features/filters/redux/optionSortProduct.slice";
@@ -18,7 +17,6 @@ export const store = configureStore({
         price: priceReducer,
         billDetail: billDetailReducer,
         promotion: promotionReducer,
-        invoice: invoiceReducer,
         allInvoiceDetail: allInvoiceDetailReducer,
         shippingAddress: shippingAddressReducer,
         optionSortProduct: optionSortProductReducer,

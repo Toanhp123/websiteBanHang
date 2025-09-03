@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import type { Invoice, InvoiceDetail } from "../types/invoice.type";
 import { useEffect, useState } from "react";
 import { getInvoiceDetail } from "../services/invoice.api";
-import { formatData } from "@/utils/formatData";
+import { formatDate } from "@/utils/formatDate";
 
 function InvoiceCompleteOrder() {
     const location = useLocation();
@@ -33,7 +33,7 @@ function InvoiceCompleteOrder() {
                 <div className="px-4">
                     <p className="text-disable">Order Date</p>
                     <p className="font-bold">
-                        {formatData(invoice.invoice_date)}
+                        {formatDate(invoice.invoice_date)}
                     </p>
                 </div>
             </div>

@@ -179,6 +179,8 @@ class InvoiceService {
 				-- Invoice
 					i.discount_amount,
 					i.total_final_amount,
+					i.invoice_date,
+					i.status,
 
 				-- Product
 					p.product_name,
@@ -214,6 +216,8 @@ class InvoiceService {
 					invoice_id: row.invoice_id,
 					discount_amount: Number(row.discount_amount),
 					total_final_amount: Number(row.total_final_amount),
+					invoice_date: row.invoice_date,
+					status: row.status,
 					products: [],
 				};
 				invoices.push(invoice);
