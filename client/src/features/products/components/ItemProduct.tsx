@@ -29,17 +29,19 @@ function ItemProduct({
 
     const handleClickButton = () => {
         if (getAccessToken()) {
-            dispatch(
-                addToCart({
-                    id_product: product_id,
-                    product: product_name,
-                    price,
-                    img: mainImage,
-                    quantity: 1,
-                    Inventories,
-                    totalStock: totalStock,
-                }),
-            );
+            if (totalStock > 0) {
+                dispatch(
+                    addToCart({
+                        id_product: product_id,
+                        product: product_name,
+                        price,
+                        img: mainImage,
+                        quantity: 1,
+                        Inventories,
+                        totalStock: totalStock,
+                    }),
+                );
+            }
         } else {
             navigate("/login");
         }

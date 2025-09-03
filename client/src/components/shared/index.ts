@@ -10,6 +10,7 @@ import { default as ImageProduct } from "./ImageProduct";
 import { default as SelectQuantity } from "./SelectQuantity";
 import { default as InputOTP } from "./InputOTP";
 import { default as ButtonSidebarDashboard } from "./ButtonSidebarDashboard";
+import { default as CardItem } from "./CardItem";
 
 export {
     Button,
@@ -24,4 +25,5 @@ export {
     SelectQuantity,
     InputOTP,
     ButtonSidebarDashboard,
+    CardItem,
 };

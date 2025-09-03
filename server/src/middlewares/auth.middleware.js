@@ -9,6 +9,7 @@ const {
 const {
 	throwBadRequest,
 	throwUnauthorized,
+	throwForbiddenError,
 } = require("../utils/errorThrowFunc");
 
 const validateUserLogin = (req, res, next) => {
@@ -179,9 +180,26 @@ const checkRefreshToken = (req, res, next) => {
 	}
 };
 
+const checkRole = (roles = []) => {
+	return (req, res, next) => {
+		const user = req.user;
+
+		if (!user) {
+			throwUnauthorized("Unauthorized", TokenStatus.INVALID);
+		}
+
+		if (!roles.includes(user.role)) {
+			throwForbiddenError("Forbidden", TokenStatus.INVALID);
+		}
+
+		next();
+	};
+};
+
 module.exports = {
 	checkAccessToken,
 	checkRefreshToken,
 	validateUserLogin,
 	validateUserRegister,
+	checkRole,
 };

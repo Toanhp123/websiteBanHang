@@ -12,7 +12,6 @@ type SelectQuantityPros = {
     >;
 };
 
-// TODO: cần thêm event tăng quantity
 function SelectQuantity({
     saveChangeCartToDatabase = false,
     product_id,
@@ -37,7 +36,7 @@ function SelectQuantity({
             }));
         }
 
-        if (saveChangeCartToDatabase) {
+        if (quantity > 0 && saveChangeCartToDatabase) {
             dispatch(
                 changeQuantityItemCart({
                     quantity: quantity - 1,
@@ -61,7 +60,7 @@ function SelectQuantity({
             }));
         }
 
-        if (saveChangeCartToDatabase) {
+        if (quantity < max && saveChangeCartToDatabase) {
             dispatch(
                 changeQuantityItemCart({
                     quantity: quantity + 1,
