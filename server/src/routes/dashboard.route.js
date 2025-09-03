@@ -17,4 +17,11 @@ router.get(
 	dashboardController.getOverview
 );
 
+router.get(
+	"/saleStatistics",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	dashboardController.getSaleStatistics
+);
+
 module.exports = router;

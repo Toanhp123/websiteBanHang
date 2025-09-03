@@ -47,6 +47,8 @@ class ProductService {
 			order: query.order,
 		});
 
+		console.log(product);
+
 		const productImage = await ProductImage.findAll({
 			attributes: ["image_url", "is_main", "product_id"],
 		});

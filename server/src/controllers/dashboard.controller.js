@@ -7,6 +7,13 @@ class DashboardController {
 
 		return res.json(overview);
 	}
+
+	// [GET] /dashboard/saleStatistics
+	async getSaleStatistics(req, res) {
+		const saleStatistics = await dashboardService.getSaleStatistics();
+
+		return res.json(saleStatistics);
+	}
 }
 
 module.exports = new DashboardController();

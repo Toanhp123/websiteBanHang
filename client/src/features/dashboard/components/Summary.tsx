@@ -9,9 +9,19 @@ function Summary() {
         totalProducts: 0,
         orderStats: [],
     });
-    const orderComplete = overview.orderStats.filter(
-        (order) => order.status === "paid",
+
+    const { orderComplete, orderPending } = overview.orderStats.reduce(
+        (acc, order) => {
+            if (order.status === "paid") acc.orderComplete = order.count || 0;
+            if (order.status === "pending") acc.orderPending = order.count || 0;
+            return acc;
+        },
+        { orderComplete: 0, orderPending: 0 },
     );
+
+    const totalOrder = orderComplete + orderPending;
+    const avgOrder =
+        totalOrder > 0 ? Math.round(overview.revenue / totalOrder) / 100 : 0;
 
     useEffect(() => {
         const handleGetOverview = async () => {
@@ -24,24 +34,16 @@ function Summary() {
     }, []);
 
     return (
-        <div className="flex items-center justify-around gap-4">
-            <CardItem
-                text="Revenue"
-                icon="fa-solid fa-dollar-sign"
-                value={overview.revenue}
-            />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+            <CardItem text="TotalOrder" value={totalOrder} />
 
-            <CardItem
-                text="Orders"
-                icon="fa-solid fa-bag-shopping"
-                value={orderComplete[0]?.count | 0}
-            />
+            <CardItem text="Complete" value={orderComplete} />
 
-            <CardItem
-                text="Products"
-                icon="fa-solid fa-cart-shopping"
-                value={overview.totalProducts}
-            />
+            <CardItem text="Pending" value={orderPending} />
+
+            <CardItem text="Revenue" value={overview.revenue} />
+
+            <CardItem text="Avg order" value={avgOrder} />
         </div>
     );
 }

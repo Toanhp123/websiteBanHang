@@ -58,7 +58,6 @@ class InvoiceService {
 					invoice_address_id,
 					promotion_id,
 					discount_amount,
-					total_final_amount,
 				},
 				{ transaction }
 			);
@@ -78,43 +77,44 @@ class InvoiceService {
 					{ transaction }
 				);
 
-				let qtyToDeduct = item.quantity;
+				// TODO: cần xem lại về việc hàng hàng
+				// let qtyToDeduct = item.quantity;
 
-				const inventories = await Inventory.findAll({
-					include: [{ model: Warehouse, attributes: [] }],
-					attributes: [
-						"product_id",
-						"quantity",
-						"warehouse_id",
-						"last_checked_at",
-						[
-							sequelize.col("Warehouse.priority"),
-							"warehouse_priority",
-						],
-					],
-					where: { product_id: item.id_product },
-					order: [["warehouse_priority", "ASC"]],
-					transaction,
-				});
+				// const inventories = await Inventory.findAll({
+				// 	include: [{ model: Warehouse, attributes: [] }],
+				// 	attributes: [
+				// 		"product_id",
+				// 		"quantity",
+				// 		"warehouse_id",
+				// 		"last_checked_at",
+				// 		[
+				// 			sequelize.col("Warehouse.priority"),
+				// 			"warehouse_priority",
+				// 		],
+				// 	],
+				// 	where: { product_id: item.id_product },
+				// 	order: [["warehouse_priority", "ASC"]],
+				// 	transaction,
+				// });
 
-				for (let inv of inventories) {
-					if (qtyToDeduct <= 0) break;
+				// for (let inv of inventories) {
+				// 	if (qtyToDeduct <= 0) break;
 
-					const deduct = Math.min(inv.quantity, qtyToDeduct);
+				// 	const deduct = Math.min(inv.quantity, qtyToDeduct);
 
-					await inv.decrement({ quantity: deduct }, { transaction });
+				// 	await inv.decrement({ quantity: deduct }, { transaction });
 
-					qtyToDeduct -= deduct;
-				}
+				// 	qtyToDeduct -= deduct;
+				// }
 			}
 
 			await Cart.destroy({ where: { customer_id }, transaction });
 
-			transaction.commit();
+			await transaction.commit();
 
 			return invoice;
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			console.log(error);
 
@@ -192,15 +192,15 @@ class InvoiceService {
 				LEFT JOIN product p
 					ON id.product_id = p.product_id
 				LEFT JOIN product_image pi
-					ON p.product_id = pi.product_id
+					ON p.product_id = pi.product_id AND pi.is_main = true
 
 			WHERE 
-				pi.is_main = :is_main
-				AND i.customer_id = :customer_id
+				i.customer_id = :customer_id
+				AND i.status != :status
 		`;
 
 		const invoiceDetail = await sequelize.query(query, {
-			replacements: { is_main: 1, customer_id },
+			replacements: { is_main: 1, customer_id, status: "cancelled" },
 			type: sequelize.QueryTypes.SELECT,
 		});
 
@@ -244,11 +244,14 @@ class InvoiceService {
 		const transaction = await sequelize.transaction();
 
 		try {
-			await Invoice.destroy({ where: { invoice_id }, transaction });
+			await Invoice.update(
+				{ status: "cancelled" },
+				{ where: { invoice_id }, transaction }
+			);
 
-			transaction.commit();
+			await transaction.commit();
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			console.log(error);
 
@@ -283,11 +286,11 @@ class InvoiceService {
 				{ transaction }
 			);
 
-			transaction.commit();
+			await transaction.commit();
 
 			return invoiceAdd;
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			console.log(error);
 
@@ -307,9 +310,9 @@ class InvoiceService {
 				{ where: { invoice_address_id }, transaction }
 			);
 
-			transaction.commit();
+			await transaction.commit();
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			console.log(error);
 

@@ -262,9 +262,9 @@ class AccountService {
 				});
 			}
 
-			transaction.commit();
+			await transaction.commit();
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			throwServerError(
 				"Failed to delete item in cart",
@@ -291,9 +291,9 @@ class AccountService {
 				transaction,
 			});
 
-			transaction.commit();
+			await transaction.commit();
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			throwServerError(
 				"Failed to delete cart",
@@ -314,9 +314,9 @@ class AccountService {
 				}
 			);
 
-			transaction.commit();
+			await transaction.commit();
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			throwServerError(
 				"Failed to update quantity item in cart",
@@ -341,9 +341,9 @@ class AccountService {
 					{ where: { account_id }, transaction }
 				);
 
-				transaction.commit();
+				await transaction.commit();
 			} catch (error) {
-				transaction.rollback();
+				await transaction.rollback();
 
 				console.log(error);
 
@@ -365,9 +365,9 @@ class AccountService {
 				{ where: { email }, transaction }
 			);
 
-			transaction.commit();
+			await transaction.commit();
 		} catch (error) {
-			transaction.rollback();
+			await transaction.rollback();
 
 			console.log(error);
 
