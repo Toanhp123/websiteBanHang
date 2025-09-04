@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
     const [closeSidebar, setCloseSidebar] = useState<boolean>(false);
+    const [closeMenuInSidebar, setCloseMenuInSidebar] = useState<boolean>(true);
+
     const navigate = useNavigate();
 
     const handleNavigate = (location: string) => {
@@ -14,6 +16,17 @@ function Sidebar() {
     const handleCloseSidebar = () => {
         setCloseSidebar((prev) => !prev);
     };
+
+    const listOptionInProduct = [
+        {
+            text: "Product List",
+            func: () => handleNavigate("productList"),
+        },
+        {
+            text: "Add Product",
+            func: () => handleNavigate("addProduct"),
+        },
+    ];
 
     return (
         <div
@@ -40,7 +53,7 @@ function Sidebar() {
             </div>
             <div className="w-full border-b border-gray-300"></div>
 
-            <div className="space-y-8 p-6 font-semibold">
+            <div className="space-y-4 px-4 py-6 font-semibold">
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-house"
@@ -57,7 +70,10 @@ function Sidebar() {
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-bag-shopping"
                     text="Product"
-                    onClick={() => handleNavigate("product")}
+                    menu={true}
+                    closeMenu={closeMenuInSidebar}
+                    listOption={listOptionInProduct}
+                    onClick={() => setCloseMenuInSidebar((prev) => !prev)}
                 />
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
@@ -68,7 +84,7 @@ function Sidebar() {
             </div>
             <div className="w-full border-b border-gray-300"></div>
 
-            <div className="space-y-8 p-6 font-semibold">
+            <div className="space-y-4 px-4 py-6 font-semibold">
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-user"

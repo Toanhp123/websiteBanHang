@@ -6,7 +6,11 @@ import {
     OrderComplete,
 } from "@/pages/Customer";
 import { RequireAuth } from "@/components/shared";
-import { DashboardHome, DashboardOrders } from "@/pages/Employee";
+import {
+    DashboardHome,
+    DashboardOrders,
+    DashboardProduct,
+} from "@/pages/Employee";
 
 const privateRoutes = (
     <>
@@ -28,6 +32,7 @@ const privateRoutes = (
         {/* Route cho employee và admin */}
         <Route element={<RequireAuth allowedRoles={["Admin", "Employee"]} />}>
             <Route path="/dashboard/orders" element={<DashboardOrders />} />
+            <Route path="/dashboard/product" element={<DashboardProduct />} />
         </Route>
     </>
 );
