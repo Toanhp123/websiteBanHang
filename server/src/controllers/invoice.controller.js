@@ -88,7 +88,11 @@ class InvoiceController {
 
 	// [GET] /invoice/ordersList
 	async getOrdersList(req, res) {
-		const ordersList = await InvoiceService.getOrdersList();
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 5;
+		const offset = (page - 1) * limit;
+
+		const ordersList = await InvoiceService.getOrdersList(limit, offset);
 
 		res.json(ordersList);
 	}

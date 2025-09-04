@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { getOrderList, updateOrderStatus } from "../services/invoice.api";
 import { isOrderStatus, type OrdersItem } from "../types/invoice.type";
 import { formatDate } from "@/utils/formatDate";
-import { TagItem } from "@/components/shared";
+import { Button, TagItem } from "@/components/shared";
 
 function InvoiceManager() {
     const [orderList, setOrderList] = useState<OrdersItem[]>([]);
     const [editMenu, setEditMenu] = useState<number | null>(null);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     const handleOpenEditMenu = (invoice_id: number) => {
         setEditMenu((prev) => (prev === invoice_id ? null : invoice_id));
@@ -35,20 +37,48 @@ function InvoiceManager() {
         }
     };
 
+    const disableButtonBaseOptionStatus = (status: string): boolean => {
+        return (
+            status === "paid" || status === "cancelled" || status === "refunded"
+        );
+    };
+
+    const handleLoadMoreOrders = () => {
+        setPage((prev) => prev + 1);
+    };
+
     useEffect(() => {
         const handleGetOrdersList = async () => {
-            const res = await getOrderList();
+            try {
+                const res = await getOrderList(5, page);
 
-            setOrderList(res);
+                setOrderList((prev) => {
+                    const merged = [...prev, ...res.orderList];
+                    const map = new Map(
+                        merged.map((item) => [item.invoice_id, item]),
+                    );
+                    return Array.from(map.values());
+                });
+                setHasMore(res.hasMore);
+            } catch (error) {
+                console.log(error);
+            }
         };
 
         handleGetOrdersList();
-    }, []);
+    }, [page]);
 
     return (
-        <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
+        <div
+            className="space-y-8 rounded-2xl bg-white px-8 py-6"
+            onClick={() => {
+                if (editMenu) {
+                    setEditMenu(null);
+                }
+            }}
+        >
             <div className="flex justify-between">
-                <p>We found 13 items for you</p>
+                <p>We found {orderList.length} items for you</p>
 
                 <div></div>
             </div>
@@ -78,7 +108,10 @@ function InvoiceManager() {
                                 {order.total_final_amount}
                             </td>
                             <td className="px-4 py-4">
-                                <TagItem text={order.status} isTagOnly={true} />
+                                <TagItem
+                                    text={order.status.toUpperCase()}
+                                    isTagOnly={true}
+                                />
                             </td>
                             <td className="px-4 py-4">
                                 {formatDate(order.invoice_date)}
@@ -89,15 +122,19 @@ function InvoiceManager() {
                                         onClick={() =>
                                             handleOpenEditMenu(order.invoice_id)
                                         }
+                                        className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
                                     >
                                         <i className="fa-solid fa-ellipsis"></i>
                                     </button>
 
                                     {editMenu === order.invoice_id && (
-                                        <div className="shadow-light absolute top-8 right-0 z-50 h-25 w-40 rounded-2xl bg-white">
+                                        <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
                                             <div className="flex h-full w-full flex-col px-4 py-2">
-                                                <div
-                                                    className="flex flex-1 items-center"
+                                                <button
+                                                    className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center font-semibold hover:cursor-pointer"
+                                                    disabled={disableButtonBaseOptionStatus(
+                                                        order.status,
+                                                    )}
                                                     onClick={() =>
                                                         handleUpdateStatusOrder(
                                                             "paid",
@@ -105,13 +142,14 @@ function InvoiceManager() {
                                                         )
                                                     }
                                                 >
-                                                    <p className="text-main-primary font-semibold">
-                                                        Accept Order
-                                                    </p>
-                                                </div>
+                                                    Accept Order
+                                                </button>
 
-                                                <div
-                                                    className="flex flex-1 items-center"
+                                                <button
+                                                    className="disabled:text-disable flex flex-1 items-center font-semibold text-red-600 hover:cursor-pointer hover:text-red-500"
+                                                    disabled={disableButtonBaseOptionStatus(
+                                                        order.status,
+                                                    )}
                                                     onClick={() =>
                                                         handleUpdateStatusOrder(
                                                             "cancelled",
@@ -119,10 +157,20 @@ function InvoiceManager() {
                                                         )
                                                     }
                                                 >
-                                                    <p className="font-semibold text-red-500">
-                                                        Cancelled Order
-                                                    </p>
-                                                </div>
+                                                    Cancelled Order
+                                                </button>
+
+                                                <button
+                                                    className="flex flex-1 items-center font-semibold text-pink-600 hover:cursor-pointer hover:text-pink-500"
+                                                    onClick={() =>
+                                                        handleUpdateStatusOrder(
+                                                            "cancelled",
+                                                            order.invoice_id,
+                                                        )
+                                                    }
+                                                >
+                                                    Detail
+                                                </button>
                                             </div>
                                         </div>
                                     )}
@@ -132,6 +180,18 @@ function InvoiceManager() {
                     ))}
                 </tbody>
             </table>
+
+            <div className="text-center">
+                <div className="inline-flex">
+                    <Button
+                        text="Load More"
+                        textSize="small"
+                        type="small"
+                        onClick={handleLoadMoreOrders}
+                        disabled={!hasMore}
+                    />
+                </div>
+            </div>
         </div>
     );
 }

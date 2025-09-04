@@ -7,6 +7,7 @@ const {
 	InvoiceDetail,
 	Inventory,
 	Cart,
+	Customer,
 	Warehouse,
 } = require("../models");
 const {
@@ -293,29 +294,36 @@ class InvoiceService {
 		}
 	}
 
-	async getOrdersList() {
-		const queryOderList = `
-			SELECT
-				i.invoice_id,
-				i.total_final_amount,
-				i.status,
-				i.invoice_date,
-
-				a.email
-			FROM invoice i
-			LEFT JOIN customer c
-				ON i.customer_id = c.customer_id
-			LEFT JOIN account a
-				ON c.customer_id = a.customer_id
-			ORDER BY i.invoice_date DESC
-			LIMIT 5;
-		`;
-
-		const orderList = await sequelize.query(queryOderList, {
-			type: sequelize.QueryTypes.SELECT,
+	async getOrdersList(limit, offset) {
+		const orderList = await Invoice.findAll({
+			include: [
+				{
+					model: Customer,
+					attributes: [],
+					include: [
+						{
+							model: Account,
+							attributes: [],
+						},
+					],
+				},
+			],
+			attributes: [
+				"invoice_id",
+				"total_final_amount",
+				"status",
+				"invoice_date",
+				[sequelize.col("Customer.Account.email"), "email"],
+			],
+			limit,
+			offset,
+			order: [["invoice_date", "DESC"]],
 		});
 
-		return orderList;
+		const total = await Invoice.count();
+		const hasMore = offset + orderList.length < total;
+
+		return { orderList, hasMore };
 	}
 
 	async updateOrderStatus(status, invoice_id) {

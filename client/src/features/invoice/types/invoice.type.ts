@@ -67,3 +67,8 @@ export const isOrderStatus = (status: unknown): status is OrderStatus => {
         status === "refunded"
     );
 };
+
+export type GetOrderListResponse = {
+    orderList: OrdersItem[];
+    hasMore: boolean;
+};

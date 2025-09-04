@@ -1,10 +1,10 @@
 import axios from "@/utils/axiosInstance";
 import type {
     AllInvoiceDetail,
+    GetOrderListResponse,
     Invoice,
     InvoiceAddress,
     InvoiceDetail,
-    OrdersItem,
 } from "../types/invoice.type";
 
 export const getInvoice = async (invoice_id: number): Promise<Invoice> => {
@@ -53,8 +53,13 @@ export const deleteAddressShipping = async (invoice_address_id: number) => {
     );
 };
 
-export const getOrderList = async (): Promise<OrdersItem[]> => {
-    const res = await axios.get("/invoice/ordersList");
+export const getOrderList = async (
+    limit: number,
+    page: number,
+): Promise<GetOrderListResponse> => {
+    const res = await axios.get("/invoice/ordersList", {
+        params: { limit, page },
+    });
 
     return res.data;
 };
