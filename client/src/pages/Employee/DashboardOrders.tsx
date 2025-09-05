@@ -5,9 +5,7 @@ function DashboardOrders() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <div className="space-y-1">
-                    <h1 className="text-2xl font-semibold">Order List</h1>
-                </div>
+                <h1 className="text-2xl font-semibold">Order List</h1>
 
                 <InvoiceManager />
             </div>

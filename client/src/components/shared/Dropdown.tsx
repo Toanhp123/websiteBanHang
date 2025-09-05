@@ -1,66 +1,36 @@
-import { setOption } from "@/features/filters/redux/optionSortProduct.slice";
-import type { SortOptions } from "@/features/filters/types/filter.type";
-import { useAppDispatch } from "@/hooks/useRedux";
-import {
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
-    Transition,
-} from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+type DropdownPros = {
+    options: { id: number; name: string }[];
+    text: string;
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+};
 
-const options = [
-    { id: 1, name: "latest" },
-    { id: 2, name: "oldest" },
-    { id: 3, name: "Price Low To High" },
-    { id: 4, name: "Price High To Low" },
-];
-
-// TODO: cần làm thêm
-function Dropdown() {
-    const dispatch = useAppDispatch();
-    const [selected, setSelected] = useState(options[0]);
-
-    useEffect(() => {
-        dispatch(setOption(selected.name as SortOptions));
-    }, [selected, dispatch]);
-
+function Dropdown({ options, text, value, setValue }: DropdownPros) {
     return (
-        <div>
-            <Listbox value={selected} onChange={setSelected}>
-                <div className="relative">
-                    <ListboxButton className="relative flex w-55 items-center justify-between gap-2 rounded-4xl border border-gray-300 px-6 py-2">
-                        {selected.name}
-                        <i className="fa-solid fa-caret-down"></i>
-                    </ListboxButton>
+        <div className="relative flex flex-col gap-2">
+            <label className="">{text}</label>
 
-                    <Transition
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
+            <select
+                className="h-10 w-full appearance-none rounded-md bg-gray-100 px-4"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+            >
+                <option value={0}>-- Select {text} --</option>
+                {options?.map((option) => (
+                    <option
+                        className="rounded-2xl"
+                        key={option.id}
+                        value={option.id}
                     >
-                        <ListboxOptions className="absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg">
-                            {options.map((option) => (
-                                <ListboxOption
-                                    key={option.id}
-                                    value={option}
-                                    className={({ active }) =>
-                                        `cursor-pointer px-4 py-2 select-none ${
-                                            active
-                                                ? "bg-main-primary text-white"
-                                                : "text-gray-900"
-                                        }`
-                                    }
-                                >
-                                    {option.name}
-                                </ListboxOption>
-                            ))}
-                        </ListboxOptions>
-                    </Transition>
-                </div>
-            </Listbox>
+                        {option.name}
+                    </option>
+                ))}
+            </select>
+
+            {/* Icon custom */}
+            <span className="pointer-events-none absolute top-1/2 right-3 translate-y-1/30 text-gray-500">
+                <i className="fa-solid fa-sort-down"></i>
+            </span>
         </div>
     );
 }

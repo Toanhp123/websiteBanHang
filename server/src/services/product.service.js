@@ -18,6 +18,8 @@ class ProductService {
 	 * @return {Promise<Array>} danh sách sản phẩm
 	 */
 	async getProductByCondition(query) {
+		console.log(query);
+
 		// TODO: cần thêm thuật toán tính tiền để suy ra sản phẩm bán chạy
 		const product = await Product.findAll({
 			include: [
@@ -30,6 +32,7 @@ class ProductService {
 				"product_name",
 				"product_description",
 				"price",
+				"product_date_add",
 				[
 					sequelize.fn("SUM", sequelize.col("Inventories.quantity")),
 					"totalStock",
@@ -46,8 +49,6 @@ class ProductService {
 			having: query.having,
 			order: query.order,
 		});
-
-		console.log(product);
 
 		const productImage = await ProductImage.findAll({
 			attributes: ["image_url", "is_main", "product_id"],

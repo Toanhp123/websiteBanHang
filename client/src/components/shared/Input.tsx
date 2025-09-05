@@ -30,7 +30,7 @@ function Input({
     checked = false,
 }: InputPros) {
     return (
-        <div className="flex flex-col gap-2 md:text-xl">
+        <div className="md:text-md flex flex-col gap-2">
             {label !== "" && (
                 <label className={clsx("font-semibold", labelColor)}>
                     {label} {required && "*"}

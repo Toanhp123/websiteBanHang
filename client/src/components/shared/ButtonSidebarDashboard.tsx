@@ -54,8 +54,9 @@ function ButtonSidebarDashboard({
                         closeSidebar ? "hidden" : "block",
                     )}
                 >
-                    {listOption.map((option) => (
+                    {listOption.map((option, index) => (
                         <li
+                            key={index}
                             className="text-start hover:cursor-pointer hover:text-gray-400"
                             onClick={option.func}
                         >

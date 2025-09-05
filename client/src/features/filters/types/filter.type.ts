@@ -33,7 +33,14 @@ export type ItemTypeState = {
     itemType: ItemType[];
 };
 
-export type SortOptions = "latest" | "best" | "name decs" | "name up";
+export type SortOptions =
+    | "latest"
+    | "best"
+    | "name decs"
+    | "name up"
+    | "oldest"
+    | "Price Low To High"
+    | "Price High To Low";
 
 export type SortOptionsState = {
     option: SortOptions;

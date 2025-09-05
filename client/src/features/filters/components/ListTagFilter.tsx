@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { deleteAllFilter, selectFilter } from "../redux/filter.slice";
-import { Dropdown, TagItem } from "@/components/shared";
+import { DropdownSortProduct, TagItem } from "@/components/shared";
 import { TypeFilter } from "@/constants/typeFilter.constants";
 
 function ListTagFilter() {
@@ -23,7 +23,7 @@ function ListTagFilter() {
                 <div className="flex items-center gap-4">
                     <p className="font-semibold text-gray-700">Sort by: </p>
 
-                    <Dropdown />
+                    <DropdownSortProduct />
                 </div>
             </div>
 

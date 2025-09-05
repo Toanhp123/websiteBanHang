@@ -16,6 +16,7 @@ export interface Product {
     totalStock: number;
     category: string;
     type: string;
+    product_date_add: string;
     images: ProductImage[];
     Inventories: Inventory[];
 }

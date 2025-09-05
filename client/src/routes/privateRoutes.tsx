@@ -7,9 +7,10 @@ import {
 } from "@/pages/Customer";
 import { RequireAuth } from "@/components/shared";
 import {
+    DashboardAddProduct,
     DashboardHome,
     DashboardOrders,
-    DashboardProduct,
+    DashboardProductList,
 } from "@/pages/Employee";
 
 const privateRoutes = (
@@ -32,7 +33,14 @@ const privateRoutes = (
         {/* Route cho employee và admin */}
         <Route element={<RequireAuth allowedRoles={["Admin", "Employee"]} />}>
             <Route path="/dashboard/orders" element={<DashboardOrders />} />
-            <Route path="/dashboard/product" element={<DashboardProduct />} />
+            <Route
+                path="/dashboard/productList"
+                element={<DashboardProductList />}
+            />
+            <Route
+                path="/dashboard/addProduct"
+                element={<DashboardAddProduct />}
+            />
         </Route>
     </>
 );
