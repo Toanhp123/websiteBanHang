@@ -51,7 +51,7 @@ function UpdateAddressShipping() {
 
     useEffect(() => {
         dispatch(deleteBillDetail());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="space-y-8">

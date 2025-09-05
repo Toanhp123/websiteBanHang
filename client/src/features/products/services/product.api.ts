@@ -4,6 +4,8 @@ import type {
     ItemStock,
     Product,
     ProductDetail,
+    Supplier,
+    Warehouse,
 } from "../types/product.type";
 
 export const getProductByCondition = async ({
@@ -37,4 +39,24 @@ export const getProductStock = async (
     const res = await axios.get<ItemStock>(`product/stock/${product_id}`);
 
     return res.data;
+};
+
+export const getWarehouse = async (): Promise<Warehouse[]> => {
+    const res = await axios.get(`product/warehouse`);
+
+    return res.data;
+};
+
+export const getSupplier = async (): Promise<Supplier[]> => {
+    const res = await axios.get(`product/supplier`);
+
+    return res.data;
+};
+
+export const addProduct = async (formData: FormData) => {
+    await axios.post(`product/addProduct`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
 };

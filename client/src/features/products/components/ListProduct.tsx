@@ -21,7 +21,7 @@ function ListProduct() {
 
     return (
         <div className="space-y-12">
-            <ul className="grid grid-cols-3 gap-6">
+            <ul className="grid grid-cols-3 gap-6 2xl:grid-cols-4">
                 {visibleItems.map((item) => (
                     <li key={item.product_id}>
                         <ItemProduct

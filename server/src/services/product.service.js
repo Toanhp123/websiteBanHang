@@ -9,6 +9,7 @@ const {
 	Inventory,
 	sequelize,
 	Warehouse,
+	Employee,
 } = require("../models");
 const { throwNotFoundError } = require("../utils/errorThrowFunc");
 
@@ -18,8 +19,6 @@ class ProductService {
 	 * @return {Promise<Array>} danh sách sản phẩm
 	 */
 	async getProductByCondition(query) {
-		console.log(query);
-
 		// TODO: cần thêm thuật toán tính tiền để suy ra sản phẩm bán chạy
 		const product = await Product.findAll({
 			include: [
@@ -202,6 +201,39 @@ class ProductService {
 
 		return productsWithImageAndInventory;
 	}
+
+	async getWarehouse() {
+		const warehouse = Warehouse.findAll({
+			include: [{ model: Employee, attributes: [] }],
+			attributes: [
+				"warehouse_id",
+				"warehouse_name",
+				"location",
+				"priority",
+				[sequelize.col("Employee.employee_first_name"), "first_name"],
+				[sequelize.col("Employee.employee_last_name"), "last_name"],
+			],
+		});
+
+		if (warehouse) return warehouse;
+	}
+
+	async getSupplier() {
+		const supplier = Supplier.findAll();
+
+		return supplier;
+	}
+
+	async addProduct(
+		mainImage,
+		subImages,
+		product_name,
+		product_description,
+		product_category_id,
+		price,
+		supplier_id,
+		parsedWarehouseQuantities
+	) {}
 }
 
 module.exports = new ProductService();

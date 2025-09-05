@@ -54,3 +54,22 @@ export type GetProductByConditionParams = {
     filterOption?: FilterState;
     option?: SortOptions;
 };
+
+export type Warehouse = {
+    warehouse_id: number;
+    warehouse_name: string;
+    location: string;
+    first_name: string;
+    last_name: string;
+    priority: number;
+};
+
+export type Supplier = {
+    supplier_id: string;
+    supplier_name: string;
+};
+
+export type WarehouseQuantity = {
+    warehouse_id: number;
+    quantity: number;
+};

@@ -49,6 +49,52 @@ class ProductController {
 
 		res.json(productDetail);
 	}
+
+	// [GET] product/warehouse
+	async getWarehouse(req, res) {
+		const warehouse = await productService.getWarehouse();
+
+		res.json(warehouse);
+	}
+
+	// [GET] product/warehouse
+	async getSupplier(req, res) {
+		const supplier = await productService.getSupplier();
+
+		res.json(supplier);
+	}
+
+	// [POST] product/addProduct
+	async addProduct(req, res) {
+		const mainImage = req.files?.mainImage?.[0] || null;
+		const subImages = req.files?.subImages || [];
+
+		const {
+			product_name,
+			product_description,
+			product_category_id,
+			price,
+			supplier_id,
+			warehouseQuantities,
+		} = req.body;
+
+		const parsedWarehouseQuantities = warehouseQuantities
+			? JSON.parse(warehouseQuantities)
+			: [];
+
+		await productService.addProduct(
+			mainImage,
+			subImages,
+			product_name,
+			product_description,
+			product_category_id,
+			price,
+			supplier_id,
+			parsedWarehouseQuantities
+		);
+
+		res.json({ message: "OK" });
+	}
 }
 
 module.exports = new ProductController();

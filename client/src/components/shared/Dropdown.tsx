@@ -1,5 +1,5 @@
 type DropdownPros = {
-    options: { id: number; name: string }[];
+    options: { id: number | string; name: string }[];
     text: string;
     value: string;
     setValue: React.Dispatch<React.SetStateAction<string>>;

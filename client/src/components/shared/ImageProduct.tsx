@@ -9,7 +9,7 @@ function ImageProduct({ src, selected = false }: ProsImageProduct) {
     return (
         <div
             className={clsx(
-                "flex items-center justify-center rounded-2xl border p-6",
+                "flex aspect-square items-center justify-center rounded-2xl border p-6",
                 selected ? "border-main-primary border-3" : "border-gray-300",
             )}
         >

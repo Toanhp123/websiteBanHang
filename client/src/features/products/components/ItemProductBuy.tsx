@@ -73,8 +73,8 @@ function ItemProductBuy() {
     return (
         <div className="flex gap-8">
             {/* TODO: giao diện ảnh đang bị lỗi */}
-            <div className="grid flex-2 grid-cols-4 gap-4">
-                <div className="relative col-span-4">
+            <div className="grid flex-2 grid-cols-5 gap-4">
+                <div className="relative col-span-5">
                     <div className="absolute flex h-full w-full items-center justify-between px-4">
                         <Button
                             text="<"
