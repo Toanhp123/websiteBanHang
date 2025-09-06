@@ -1,3 +1,4 @@
+const { json } = require("sequelize");
 const productService = require("../services/product.service");
 const { ProductFilter } = require("../utils/search");
 
@@ -80,11 +81,14 @@ class ProductController {
 			product_code,
 		} = req.body;
 
+		const { id } = req.user;
+
 		const parsedWarehouseQuantities = warehouseQuantities
 			? JSON.parse(warehouseQuantities)
 			: [];
 
 		const message = await productService.addProduct(
+			id,
 			mainImage,
 			subImages,
 			product_name,
@@ -95,6 +99,57 @@ class ProductController {
 			product_type_id,
 			parsedWarehouseQuantities,
 			product_code
+		);
+
+		res.json(message);
+	}
+
+	// [DELETE] /product/:product_id
+	async deleteProduct(req, res) {
+		const { product_id } = req.params;
+
+		await productService.deleteProduct(product_id);
+
+		return json({ message: "OK" });
+	}
+
+	// [GET] /product/advanceInfo
+	async getProductAdvancedInfo(req, res) {
+		const advanceInfo = await productService.getProductAdvancedInfo();
+
+		res.json(advanceInfo);
+	}
+	// [PUT] /updateProduct
+	async updateProduct(req, res) {
+		const {
+			product_id,
+			product_name,
+			product_description,
+			price,
+			product_status_id,
+			product_category_id,
+			supplier_id,
+			product_type_id,
+			warehouseQuantities,
+		} = req.body;
+
+		const { id } = req.user;
+
+		const parsedWarehouseQuantities = warehouseQuantities
+			? JSON.parse(warehouseQuantities)
+			: [];
+
+		const message = await productService.updateProduct(
+			id,
+			product_id,
+			product_name,
+			product_description,
+			price,
+			product_status_id,
+			product_category_id,
+			supplier_id,
+			product_type_id,
+			parsedWarehouseQuantities
 		);
 
 		res.json(message);

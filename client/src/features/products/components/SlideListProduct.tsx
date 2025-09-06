@@ -26,7 +26,7 @@ function SlideListProduct({ options }: SlideListProductPros) {
                 620: { slidesPerView: 1.6 },
                 740: { slidesPerView: 2 },
                 1024: { slidesPerView: 3 },
-                1280: { slidesPerView: 3.3 },
+                1280: { slidesPerView: 3.5 },
                 1600: { slidesPerView: 5 },
             }}
             spaceBetween={50}

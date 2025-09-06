@@ -3,6 +3,7 @@ import type {
     GetProductByConditionParams,
     ItemStock,
     Product,
+    ProductAdvancedInfo,
     ProductDetail,
     ProductType,
     Supplier,
@@ -68,6 +69,32 @@ export const addProduct = async (
 
 export const getProductType = async (): Promise<ProductType[]> => {
     const res = await axios.get(`product/type`);
+
+    return res.data;
+};
+
+export const deleteProduct = async (product_id: number) => {
+    await axios.delete(`product/${product_id}`);
+};
+
+export const getProductAdvancedInfo =
+    async (): Promise<ProductAdvancedInfo> => {
+        const res = await axios.get(`product/advancedInfo`);
+
+        return res.data;
+    };
+
+export const updateProduct = async (
+    formData: FormData,
+): Promise<{
+    success: boolean;
+    message: string;
+}> => {
+    const res = await axios.put(`product/updateProduct`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
 
     return res.data;
 };

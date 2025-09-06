@@ -138,7 +138,7 @@ function InvoiceManager() {
                                             <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
                                                 <div className="flex h-full w-full flex-col px-4 py-2">
                                                     <button
-                                                        className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center font-semibold hover:cursor-pointer"
+                                                        className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
                                                         disabled={disableButtonBaseOptionStatus(
                                                             order.status,
                                                         )}
@@ -153,7 +153,7 @@ function InvoiceManager() {
                                                     </button>
 
                                                     <button
-                                                        className="disabled:text-disable flex flex-1 items-center font-semibold text-red-600 hover:cursor-pointer hover:text-red-500"
+                                                        className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
                                                         disabled={disableButtonBaseOptionStatus(
                                                             order.status,
                                                         )}
@@ -168,7 +168,7 @@ function InvoiceManager() {
                                                     </button>
 
                                                     <button
-                                                        className="flex flex-1 items-center font-semibold text-pink-600 hover:cursor-pointer hover:text-pink-500"
+                                                        className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
                                                         onClick={() =>
                                                             handleUpdateStatusOrder(
                                                                 "cancelled",
@@ -176,7 +176,7 @@ function InvoiceManager() {
                                                             )
                                                         }
                                                     >
-                                                        Detail
+                                                        Detail Order
                                                     </button>
                                                 </div>
                                             </div>

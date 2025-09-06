@@ -1,5 +1,6 @@
 const { ProductError } = require("../constants/errorCode.constants");
 const {
+	Account,
 	Product,
 	ProductCategory,
 	Supplier,
@@ -10,6 +11,9 @@ const {
 	sequelize,
 	Warehouse,
 	Employee,
+	WarehouseReceipt,
+	WarehouseReceiptItem,
+	InventoryAudit,
 } = require("../models");
 const { deleteImages } = require("../utils/deleteImage");
 const {
@@ -37,6 +41,7 @@ class ProductService {
 				"product_description",
 				"price",
 				"product_date_add",
+				"is_delete",
 				[
 					sequelize.fn("SUM", sequelize.col("Inventories.quantity")),
 					"totalStock",
@@ -49,7 +54,7 @@ class ProductService {
 			],
 
 			group: ["Product.product_id"],
-			where: query.where,
+			where: { ...query.where, is_delete: false },
 			having: query.having,
 			order: query.order,
 		});
@@ -192,6 +197,7 @@ class ProductService {
 		const productImage = await ProductImage.findAll({
 			attributes: ["image_url", "is_main", "product_id"],
 			where: { product_id: product_id },
+			order: [["is_main", "DESC"]],
 		});
 
 		const inventories = await Inventory.findAll({
@@ -208,7 +214,7 @@ class ProductService {
 	}
 
 	async getWarehouse() {
-		const warehouse = Warehouse.findAll({
+		const warehouse = await Warehouse.findAll({
 			include: [{ model: Employee, attributes: [] }],
 			attributes: [
 				"warehouse_id",
@@ -224,12 +230,13 @@ class ProductService {
 	}
 
 	async getSupplier() {
-		const supplier = Supplier.findAll();
+		const supplier = await Supplier.findAll();
 
 		return supplier;
 	}
 
 	async addProduct(
+		account_id,
 		mainImage,
 		subImages,
 		product_name,
@@ -242,11 +249,10 @@ class ProductService {
 		product_code
 	) {
 		const transaction = await sequelize.transaction();
-		console.log(parsedWarehouseQuantities);
 
 		try {
 			const [product, created] = await Product.findOrCreate({
-				where: { product_code: product_code },
+				where: { product_code: product_code, is_delete: false },
 				defaults: {
 					product_name,
 					product_description,
@@ -271,6 +277,10 @@ class ProductService {
 				const subImagesURL = subImages.map(
 					(subImage) => "uploads/images/" + subImage.filename
 				);
+				const account = await Account.findOne({
+					where: { account_id },
+				});
+				const employee_id = account.employee_id;
 
 				await ProductImage.create(
 					{ product_id, image_url: mainImageURL, is_main: true },
@@ -290,6 +300,8 @@ class ProductService {
 					})
 				);
 
+				let quantity = 0;
+
 				await Promise.all(
 					parsedWarehouseQuantities.map(async (warehouseQuantity) => {
 						await Inventory.create(
@@ -298,6 +310,45 @@ class ProductService {
 								warehouse_id: warehouseQuantity.warehouse_id,
 								quantity: warehouseQuantity.quantity,
 								last_checked_at: new Date(),
+							},
+							{ transaction }
+						);
+
+						quantity += warehouseQuantity.quantity;
+
+						const warehouseReceipt = await WarehouseReceipt.create(
+							{
+								supplier_id,
+								employee_id,
+								warehouse_id: warehouseQuantity.warehouse_id,
+							},
+							{ transaction }
+						);
+
+						const receipt_id = warehouseReceipt.receipt_id;
+
+						await WarehouseReceiptItem.create(
+							{
+								receipt_id,
+								product_id,
+								quantity,
+								unit_price: price,
+							},
+							{ transaction }
+						);
+
+						let oldQuantity = 0;
+						let newQuantity = warehouseQuantity.quantity;
+
+						await InventoryAudit.create(
+							{
+								product_id,
+								warehouse_id: warehouseQuantity.warehouse_id,
+								old_quantity: oldQuantity,
+								new_quantity: newQuantity,
+								change_amount: newQuantity - oldQuantity,
+								action: "import",
+								employee_id,
 							},
 							{ transaction }
 						);
@@ -319,6 +370,142 @@ class ProductService {
 			deleteImages(mainImage, subImages);
 
 			throwServerError("Can't add product", ProductError.ERROR_ITEM);
+		}
+	}
+
+	async deleteProduct(product_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Product.update(
+				{ is_delete: true },
+				{
+					where: { product_id },
+					transaction,
+				}
+			);
+
+			transaction.commit();
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't delete product", ProductError.ERROR_ITEM);
+		}
+	}
+
+	async getProductAdvancedInfo() {
+		const warehouse = await Warehouse.findAll({
+			include: [{ model: Employee, attributes: [] }],
+			attributes: [
+				"warehouse_id",
+				"warehouse_name",
+				"location",
+				"priority",
+				[sequelize.col("Employee.employee_first_name"), "first_name"],
+				[sequelize.col("Employee.employee_last_name"), "last_name"],
+			],
+		});
+
+		const categories = await ProductCategory.findAll();
+		const supplier = await Supplier.findAll();
+		const productType = await ProductType.findAll();
+		const productStatus = await ProductStatus.findAll();
+
+		return { warehouse, categories, supplier, productType, productStatus };
+	}
+
+	async updateProduct(
+		account_id,
+		product_id,
+		product_name,
+		product_description,
+		price,
+		product_status_id,
+		product_category_id,
+		supplier_id,
+		product_type_id,
+		parsedWarehouseQuantities
+	) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const account = await Account.findOne({
+				where: { account_id },
+			});
+
+			const employee_id = account.employee_id;
+
+			await Product.update(
+				{
+					product_name,
+					product_description,
+					price,
+					product_status_id,
+					product_category_id,
+					supplier_id,
+					product_type_id,
+				},
+				{ where: { product_id }, transaction }
+			);
+
+			await Promise.all(
+				parsedWarehouseQuantities.map(async (warehouseQuantity) => {
+					let oldQuantity = 0;
+					let newQuantity = warehouseQuantity.quantity;
+
+					const [inventory, created] = await Inventory.findOrCreate({
+						where: {
+							product_id,
+							warehouse_id: warehouseQuantity.warehouse_id,
+						},
+						defaults: {
+							product_id,
+							warehouse_id: warehouseQuantity.warehouse_id,
+							quantity: warehouseQuantity.quantity,
+							last_checked_at: new Date(),
+						},
+						transaction,
+					});
+
+					if (!created) {
+						oldQuantity = inventory.quantity;
+						newQuantity = warehouseQuantity.quantity;
+
+						await inventory.update(
+							{ quantity: newQuantity },
+							{ transaction }
+						);
+					}
+
+					await InventoryAudit.create(
+						{
+							product_id,
+							warehouse_id: warehouseQuantity.warehouse_id,
+							old_quantity: oldQuantity,
+							new_quantity: newQuantity,
+							change_amount: newQuantity - oldQuantity,
+							action: "update",
+							employee_id,
+						},
+						{ transaction }
+					);
+				})
+			);
+
+			await transaction.commit();
+
+			return {
+				success: true,
+				message: "Product update successfully",
+			};
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't update product", ProductError.ERROR_ITEM);
 		}
 	}
 }

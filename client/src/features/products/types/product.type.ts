@@ -1,3 +1,4 @@
+import type { Categories } from "@/features/categories/types/categories.type";
 import type {
     FilterState,
     SortOptions,
@@ -11,7 +12,7 @@ export type Inventory = {
 export interface Product {
     product_id: number;
     product_name: string;
-    product_description: string | null;
+    product_description: string;
     price: number;
     totalStock: number;
     category: string;
@@ -19,6 +20,7 @@ export interface Product {
     product_date_add: string;
     images: ProductImage[];
     Inventories: Inventory[];
+    is_delete: boolean;
 }
 
 export interface ProductDetail extends Product {
@@ -77,4 +79,23 @@ export type WarehouseQuantity = {
 export type ProductType = {
     product_type_id: number;
     product_type_name: string;
+};
+
+export type EditProductModalProps = {
+    product_id?: number | null;
+    setProduct?: React.Dispatch<React.SetStateAction<number | null>>;
+    setPopup: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type ProductStatus = {
+    product_status_id: number;
+    product_status_name: string;
+};
+
+export type ProductAdvancedInfo = {
+    productType: ProductType[];
+    productStatus: ProductStatus[];
+    warehouse: Warehouse[];
+    supplier: Supplier[];
+    categories: Categories[];
 };

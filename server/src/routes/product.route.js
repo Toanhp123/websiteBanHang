@@ -26,6 +26,13 @@ route.get(
 	catchAsync(productController.getSupplier)
 );
 
+route.get(
+	"/advancedInfo",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(productController.getProductAdvancedInfo)
+);
+
 route.post(
 	"/addProduct",
 	checkAccessToken,
@@ -35,6 +42,24 @@ route.post(
 		{ name: "subImages", maxCount: 4 },
 	]),
 	catchAsync(productController.addProduct)
+);
+
+route.put(
+	"/updateProduct",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	upload.fields([
+		{ name: "mainImage", maxCount: 1 },
+		{ name: "subImages", maxCount: 4 },
+	]),
+	catchAsync(productController.updateProduct)
+);
+
+route.delete(
+	"/:product_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(productController.deleteProduct)
 );
 
 route.get("/type", catchAsync(productController.getProductType));

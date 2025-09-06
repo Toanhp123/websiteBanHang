@@ -16,6 +16,8 @@ export const useProductDetail = (product_id: string | undefined) => {
         status: "",
         supplier: "",
         Inventories: [],
+        is_delete: false,
+        product_date_add: "",
     });
 
     // Lấy danh sách ảnh

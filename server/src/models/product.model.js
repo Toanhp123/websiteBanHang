@@ -44,6 +44,10 @@ const Product = sequelize.define(
 		product_code: {
 			type: DataTypes.STRING,
 		},
+		is_delete: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+		},
 	},
 	{
 		tableName: "product",

@@ -1,18 +1,14 @@
 import { Button, Dropdown, InputForDashboard } from "@/components/shared";
 import InputImageUpload from "@/components/shared/InputImageUpload";
-import { useCategories } from "@/hooks/useCategories";
-import { useGetSupplier } from "@/hooks/useGetSupplier";
-import { useGetWarehouse } from "@/hooks/useGetWarehouse";
 import { useState } from "react";
 import type { WarehouseQuantity } from "../types/product.type";
 import { addProduct } from "../services/product.api";
-import { useGetProductType } from "@/hooks/useGetProductType";
+import { useGetProductAdvancedInfo } from "@/hooks/useGetProductBasicInfoFilter";
+import { useNavigate } from "react-router-dom";
 
 function AddProductForm() {
-    const categories = useCategories();
-    const warehouseList = useGetWarehouse();
-    const supplierList = useGetSupplier();
-    const productTypeList = useGetProductType();
+    const advanceInfo = useGetProductAdvancedInfo();
+    const navigate = useNavigate();
 
     const [price, setPrice] = useState<string>("");
     const [mainImage, setMainImage] = useState<File | null>(null);
@@ -29,25 +25,29 @@ function AddProductForm() {
     const [productDescription, setProductDescription] = useState<string>("");
     const [productTypeID, setProductTypeID] = useState<string>("");
 
-    const formatDataCategories = categories?.categories.map((category) => ({
-        id: category.product_category_id,
-        name: category.product_category_name,
-    }));
+    const formatDataCategories =
+        advanceInfo?.categories.map((category) => ({
+            id: category.product_category_id,
+            name: category.product_category_name,
+        })) || [];
 
-    const formatDataWarehouse = warehouseList?.map((warehouse) => ({
-        id: warehouse.warehouse_id,
-        name: warehouse.warehouse_name,
-    }));
+    const formatDataWarehouse =
+        advanceInfo?.warehouse.map((warehouse) => ({
+            id: warehouse.warehouse_id,
+            name: warehouse.warehouse_name,
+        })) || [];
 
-    const formatDataSupplier = supplierList?.map((supplier) => ({
-        id: supplier.supplier_id,
-        name: supplier.supplier_name,
-    }));
+    const formatDataSupplier =
+        advanceInfo?.supplier.map((supplier) => ({
+            id: supplier.supplier_id,
+            name: supplier.supplier_name,
+        })) || [];
 
-    const formatDataProductType = productTypeList?.map((productType) => ({
-        id: productType.product_type_id,
-        name: productType.product_type_name,
-    }));
+    const formatDataProductType =
+        advanceInfo?.productType.map((productType) => ({
+            id: productType.product_type_id,
+            name: productType.product_type_name,
+        })) || [];
 
     const handleAddProduct = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -86,7 +86,11 @@ function AddProductForm() {
         try {
             const res = await addProduct(formData);
 
-            console.log(res);
+            if (res.success) {
+                console.log(res.message);
+
+                navigate("/dashboard/productList");
+            }
         } catch (error) {
             console.log(error);
         }
