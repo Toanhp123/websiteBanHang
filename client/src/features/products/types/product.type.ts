@@ -73,3 +73,8 @@ export type WarehouseQuantity = {
     warehouse_id: number;
     quantity: number;
 };
+
+export type ProductType = {
+    product_type_id: number;
+    product_type_name: string;
+};

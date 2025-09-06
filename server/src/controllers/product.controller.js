@@ -75,14 +75,16 @@ class ProductController {
 			product_category_id,
 			price,
 			supplier_id,
+			product_type_id,
 			warehouseQuantities,
+			product_code,
 		} = req.body;
 
 		const parsedWarehouseQuantities = warehouseQuantities
 			? JSON.parse(warehouseQuantities)
 			: [];
 
-		await productService.addProduct(
+		const message = await productService.addProduct(
 			mainImage,
 			subImages,
 			product_name,
@@ -90,10 +92,12 @@ class ProductController {
 			product_category_id,
 			price,
 			supplier_id,
-			parsedWarehouseQuantities
+			product_type_id,
+			parsedWarehouseQuantities,
+			product_code
 		);
 
-		res.json({ message: "OK" });
+		res.json(message);
 	}
 }
 

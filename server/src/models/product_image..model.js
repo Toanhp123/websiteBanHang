@@ -25,7 +25,7 @@ const ProductImage = sequelize.define(
 		},
 		uploaded_at: {
 			type: DataTypes.DATE,
-			allowNull: false,
+			defaultValue: DataTypes.NOW(),
 		},
 	},
 	{

@@ -11,7 +11,12 @@ const {
 	Warehouse,
 	Employee,
 } = require("../models");
-const { throwNotFoundError } = require("../utils/errorThrowFunc");
+const { deleteImages } = require("../utils/deleteImage");
+const {
+	throwNotFoundError,
+	throwConflictError,
+	throwServerError,
+} = require("../utils/errorThrowFunc");
 
 class ProductService {
 	/**
@@ -232,8 +237,90 @@ class ProductService {
 		product_category_id,
 		price,
 		supplier_id,
-		parsedWarehouseQuantities
-	) {}
+		product_type_id,
+		parsedWarehouseQuantities,
+		product_code
+	) {
+		const transaction = await sequelize.transaction();
+		console.log(parsedWarehouseQuantities);
+
+		try {
+			const [product, created] = await Product.findOrCreate({
+				where: { product_code: product_code },
+				defaults: {
+					product_name,
+					product_description,
+					price,
+					product_status_id: 1,
+					product_category_id,
+					supplier_id,
+					product_type_id,
+					product_date_add: new Date(),
+					product_code,
+				},
+				transaction,
+			});
+
+			if (!created) {
+				deleteImages(mainImage, subImages);
+
+				return { success: false, message: "Product already exists" };
+			} else {
+				const product_id = product.product_id;
+				const mainImageURL = "uploads/images/" + mainImage.filename;
+				const subImagesURL = subImages.map(
+					(subImage) => "uploads/images/" + subImage.filename
+				);
+
+				await ProductImage.create(
+					{ product_id, image_url: mainImageURL, is_main: true },
+					{ transaction }
+				);
+
+				await Promise.all(
+					subImagesURL.map(async (subImage) => {
+						await ProductImage.create(
+							{
+								product_id,
+								image_url: subImage,
+								is_main: false,
+							},
+							{ transaction }
+						);
+					})
+				);
+
+				await Promise.all(
+					parsedWarehouseQuantities.map(async (warehouseQuantity) => {
+						await Inventory.create(
+							{
+								product_id,
+								warehouse_id: warehouseQuantity.warehouse_id,
+								quantity: warehouseQuantity.quantity,
+								last_checked_at: new Date(),
+							},
+							{ transaction }
+						);
+					})
+				);
+
+				await transaction.commit();
+
+				return {
+					success: true,
+					message: "Product created successfully",
+				};
+			}
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			deleteImages(mainImage, subImages);
+
+			throwServerError("Can't add product", ProductError.ERROR_ITEM);
+		}
+	}
 }
 
 module.exports = new ProductService();

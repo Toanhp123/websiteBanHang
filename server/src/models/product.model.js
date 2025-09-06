@@ -8,6 +8,7 @@ const Product = sequelize.define(
 		product_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
+			autoIncrement: true,
 		},
 		product_name: {
 			type: DataTypes.STRING(255),
@@ -39,6 +40,9 @@ const Product = sequelize.define(
 		product_date_add: {
 			type: DataTypes.DATE,
 			defaultValue: DataTypes.NOW,
+		},
+		product_code: {
+			type: DataTypes.STRING,
 		},
 	},
 	{

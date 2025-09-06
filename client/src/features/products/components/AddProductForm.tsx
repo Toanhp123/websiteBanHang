@@ -6,25 +6,28 @@ import { useGetWarehouse } from "@/hooks/useGetWarehouse";
 import { useState } from "react";
 import type { WarehouseQuantity } from "../types/product.type";
 import { addProduct } from "../services/product.api";
+import { useGetProductType } from "@/hooks/useGetProductType";
 
 function AddProductForm() {
-    const [warehouseQuantities, setWarehouseQuantities] = useState<
-        WarehouseQuantity[]
-    >([]);
-
     const categories = useCategories();
     const warehouseList = useGetWarehouse();
     const supplierList = useGetSupplier();
+    const productTypeList = useGetProductType();
 
     const [price, setPrice] = useState<string>("");
     const [mainImage, setMainImage] = useState<File | null>(null);
     const [subImages, setSubImages] = useState<Array<File | null>>(
         Array(4).fill(null),
     );
+    const [warehouseQuantities, setWarehouseQuantities] = useState<
+        WarehouseQuantity[]
+    >([]);
     const [supplierID, setSupplierID] = useState<string>("");
     const [categoryID, setCategoryID] = useState<string>("");
+    const [productCode, setProductCode] = useState<string>("");
     const [productTitle, setProductTitle] = useState<string>("");
     const [productDescription, setProductDescription] = useState<string>("");
+    const [productTypeID, setProductTypeID] = useState<string>("");
 
     const formatDataCategories = categories?.categories.map((category) => ({
         id: category.product_category_id,
@@ -39,6 +42,11 @@ function AddProductForm() {
     const formatDataSupplier = supplierList?.map((supplier) => ({
         id: supplier.supplier_id,
         name: supplier.supplier_name,
+    }));
+
+    const formatDataProductType = productTypeList?.map((productType) => ({
+        id: productType.product_type_id,
+        name: productType.product_type_name,
     }));
 
     const handleAddProduct = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,6 +70,8 @@ function AddProductForm() {
             product_category_id: categoryID,
             price: price,
             supplier_id: supplierID,
+            product_type_id: productTypeID,
+            product_code: productCode,
         };
 
         Object.entries(productInfo).map(([key, value]) => {
@@ -73,7 +83,13 @@ function AddProductForm() {
             JSON.stringify(warehouseQuantities),
         );
 
-        await addProduct(formData);
+        try {
+            const res = await addProduct(formData);
+
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleSetSubImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,6 +171,13 @@ function AddProductForm() {
                         />
                     </div>
 
+                    <InputForDashboard
+                        label="Product Code"
+                        value={productCode}
+                        setValue={setProductCode}
+                        placeholder="Type Here"
+                    />
+
                     <div className="grid grid-cols-2 items-center gap-8">
                         <InputForDashboard
                             label="Price"
@@ -172,12 +195,21 @@ function AddProductForm() {
                         />
                     </div>
 
-                    <Dropdown
-                        text="Supplier"
-                        value={supplierID}
-                        setValue={setSupplierID}
-                        options={formatDataSupplier}
-                    />
+                    <div className="grid grid-cols-2 items-center gap-8">
+                        <Dropdown
+                            text="Supplier"
+                            value={supplierID}
+                            setValue={setSupplierID}
+                            options={formatDataSupplier}
+                        />
+
+                        <Dropdown
+                            text="Product Type"
+                            value={productTypeID}
+                            setValue={setProductTypeID}
+                            options={formatDataProductType}
+                        />
+                    </div>
                 </div>
 
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
