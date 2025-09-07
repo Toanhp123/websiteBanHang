@@ -9,6 +9,9 @@ const {
 	Cart,
 	Customer,
 	Warehouse,
+	WarehouseExport,
+	WarehouseExportItem,
+	InventoryAudit,
 } = require("../models");
 const {
 	throwServerError,
@@ -326,8 +329,11 @@ class InvoiceService {
 		return { orderList, hasMore };
 	}
 
-	async updateOrderStatus(status, invoice_id) {
+	async updateOrderStatus(status, invoice_id, account_id) {
 		const transaction = await sequelize.transaction();
+
+		const account = await Account.findOne({ where: { account_id } });
+		const employee_id = account.employee_id;
 
 		try {
 			// Lấy invoice và chi tiết sản phẩm của nó
@@ -366,6 +372,17 @@ class InvoiceService {
 						transaction,
 					});
 
+					const exportRecord = await WarehouseExport.create(
+						{
+							invoice_id,
+							employee_id,
+							reason: `Export for invoice ${invoice_id}`,
+						},
+						{ transaction }
+					);
+
+					const export_id = exportRecord.export_id;
+
 					for (let inv of inventories) {
 						if (qtyToDeduct <= 0) break;
 
@@ -373,6 +390,30 @@ class InvoiceService {
 
 						await inv.decrement(
 							{ quantity: deduct },
+							{ transaction }
+						);
+
+						await InventoryAudit.create(
+							{
+								warehouse_id: inv.warehouse_id,
+								product_id: inv.product_id,
+								old_quantity: inv.quantity,
+								new_quantity: inv.quantity - deduct,
+								change_amount: -deduct,
+								action: "invoice_paid",
+								employee_id,
+							},
+							{ transaction }
+						);
+
+						await WarehouseExportItem.create(
+							{
+								export_id,
+								product_id: inv.product_id,
+								warehouse_id: inv.warehouse_id,
+								quantity: deduct,
+								unit_price: inv,
+							},
 							{ transaction }
 						);
 

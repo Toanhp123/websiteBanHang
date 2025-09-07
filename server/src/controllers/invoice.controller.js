@@ -101,8 +101,9 @@ class InvoiceController {
 	async updateOrderStatus(req, res) {
 		const { status } = req.body;
 		const { invoice_id } = req.params;
+		const { id } = req.user;
 
-		await InvoiceService.updateOrderStatus(status, invoice_id);
+		await InvoiceService.updateOrderStatus(status, invoice_id, id);
 
 		res.json({ message: "ok" });
 	}
