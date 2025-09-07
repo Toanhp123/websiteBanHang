@@ -44,6 +44,14 @@ function Sidebar() {
             func: () => handleNavigate("warehouseTransactions"),
         },
         {
+            text: "Warehouse List",
+            func: () => handleNavigate("warehouseList"),
+        },
+        {
+            text: "Supplier List",
+            func: () => handleNavigate("supplierList"),
+        },
+        {
             text: "Add Warehouse",
             func: () => handleNavigate("addWarehouse"),
         },

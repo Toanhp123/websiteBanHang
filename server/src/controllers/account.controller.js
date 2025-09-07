@@ -90,6 +90,13 @@ class AccountController {
 
 		return res.json({ message: "done" });
 	}
+
+	// [GET] /account/employee
+	async getAllEmployee(req, res) {
+		const allEmployee = await accountService.getAllEmployee();
+
+		res.json(allEmployee);
+	}
 }
 
 module.exports = new AccountController();

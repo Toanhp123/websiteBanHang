@@ -3,9 +3,8 @@ const {
 	AccountRole,
 	CartProduct,
 	Cart,
-	Product,
-	ProductImage,
-	Inventory,
+	Employee,
+	EmployeePosition,
 } = require("../models");
 const {
 	CartStatus,
@@ -376,6 +375,32 @@ class AccountService {
 				AccountStatus.ERROR_UPDATE_PASSWORD
 			);
 		}
+	}
+
+	async getAllEmployee() {
+		const employee = await Employee.findAll({
+			include: [
+				{
+					model: EmployeePosition,
+					attributes: [],
+				},
+			],
+			attributes: [
+				"employee_id",
+				"employee_first_name",
+				"employee_phone",
+				"employee_birthday",
+				"employee_address",
+				"employee_hire_date",
+				"employee_last_name",
+				[
+					sequelize.col("EmployeePosition.employee_position_name"),
+					"employee_position_name",
+				],
+			],
+		});
+
+		return employee;
 	}
 }
 

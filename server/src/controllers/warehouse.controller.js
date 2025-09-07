@@ -64,6 +64,43 @@ class WarehouseController {
 
 		res.json(inventoryAuditList);
 	}
+
+	// [GET] /warehouse
+	async getAllWarehouse(req, res) {
+		const warehouse = await warehouseService.getAllWarehouse();
+
+		res.json(warehouse);
+	}
+
+	// [GET] /warehouse/:warehouse_id
+	async getWarehouseByID(req, res) {
+		const { warehouse_id } = req.params;
+
+		const warehouse = await warehouseService.getWarehouseByID(warehouse_id);
+
+		res.json(warehouse);
+	}
+
+	// [PUT] /warehouse/:warehouse_id
+	async updateWarehouse(req, res) {
+		const {
+			warehouse_id,
+			warehouse_name,
+			location,
+			priority,
+			employee_id,
+		} = req.body.UpdateWarehouseData;
+
+		const message = await warehouseService.updateWarehouse(
+			warehouse_id,
+			warehouse_name,
+			location,
+			priority,
+			employee_id
+		);
+
+		res.json(message);
+	}
 }
 
 module.exports = new WarehouseController();

@@ -65,3 +65,13 @@ export type InventoryAuditBasicInfoResponse = {
     inventoryAuditList: InventoryAuditBasicInfo[];
     hasMore: boolean;
 };
+
+export type Warehouse = {
+    warehouse_id: number;
+    warehouse_name: string;
+    location: string;
+    priority: number;
+    employee_first_name: string;
+    employee_last_name: string;
+    employee_id: number;
+};

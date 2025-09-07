@@ -49,4 +49,28 @@ router.get(
 	catchAsync(warehouseController.getExportDetail)
 );
 
+// [GET] /warehouse/:warehouse_id
+router.get(
+	"/:warehouse_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.getWarehouseByID)
+);
+
+// [GET] /warehouse/
+router.get(
+	"/",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.getAllWarehouse)
+);
+
+// [PUT] /warehouse/:warehouse_id
+router.put(
+	"/:warehouse_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.updateWarehouse)
+);
+
 module.exports = router;

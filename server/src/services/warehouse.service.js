@@ -1,3 +1,4 @@
+const { WarehouseError } = require("../constants/errorCode.constants");
 const {
 	sequelize,
 	WarehouseReceipt,
@@ -7,6 +8,7 @@ const {
 	WarehouseExport,
 	InventoryAudit,
 } = require("../models");
+const { throwServerError } = require("../utils/errorThrowFunc");
 
 class WarehouseService {
 	async getReceiptBasicInfo(limit, offset) {
@@ -172,6 +174,82 @@ class WarehouseService {
 		const hasMore = offset + inventoryAuditList.length < total;
 
 		return { inventoryAuditList, hasMore };
+	}
+
+	async getAllWarehouse() {
+		const warehouse = await Warehouse.findAll({
+			include: [{ model: Employee, attributes: [] }],
+			attributes: [
+				"warehouse_id",
+				"warehouse_name",
+				"location",
+				"priority",
+				[
+					sequelize.col("Employee.employee_first_name"),
+					"employee_first_name",
+				],
+				[
+					sequelize.col("Employee.employee_last_name"),
+					"employee_last_name",
+				],
+			],
+		});
+
+		return warehouse;
+	}
+
+	async getWarehouseByID(warehouse_id) {
+		const warehouse = await Warehouse.findOne({
+			include: [{ model: Employee, attributes: [] }],
+			attributes: [
+				"warehouse_id",
+				"warehouse_name",
+				"location",
+				"priority",
+				"employee_id",
+				[
+					sequelize.col("Employee.employee_first_name"),
+					"employee_first_name",
+				],
+				[
+					sequelize.col("Employee.employee_last_name"),
+					"employee_last_name",
+				],
+			],
+			where: { warehouse_id },
+		});
+
+		return warehouse;
+	}
+
+	async updateWarehouse(
+		warehouse_id,
+		warehouse_name,
+		location,
+		priority,
+		employee_id
+	) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Warehouse.update(
+				{ warehouse_name, location, priority: priority, employee_id },
+				{ where: { warehouse_id }, transaction }
+			);
+
+			await transaction.commit();
+
+			return { message: "Update success", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't update warehouse",
+				WarehouseError.UPDATE_ERROR
+			);
+		}
 	}
 }
 

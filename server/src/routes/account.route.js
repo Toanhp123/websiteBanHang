@@ -1,4 +1,7 @@
-const { checkAccessToken } = require("../middlewares/auth.middleware");
+const {
+	checkAccessToken,
+	checkRole,
+} = require("../middlewares/auth.middleware");
 
 const express = require("express");
 const catchAsync = require("../utils/catchAsync");
@@ -49,6 +52,14 @@ router.delete(
 	"/cart",
 	checkAccessToken,
 	catchAsync(accountController.deleteCart)
+);
+
+// [GET] /account/employee
+router.get(
+	"/employee",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(accountController.getAllEmployee)
 );
 
 // [GET] /account/:username
