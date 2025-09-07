@@ -18,7 +18,6 @@ const {
 const { deleteImages } = require("../utils/deleteImage");
 const {
 	throwNotFoundError,
-	throwConflictError,
 	throwServerError,
 } = require("../utils/errorThrowFunc");
 
@@ -43,7 +42,9 @@ class ProductService {
 				"product_date_add",
 				"is_delete",
 				[
-					sequelize.fn("SUM", sequelize.col("Inventories.quantity")),
+					sequelize.literal(
+						`SUM(CASE WHEN Inventories.is_active = true THEN Inventories.quantity ELSE 0 END)`
+					),
 					"totalStock",
 				],
 				[
@@ -87,6 +88,8 @@ class ProductService {
 				Inventories: Inventories,
 			};
 		});
+
+		console.log(product);
 
 		return productsWithImageAndInventory;
 	}
@@ -172,7 +175,9 @@ class ProductService {
 				"product_description",
 				"price",
 				[
-					sequelize.fn("SUM", sequelize.col("Inventories.quantity")),
+					sequelize.literal(
+						`SUM(CASE WHEN Inventories.is_active = true THEN Inventories.quantity ELSE 0 END)`
+					),
 					"totalStock",
 				],
 				[
@@ -224,6 +229,7 @@ class ProductService {
 				[sequelize.col("Employee.employee_first_name"), "first_name"],
 				[sequelize.col("Employee.employee_last_name"), "last_name"],
 			],
+			where: { is_active: true },
 		});
 
 		if (warehouse) return warehouse;
@@ -406,6 +412,7 @@ class ProductService {
 				[sequelize.col("Employee.employee_first_name"), "first_name"],
 				[sequelize.col("Employee.employee_last_name"), "last_name"],
 			],
+			where: { is_active: true },
 		});
 
 		const categories = await ProductCategory.findAll();

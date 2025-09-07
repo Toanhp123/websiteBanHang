@@ -67,5 +67,7 @@ module.exports = {
 	},
 	WarehouseError: {
 		UPDATE_ERROR: "CAN'T UPDATE WAREHOUSE",
+		DELETE_ERROR: "CAN'T DELETE WAREHOUSE",
+		CREATE_ERROR: "CAN'T ADD WAREHOUSE",
 	},
 };

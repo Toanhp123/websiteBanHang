@@ -26,6 +26,10 @@ const Warehouse = sequelize.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		is_active: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: true,
+		},
 	},
 	{
 		tableName: "warehouse",

@@ -21,6 +21,10 @@ const Inventory = sequelize.define(
 			type: DataTypes.DATE,
 			allowNull: false,
 		},
+		is_active: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: true,
+		},
 	},
 	{
 		tableName: "inventory",

@@ -82,8 +82,18 @@ export const editWarehouse = async ({
     return res.data;
 };
 
-export const deleteWarehouse = async (warehouse_id: number) => {
+export const deleteWarehouse = async (
+    warehouse_id: number,
+): Promise<{ message: string; success: boolean }> => {
     const res = await axios.delete(`warehouse/${warehouse_id}`);
+
+    return res.data;
+};
+
+export const addWarehouse = async ({
+    ...WarehouseInfo
+}): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.post(`warehouse/addWarehouse`, { WarehouseInfo });
 
     return res.data;
 };

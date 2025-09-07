@@ -3,6 +3,7 @@ import { default as DashboardOrders } from "./DashboardOrders";
 import { default as DashboardProductList } from "./DashboardProductList";
 import { default as DashboardAddProduct } from "./DashboardAddProduct";
 import { default as WarehouseTransactions } from "./WarehouseTransactions";
+import { default as AddWarehouse } from "./AddWarehouse";
 
 export {
     DashboardHome,
@@ -10,4 +11,5 @@ export {
     DashboardProductList,
     DashboardAddProduct,
     WarehouseTransactions,
+    AddWarehouse,
 };

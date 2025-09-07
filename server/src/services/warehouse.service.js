@@ -7,6 +7,8 @@ const {
 	Supplier,
 	WarehouseExport,
 	InventoryAudit,
+	Inventory,
+	Account,
 } = require("../models");
 const { throwServerError } = require("../utils/errorThrowFunc");
 
@@ -193,6 +195,7 @@ class WarehouseService {
 					"employee_last_name",
 				],
 			],
+			where: { is_active: true },
 		});
 
 		return warehouse;
@@ -248,6 +251,87 @@ class WarehouseService {
 			throwServerError(
 				"Can't update warehouse",
 				WarehouseError.UPDATE_ERROR
+			);
+		}
+	}
+
+	async deleteWarehouse(warehouse_id, account_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Warehouse.update(
+				{ is_active: false },
+				{ where: { warehouse_id }, transaction }
+			);
+
+			await Inventory.update(
+				{ is_active: false },
+				{ where: { warehouse_id }, transaction }
+			);
+
+			const inventories = await Inventory.findAll({
+				where: { warehouse_id },
+				transaction,
+			});
+
+			const account = await Account.findOne({ account_id });
+
+			const employee_id = account.employee_id;
+
+			const auditLogs = inventories.map((inv) => {
+				return {
+					warehouse_id: warehouse_id,
+					product_id: inv.product_id,
+					employee_id: employee_id,
+					old_quantity: inv.quantity,
+					new_quantity: 0,
+					change_amount: -inv.quantity,
+					action: "deactivate",
+				};
+			});
+
+			await InventoryAudit.bulkCreate(auditLogs, { transaction });
+
+			await transaction.commit();
+
+			return { message: "Delete success", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't delete warehouse",
+				WarehouseError.DELETE_ERROR
+			);
+		}
+	}
+
+	async addWarehouse(warehouseName, location, priority, employeeID) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Warehouse.create(
+				{
+					warehouse_name: warehouseName,
+					location,
+					priority,
+					employee_id: employeeID,
+				},
+				{ transaction }
+			);
+
+			transaction.commit();
+
+			return { message: "add warehouse success", success: true };
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't add warehouse",
+				WarehouseError.CREATE_ERROR
 			);
 		}
 	}

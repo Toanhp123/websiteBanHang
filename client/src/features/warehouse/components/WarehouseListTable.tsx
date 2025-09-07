@@ -4,6 +4,7 @@ import { deleteWarehouse, getAllWarehouse } from "../services/warehouse.api";
 
 function WarehouseListTable({ id, popup }: EditPopupPros) {
     const [warehouseList, setWarehouseList] = useState<Warehouse[]>([]);
+    const [reload, setReload] = useState(false);
 
     const handleGetAllWarehouse = async () => {
         try {
@@ -17,8 +18,11 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
 
     const handleDeleteWarehouse = async (warehouse_id: number) => {
         try {
-            // TODO: có thể làm sau vì khá lằng nhằng
-            await deleteWarehouse(warehouse_id);
+            const res = await deleteWarehouse(warehouse_id);
+
+            if (res) {
+                setReload(true);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -26,7 +30,7 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
 
     useEffect(() => {
         handleGetAllWarehouse();
-    }, [id]);
+    }, [id, reload]);
 
     return (
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">

@@ -73,4 +73,20 @@ router.put(
 	catchAsync(warehouseController.updateWarehouse)
 );
 
+// [DELETE] /warehouse/:warehouse_id
+router.delete(
+	"/:warehouse_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.deleteWarehouse)
+);
+
+// [POST] /warehouse/addWarehouse
+router.post(
+	"/addWarehouse",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.addWarehouse)
+);
+
 module.exports = router;

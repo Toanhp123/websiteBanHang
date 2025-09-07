@@ -101,6 +101,34 @@ class WarehouseController {
 
 		res.json(message);
 	}
+
+	// [DELETE] /warehouse/:warehouse_id
+	async deleteWarehouse(req, res) {
+		const { warehouse_id } = req.params;
+		const { id } = req.user;
+
+		const message = await warehouseService.deleteWarehouse(
+			warehouse_id,
+			id
+		);
+
+		res.json(message);
+	}
+
+	// [POST] /warehouse/addWarehouse
+	async addWarehouse(req, res) {
+		const { warehouseName, location, priority, employeeID } =
+			req.body.WarehouseInfo;
+
+		const message = await warehouseService.addWarehouse(
+			warehouseName,
+			location,
+			priority,
+			employeeID
+		);
+
+		res.json(message);
+	}
 }
 
 module.exports = new WarehouseController();
