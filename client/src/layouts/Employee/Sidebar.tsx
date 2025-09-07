@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
     const [closeSidebar, setCloseSidebar] = useState<boolean>(false);
-    const [closeMenuInSidebar, setCloseMenuInSidebar] = useState<boolean>(true);
+    const [menuState, setMenuState] = useState<Record<string, boolean>>({
+        product: true,
+        warehouse: true,
+    });
 
     const navigate = useNavigate();
 
@@ -17,6 +20,13 @@ function Sidebar() {
         setCloseSidebar((prev) => !prev);
     };
 
+    const toggleMenu = (menu: string) => {
+        setMenuState((prev) => ({
+            ...prev,
+            [menu]: !prev[menu],
+        }));
+    };
+
     const listOptionInProduct = [
         {
             text: "Product List",
@@ -25,6 +35,21 @@ function Sidebar() {
         {
             text: "Add Product",
             func: () => handleNavigate("addProduct"),
+        },
+    ];
+
+    const listOptionInWarehouse = [
+        {
+            text: "Warehouse Transactions",
+            func: () => handleNavigate("warehouseTransactions"),
+        },
+        {
+            text: "Add Warehouse",
+            func: () => handleNavigate("addWarehouse"),
+        },
+        {
+            text: "Add Supplier",
+            func: () => handleNavigate("addSupplier"),
         },
     ];
 
@@ -71,15 +96,18 @@ function Sidebar() {
                     icon="fa-solid fa-bag-shopping"
                     text="Product"
                     menu={true}
-                    closeMenu={closeMenuInSidebar}
+                    closeMenu={menuState.product}
                     listOption={listOptionInProduct}
-                    onClick={() => setCloseMenuInSidebar((prev) => !prev)}
+                    onClick={() => toggleMenu("product")}
                 />
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
-                    icon="fa-solid fa-tag"
-                    text="Promotion"
-                    onClick={() => handleNavigate("promotion")}
+                    icon="fa-solid fa-bag-shopping"
+                    text="Warehouse"
+                    menu={true}
+                    closeMenu={menuState.warehouse}
+                    listOption={listOptionInWarehouse}
+                    onClick={() => toggleMenu("warehouse")}
                 />
             </div>
             <div className="w-full border-b border-gray-300"></div>

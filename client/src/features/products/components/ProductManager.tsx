@@ -68,7 +68,7 @@ function ProductManager({ setProduct, setPopup }: EditProductModalProps) {
         >
             <div>
                 <div className="flex items-center justify-between">
-                    <p className="text-disable">
+                    <p className="font-semibold">
                         Show {visibleItems.length} of {listProduct.length}{" "}
                         Product
                     </p>
@@ -79,7 +79,7 @@ function ProductManager({ setProduct, setPopup }: EditProductModalProps) {
             </div>
 
             <table className="w-full">
-                <thead>
+                <thead className="bg-gray-100">
                     <tr>
                         <th className="px-4 py-2 text-left">ID</th>
                         <th className="px-4 py-2 text-center">Image</th>

@@ -22,10 +22,6 @@ const WarehouseReceipt = sequelize.define(
 			type: DataTypes.DATE,
 			defaultValue: new Date(),
 		},
-		note: {
-			type: DataTypes.TEXT,
-			allowNull: true,
-		},
 		warehouse_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
@@ -47,6 +43,9 @@ WarehouseReceipt.associate = (models) => {
 	});
 	WarehouseReceipt.belongsTo(models.Employee, {
 		foreignKey: "employee_id",
+	});
+	WarehouseReceipt.belongsTo(models.Warehouse, {
+		foreignKey: "warehouse_id",
 	});
 };
 
