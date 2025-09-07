@@ -59,7 +59,10 @@ function ReceiptTable({ popup }: EditPopupPros) {
 
                 <tbody>
                     {receiptBasic.map((receipt) => (
-                        <tr key={receipt.receipt_id}>
+                        <tr
+                            key={receipt.receipt_id}
+                            className="even:bg-gray-100"
+                        >
                             <td className="px-4 py-2">{receipt.receipt_id}</td>
                             <td className="px-4 py-2">
                                 {receipt.supplier_name}

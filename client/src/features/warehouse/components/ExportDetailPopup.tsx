@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import type { EditPopupPros, ReceiptDetail } from "../types/warehouse.type";
-import { getReceiptDetail } from "../services/warehouse.api";
+import type { EditPopupPros, ExportDetail } from "../types/warehouse.type";
+import { getExportDetail } from "../services/warehouse.api";
 
-function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
-    const [receiptDetail, setReceiptDetail] = useState<ReceiptDetail[]>([]);
+function ExportDetailPopup({ id, popup }: EditPopupPros) {
+    const [exportDetail, setExportDetail] = useState<ExportDetail[]>([]);
 
     const handleGetReceiptDetail = async (receipt_id: number) => {
         try {
-            const res = await getReceiptDetail(receipt_id);
+            const res = await getExportDetail(receipt_id);
 
-            setReceiptDetail(res);
+            setExportDetail(res);
         } catch (error) {
             console.log(error);
         }
@@ -26,11 +26,11 @@ function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
             <form className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-xl">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Receipt Detail</h2>
+                    <h2 className="text-xl font-semibold">Export Detail</h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("import", "")}
+                        onClick={() => popup("export", "")}
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -45,12 +45,16 @@ function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
                                 <th className="px-4 py-2">Product ID</th>
                                 <th className="px-4 py-2">Product Name</th>
                                 <th className="px-4 py-2">Quantity</th>
-                                <th className="px-4 py-2">Price</th>
+                                <th className="px-4 py-2">Warehouse ID</th>
+                                <th className="px-4 py-2">Warehouse Name</th>
+                                <th className="px-4 py-2">
+                                    Warehouse Location
+                                </th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {receiptDetail.map((item) => (
+                            {exportDetail.map((item) => (
                                 <tr key={item.product_id}>
                                     <td className="px-4 py-2">
                                         {item.product_code}
@@ -65,7 +69,13 @@ function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
                                         {item.quantity}
                                     </td>
                                     <td className="px-4 py-2">
-                                        {item.unit_price}
+                                        {item.warehouse_id}
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        {item.warehouse_name}
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        {item.location}
                                     </td>
                                 </tr>
                             ))}
@@ -77,4 +87,4 @@ function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
     );
 }
 
-export default ReceiptDetailPopup;
+export default ExportDetailPopup;

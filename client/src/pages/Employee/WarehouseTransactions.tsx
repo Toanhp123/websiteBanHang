@@ -1,6 +1,7 @@
 import { MainLayout } from "@/layouts/Employee";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
+    ExportDetailPopup,
     ExportTable,
     InventoryAuditTable,
     ReceiptDetailPopup,
@@ -54,7 +55,14 @@ function WarehouseTransactions() {
                     </TabsContent>
 
                     <TabsContent value="export">
-                        <ExportTable />
+                        <ExportTable popup={toggleMenu} />
+
+                        {popup.export !== "" && (
+                            <ExportDetailPopup
+                                id={popup.export}
+                                popup={toggleMenu}
+                            />
+                        )}
                     </TabsContent>
 
                     <TabsContent value="inventory">

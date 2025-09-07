@@ -4,6 +4,8 @@ const {
 	Employee,
 	Warehouse,
 	Supplier,
+	WarehouseExport,
+	InventoryAudit,
 } = require("../models");
 
 class WarehouseService {
@@ -69,6 +71,107 @@ class WarehouseService {
 		});
 
 		return receiptDetail;
+	}
+
+	async getExportBasicInfo(limit, offset) {
+		const warehouseExportList = await WarehouseExport.findAll({
+			include: [
+				{
+					model: Employee,
+					attributes: [],
+				},
+			],
+			attributes: [
+				"export_id",
+				"invoice_id",
+				"export_date",
+				"reason",
+				[
+					sequelize.col("Employee.employee_first_name"),
+					"employee_first_name",
+				],
+				[
+					sequelize.col("Employee.employee_last_name"),
+					"employee_last_name",
+				],
+			],
+			limit,
+			offset,
+			order: [["export_date", "DESC"]],
+		});
+
+		const total = await WarehouseExport.count();
+		const hasMore = offset + warehouseExportList.length < total;
+
+		return { warehouseExportList, hasMore };
+	}
+
+	async getExportDetail(export_id) {
+		const query = `
+			SELECT 
+				wei.product_id,
+				wei.quantity,
+
+				p.product_name,
+				p.product_code,
+
+				w.warehouse_id,
+				w.warehouse_name,
+				w.location
+			FROM warehouse_export_item wei
+			LEFT JOIN product p
+				ON wei.product_id = p.product_id
+			LEFT JOIN warehouse w
+				ON wei.warehouse_id = w.warehouse_id
+			WHERE wei.export_id = :export_id
+		`;
+
+		const exportDetail = await sequelize.query(query, {
+			replacements: { export_id: export_id },
+			type: sequelize.QueryTypes.SELECT,
+		});
+
+		return exportDetail;
+	}
+
+	async getInventoryAuditBasicInfo(limit, offset) {
+		const inventoryAuditList = await InventoryAudit.findAll({
+			include: [
+				{
+					model: Employee,
+					attributes: [],
+				},
+				{
+					model: Warehouse,
+					attributes: [],
+				},
+			],
+			attributes: [
+				"audit_id",
+				"audit_date",
+				"old_quantity",
+				"new_quantity",
+				"change_amount",
+				"action",
+				[
+					sequelize.col("Employee.employee_first_name"),
+					"employee_first_name",
+				],
+				[
+					sequelize.col("Employee.employee_last_name"),
+					"employee_last_name",
+				],
+				[sequelize.col("Warehouse.warehouse_name"), "warehouse_name"],
+			],
+			limit,
+			offset,
+			order: [["audit_date", "DESC"]],
+		});
+
+		const total = await InventoryAudit.count();
+		const hasMore = offset + inventoryAuditList.length < total;
+
+		return { inventoryAuditList, hasMore };
 	}
 }
 
