@@ -17,4 +17,12 @@ router.get(
 	catchAsync(warehouseController.getReceiptBasicInfo)
 );
 
+// [GET] /warehouse/receipt/:receipt_id
+router.get(
+	"/receipt/:receipt_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.getReceiptDetail)
+);
+
 module.exports = router;

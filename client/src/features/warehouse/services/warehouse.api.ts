@@ -1,5 +1,8 @@
 import axios from "@/utils/axiosInstance";
-import type { ReceiptBasicInfoResponse } from "../types/warehouse.type";
+import type {
+    ReceiptBasicInfoResponse,
+    ReceiptDetail,
+} from "../types/warehouse.type";
 
 export const getReceiptBasicInfo = async (
     limit: number,
@@ -8,6 +11,14 @@ export const getReceiptBasicInfo = async (
     const res = await axios.get(`warehouse/receipt`, {
         params: { limit, page },
     });
+
+    return res.data;
+};
+
+export const getReceiptDetail = async (
+    receipt_id: number,
+): Promise<ReceiptDetail[]> => {
+    const res = await axios.get(`warehouse/receipt/${receipt_id}`);
 
     return res.data;
 };

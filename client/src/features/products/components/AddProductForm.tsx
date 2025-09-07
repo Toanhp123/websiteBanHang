@@ -6,6 +6,7 @@ import { addProduct } from "../services/product.api";
 import { useGetProductAdvancedInfo } from "@/hooks/useGetProductBasicInfoFilter";
 import { useNavigate } from "react-router-dom";
 
+// TODO: cần làm lại phải thêm được nhiều sản phẩm cùng lúc
 function AddProductForm() {
     const advanceInfo = useGetProductAdvancedInfo();
     const navigate = useNavigate();

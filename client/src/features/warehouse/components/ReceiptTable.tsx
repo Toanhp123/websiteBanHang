@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getReceiptBasicInfo } from "../services/warehouse.api";
-import type { ReceiptBasicInfo } from "../types/warehouse.type";
+import type { EditPopupPros, ReceiptBasicInfo } from "../types/warehouse.type";
 import { formatDate } from "@/utils/formatDate";
 import { Button } from "@/components/shared";
 
-function ReceiptTable() {
+function ReceiptTable({ popup }: EditPopupPros) {
     const [receiptBasic, setReceiptBasic] = useState<ReceiptBasicInfo[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -76,7 +76,15 @@ function ReceiptTable() {
                                 {formatDate(receipt.receipt_date)}
                             </td>
                             <td className="px-4 py-2">
-                                <button className="font-semibold text-green-600 hover:text-green-500">
+                                <button
+                                    className="font-semibold text-green-600 hover:text-green-500"
+                                    onClick={() =>
+                                        popup(
+                                            "import",
+                                            receipt.receipt_id.toString(),
+                                        )
+                                    }
+                                >
                                     Detail
                                 </button>
                             </td>

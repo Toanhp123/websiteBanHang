@@ -3,10 +3,25 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
     ExportTable,
     InventoryAuditTable,
+    ReceiptDetailPopup,
     ReceiptTable,
 } from "@/features/warehouse/components";
+import { useState } from "react";
 
 function WarehouseTransactions() {
+    const [popup, setPopup] = useState<Record<string, string>>({
+        import: "",
+        export: "",
+        inventory: "",
+    });
+
+    const toggleMenu = (menu: string, value: string) => {
+        setPopup((prev) => ({
+            ...prev,
+            [menu]: value,
+        }));
+    };
+
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -28,7 +43,14 @@ function WarehouseTransactions() {
                     </TabsList>
 
                     <TabsContent value="import">
-                        <ReceiptTable />
+                        <ReceiptTable popup={toggleMenu} />
+
+                        {popup.import !== "" && (
+                            <ReceiptDetailPopup
+                                id={popup.import}
+                                popup={toggleMenu}
+                            />
+                        )}
                     </TabsContent>
 
                     <TabsContent value="export">

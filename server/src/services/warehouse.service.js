@@ -8,27 +8,6 @@ const {
 
 class WarehouseService {
 	async getReceiptBasicInfo(limit, offset) {
-		const query = `
-            SELECT 
-                wr.receipt_id,
-                s.supplier_name,
-                w.warehouse_name,
-                e.employee_first_name,
-                e.employee_last_name,
-                wr.receipt_date
-            FROM warehouse_receipt wr
-            LEFT JOIN supplier s
-                ON wr.supplier_id = s.supplier_id
-            LEFT JOIN warehouse w
-                ON wr.warehouse_id = w.warehouse_id
-            LEFT JOIN employee e
-                ON wr.employee_id = e.employee_id
-        `;
-
-		// const info = await sequelize.query(query, {
-		// 	type: sequelize.QueryTypes.SELECT,
-		// });
-
 		const warehouseReceiptList = await WarehouseReceipt.findAll({
 			include: [
 				{
@@ -67,6 +46,29 @@ class WarehouseService {
 		const hasMore = offset + warehouseReceiptList.length < total;
 
 		return { warehouseReceiptList, hasMore };
+	}
+
+	async getReceiptDetail(receipt_id) {
+		const query = `
+			SELECT 
+				wri.product_id,
+				wri.quantity,
+				wri.unit_price,
+
+				p.product_name,
+				p.product_code
+			FROM warehouse_receipt_item wri
+			LEFT JOIN product p
+				ON wri.product_id = p.product_id
+			WHERE wri.receipt_id = :receipt_id
+		`;
+
+		const receiptDetail = await sequelize.query(query, {
+			replacements: { receipt_id: receipt_id },
+			type: sequelize.QueryTypes.SELECT,
+		});
+
+		return receiptDetail;
 	}
 }
 
