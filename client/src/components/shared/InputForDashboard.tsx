@@ -11,6 +11,7 @@ type InputForDashboardPros = {
     file?: File | null;
     acceptFile?: string;
     required?: boolean;
+    readOnly?: boolean;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
     setFile?: React.Dispatch<React.SetStateAction<File | null>>;
     setListFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,6 +27,7 @@ function InputForDashboard({
     value = "",
     file = null,
     required = true,
+    readOnly = false,
     setValue,
     setFile,
     setListFile,
@@ -44,11 +46,16 @@ function InputForDashboard({
 
                     <input
                         type={type}
-                        className={clsx("rounded-md bg-gray-100 px-5 py-2")}
+                        className={clsx(
+                            "rounded-md bg-gray-100 px-5 py-2",
+                            readOnly === true &&
+                                "cursor-not-allowed focus:ring-0 focus:outline-none",
+                        )}
                         placeholder={placeholder}
                         accept={acceptFile}
                         required={required}
                         value={value}
+                        readOnly={readOnly}
                         onChange={(e) => {
                             if (setValue) {
                                 setValue(e.target.value);

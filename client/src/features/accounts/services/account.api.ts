@@ -15,10 +15,12 @@ export const getAllEmployee = async (): Promise<Employee[]> => {
     return res.data;
 };
 
-export const getDetailEmployee = async (
+export const getDetailEmployeeAndAccount = async (
     employee_id: number,
 ): Promise<EmployeeDetail> => {
-    const res = await axios.get(`/account/employee/${employee_id}`);
+    const res = await axios.get(
+        `/account/employee/detailAndAccount/${employee_id}`,
+    );
 
     return res.data;
 };
@@ -40,7 +42,9 @@ export const updateEmployee = async (
     return res.data;
 };
 
-export const deleteEmployee = async (employee_id: number) => {
+export const deleteEmployee = async (
+    employee_id: number,
+): Promise<{ message: string; success: boolean }> => {
     const res = await axios.delete(`/account/employee/${employee_id}`);
 
     return res.data;
@@ -52,6 +56,14 @@ export const addEmployee = async (
     const res = await axios.post(`/account/employee`, {
         data,
     });
+
+    return res.data;
+};
+
+export const getEmployeeDetail = async (
+    employee_id: number,
+): Promise<Employee> => {
+    const res = await axios.get(`/account/employee/${employee_id}`);
 
     return res.data;
 };

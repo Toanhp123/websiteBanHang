@@ -1,7 +1,10 @@
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 import { useEffect, useState } from "react";
-import { getDetailEmployee, updateEmployee } from "../services/account.api";
+import {
+    getDetailEmployeeAndAccount,
+    updateEmployee,
+} from "../services/account.api";
 import { useGetAllPositionEmployee } from "@/hooks/useGetAllPositionEmployee";
 
 function EditEmployeePopup({ id, popup }: EditPopupPros) {
@@ -40,9 +43,9 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
             name: position.employee_position_name,
         })) || [];
 
-    const handleGetEmployeeDetail = async (employee_id: number) => {
+    const handleGetEmployeeDetailAndAccount = async (employee_id: number) => {
         try {
-            const res = await getDetailEmployee(employee_id);
+            const res = await getDetailEmployeeAndAccount(employee_id);
 
             const data = {
                 employee_first_name: res.employee_first_name,
@@ -115,7 +118,7 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
 
     useEffect(() => {
         if (id) {
-            handleGetEmployeeDetail(Number(id));
+            handleGetEmployeeDetailAndAccount(Number(id));
         }
     }, [allPositionEmployee]);
 

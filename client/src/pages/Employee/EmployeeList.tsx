@@ -1,3 +1,4 @@
+import { EmployeeDetailPopup } from "@/features/accounts/components";
 import EditEmployeePopup from "@/features/accounts/components/EditEmployeePopup";
 import EmployeeListTable from "@/features/accounts/components/EmployeeListTable";
 import { MainLayout } from "@/layouts/Employee";
@@ -23,7 +24,11 @@ function EmployeeList() {
                 <EmployeeListTable id={popup.employee} popup={toggleMenu} />
             </div>
 
-            {popup.employee !== "" && (
+            {popup.employee.includes("Detail") && (
+                <EmployeeDetailPopup id={popup.employee} popup={toggleMenu} />
+            )}
+
+            {popup.employee !== "" && !popup.employee.includes("Detail") && (
                 <EditEmployeePopup id={popup.employee} popup={toggleMenu} />
             )}
         </MainLayout>

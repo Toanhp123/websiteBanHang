@@ -416,7 +416,7 @@ class AccountService {
 		return employee;
 	}
 
-	async getEmployeeDetail(employee_id) {
+	async getDetailEmployeeAndAccount(employee_id) {
 		const employee = await Employee.findOne({
 			include: [
 				{
@@ -593,6 +593,39 @@ class AccountService {
 
 			throwServerError("Can't add employee", EmployeeError.ADD_ERROR);
 		}
+	}
+
+	async getEmployeeDetail(employee_id) {
+		const employee = Employee.findOne(
+			{
+				include: [
+					{
+						model: EmployeePosition,
+						attributes: [],
+					},
+					{ model: Account, attributes: [] },
+				],
+				attributes: [
+					"employee_id",
+					"employee_first_name",
+					"employee_last_name",
+					"employee_phone",
+					"employee_birthday",
+					"employee_address",
+					"employee_hire_date",
+					[
+						sequelize.col(
+							"EmployeePosition.employee_position_name"
+						),
+						"employee_position_name",
+					],
+					[sequelize.col("Account.email"), "email"],
+				],
+			},
+			{ where: { employee_id } }
+		);
+
+		return employee;
 	}
 }
 

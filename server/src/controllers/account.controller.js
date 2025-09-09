@@ -99,10 +99,10 @@ class AccountController {
 	}
 
 	// [GET] /account/employee/:employee_id
-	async getEmployeeDetail(req, res) {
+	async getDetailEmployeeAndAccount(req, res) {
 		const { employee_id } = req.params;
 
-		const employeeDetail = await accountService.getEmployeeDetail(
+		const employeeDetail = await accountService.getDetailEmployeeAndAccount(
 			employee_id
 		);
 
@@ -144,6 +144,17 @@ class AccountController {
 		const message = await accountService.addEmployee(data);
 
 		res.json(message);
+	}
+
+	// [GET] /account/employee/:employee_id
+	async getDetailEmployee(req, res) {
+		const { employee_id } = req.params;
+
+		const employeeDetail = await accountService.getEmployeeDetail(
+			employee_id
+		);
+
+		res.json(employeeDetail);
 	}
 }
 

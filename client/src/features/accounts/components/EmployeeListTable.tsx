@@ -30,7 +30,7 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
             const res = await deleteEmployee(employee_id);
 
             if (res) {
-                console.log(1);
+                console.log(res.message);
 
                 setReload(true);
             }
@@ -40,13 +40,18 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
     };
 
     useEffect(() => {
-        console.log(reload);
-
         handleGetAllEmployee();
     }, [id, reload]);
 
     return (
-        <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
+        <div
+            className="space-y-8 rounded-2xl bg-white px-8 py-6"
+            onClick={() => {
+                if (editMenu) {
+                    setEditMenu(null);
+                }
+            }}
+        >
             <div>
                 <p className="font-semibold">
                     We found {employee.length} employee for you
@@ -124,7 +129,16 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
                                                             Delete Employee
                                                         </button>
 
-                                                        <button className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500">
+                                                        <button
+                                                            className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
+                                                            onClick={() =>
+                                                                popup(
+                                                                    "employee",
+                                                                    item.employee_id.toString() +
+                                                                        "Detail",
+                                                                )
+                                                            }
+                                                        >
                                                             Detail Employee
                                                         </button>
                                                     </div>

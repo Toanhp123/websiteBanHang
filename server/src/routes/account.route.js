@@ -70,12 +70,20 @@ router.get(
 	catchAsync(accountController.getAllPositionEmployee)
 );
 
-// [GET] /account/employee
+// [GET] /account/employee/detailAndAccount/:employee_id
+router.get(
+	"/employee/detailAndAccount/:employee_id",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.getDetailEmployeeAndAccount)
+);
+
+// [GET] /account/employee/:employee_id
 router.get(
 	"/employee/:employee_id",
 	checkAccessToken,
 	checkRole(["Admin"]),
-	catchAsync(accountController.getEmployeeDetail)
+	catchAsync(accountController.getDetailEmployee)
 );
 
 // [PATCH] /account/employee/:employee_id
