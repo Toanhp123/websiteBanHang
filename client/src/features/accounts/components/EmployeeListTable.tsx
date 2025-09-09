@@ -30,6 +30,8 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
             const res = await deleteEmployee(employee_id);
 
             if (res) {
+                console.log(1);
+
                 setReload(true);
             }
         } catch (error) {
@@ -38,6 +40,8 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
     };
 
     useEffect(() => {
+        console.log(reload);
+
         handleGetAllEmployee();
     }, [id, reload]);
 

@@ -536,6 +536,8 @@ class AccountService {
 			);
 
 			await transaction.commit();
+
+			return { message: "delete employee success", success: true };
 		} catch (error) {
 			await transaction.rollback();
 
