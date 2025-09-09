@@ -37,9 +37,11 @@ function SelectQuantity({
         }
 
         if (quantity > 0 && saveChangeCartToDatabase) {
+            const newQuantity = quantity - 1;
+
             dispatch(
                 changeQuantityItemCart({
-                    quantity: quantity - 1,
+                    quantity: newQuantity,
                     id_product: product_id,
                 }),
             );
@@ -61,9 +63,11 @@ function SelectQuantity({
         }
 
         if (quantity < max && saveChangeCartToDatabase) {
+            const newQuantity = quantity + 1;
+
             dispatch(
                 changeQuantityItemCart({
-                    quantity: quantity + 1,
+                    quantity: newQuantity,
                     id_product: product_id,
                 }),
             );

@@ -8,13 +8,12 @@ function CartBill() {
     const navigate = useNavigate();
 
     const orderSummary = {
-        items: Object.entries(cart).reduce((sum, [_, item]) => {
-            return sum + (item.quantity || 0);
-        }, 0),
+        items: cart.reduce((sum, item) => sum + (item.quantity || 0), 0),
 
-        subTotal: Object.entries(cart).reduce((sum, [_, item]) => {
-            return sum + (item.price * item.quantity || 0);
-        }, 0),
+        subTotal: cart.reduce(
+            (sum, item) => sum + (item.price * item.quantity || 0),
+            0,
+        ),
     };
 
     const handleClick = (): void => {
