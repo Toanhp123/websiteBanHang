@@ -86,6 +86,22 @@ router.patch(
 	catchAsync(accountController.updateEmployee)
 );
 
+// [DELETE] /account/employee/:employee_id
+router.delete(
+	"/employee/:employee_id",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.deleteEmployee)
+);
+
+// [POST] /account/employee/
+router.post(
+	"/employee",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.addEmployee)
+);
+
 // [GET] /account/:username
 router.get(
 	"/:username",

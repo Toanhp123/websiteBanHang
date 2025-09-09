@@ -22,7 +22,6 @@ const {
 	checkPassword,
 	createPasswordHash,
 } = require("../utils/validateUser.util");
-const { where } = require("sequelize");
 const { getProductStock } = require("./product.service");
 
 class AccountService {
@@ -411,6 +410,7 @@ class AccountService {
 				[sequelize.col("Account.AccountRole.role_name"), "role_name"],
 				[sequelize.col("Account.email"), "email"],
 			],
+			where: { is_active: true },
 		});
 
 		return employee;
@@ -465,8 +465,6 @@ class AccountService {
 	async updateEmployee(employee_id, changes) {
 		const transaction = await sequelize.transaction();
 
-		console.log(changes.employee_first_name);
-
 		try {
 			// Map các field thuộc bảng employee
 			const employeeFields = {};
@@ -489,7 +487,7 @@ class AccountService {
 			const accountFields = {};
 			if (changes.username) accountFields.username = changes.username;
 			if (changes.password)
-				accountFields.password_hash = createPasswordHash(
+				accountFields.password_hash = await createPasswordHash(
 					changes.accountPassword
 				);
 			if (changes.email) accountFields.email = changes.email;
@@ -520,6 +518,78 @@ class AccountService {
 				"Can't update employee",
 				EmployeeError.UPDATE_ERROR
 			);
+		}
+	}
+
+	async deleteEmployee(employee_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Account.update(
+				{ account_status: "rejected" },
+				{ where: { employee_id }, transaction }
+			);
+
+			await Employee.update(
+				{ is_active: false },
+				{ where: { employee_id }, transaction }
+			);
+
+			await transaction.commit();
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't delete employee",
+				EmployeeError.DELETE_ERROR
+			);
+		}
+	}
+
+	async addEmployee(data) {
+		const transaction = await sequelize.transaction();
+
+		const password_hash = await createPasswordHash(data.password);
+
+		try {
+			const employee = await Employee.create(
+				{
+					employee_first_name: data.employee_first_name,
+					employee_last_name: data.employee_last_name,
+					employee_phone: data.employee_phone,
+					employee_address: data.employee_address,
+					employee_birthday: data.employee_birthday,
+					employee_position_id: data.employee_position_id,
+				},
+				{ transaction }
+			);
+
+			const employee_id = employee.employee_id;
+
+			await Account.create(
+				{
+					username: data.username,
+					account_type: "employee",
+					employee_id,
+					role_id: 4,
+					account_status: "approved",
+					email: data.email,
+					password_hash,
+				},
+				{ where: { employee_id }, transaction }
+			);
+
+			transaction.commit();
+
+			return { message: "add employee success", success: true };
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't add employee", EmployeeError.ADD_ERROR);
 		}
 	}
 }

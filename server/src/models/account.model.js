@@ -49,7 +49,7 @@ const Account = sequelize.define(
 		},
 		create_at: {
 			type: DataTypes.DATE,
-			allowNull: false,
+			defaultValue: new Date(),
 		},
 	},
 	{

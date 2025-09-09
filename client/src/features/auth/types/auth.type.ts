@@ -34,7 +34,7 @@ export type AuthState = {
 export type User = {
     id: number;
     username: string;
-    role: number;
+    role: string;
 };
 
 export type UserInfo = {

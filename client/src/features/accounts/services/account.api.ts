@@ -39,3 +39,19 @@ export const updateEmployee = async (
 
     return res.data;
 };
+
+export const deleteEmployee = async (employee_id: number) => {
+    const res = await axios.delete(`/account/employee/${employee_id}`);
+
+    return res.data;
+};
+
+export const addEmployee = async (
+    data: Record<string, unknown>,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.post(`/account/employee`, {
+        data,
+    });
+
+    return res.data;
+};

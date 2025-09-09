@@ -1,11 +1,13 @@
 import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 import { useEffect, useState } from "react";
 import type { Employee } from "../types/accounts.type";
-import { getAllEmployee } from "../services/account.api";
+import { deleteEmployee, getAllEmployee } from "../services/account.api";
+import { getRole } from "@/stores/authStore";
 
 function EmployeeListTable({ id, popup }: EditPopupPros) {
     const [editMenu, setEditMenu] = useState<number | null>(null);
     const [employee, setEmployee] = useState<Employee[]>([]);
+    const [reload, setReload] = useState(false);
 
     const handleGetAllEmployee = async () => {
         try {
@@ -24,19 +26,20 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
     };
 
     const handleDeleteEmployee = async (employee_id: number) => {
-        // try {
-        //     const res = await deleteWarehouse(warehouse_id);
-        //     if (res) {
-        //         setReload(true);
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const res = await deleteEmployee(employee_id);
+
+            if (res) {
+                setReload(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
         handleGetAllEmployee();
-    }, [id]);
+    }, [id, reload]);
 
     return (
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
@@ -57,7 +60,9 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
                             <th className="p-2">Email</th>
                             <th className="p-2">Phone</th>
                             <th className="p-2">Position</th>
-                            <th className="p-2 text-right">Action</th>
+                            {getRole() === "Admin" && (
+                                <th className="p-2 text-right">Action</th>
+                            )}
                         </tr>
                     </thead>
 
@@ -75,53 +80,55 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
                                 <td className="p-2">
                                     {item.employee_position_name}
                                 </td>
-                                <td className="p-2 text-right">
-                                    <div className="relative">
-                                        <button
-                                            onClick={() =>
-                                                handleOpenEditMenu(
-                                                    item.employee_id,
-                                                )
-                                            }
-                                            className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
-                                        >
-                                            <i className="fa-solid fa-ellipsis"></i>
-                                        </button>
+                                {getRole() === "Admin" && (
+                                    <td className="p-2 text-right">
+                                        <div className="relative">
+                                            <button
+                                                onClick={() =>
+                                                    handleOpenEditMenu(
+                                                        item.employee_id,
+                                                    )
+                                                }
+                                                className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
+                                            >
+                                                <i className="fa-solid fa-ellipsis"></i>
+                                            </button>
 
-                                        {editMenu === item.employee_id && (
-                                            <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
-                                                <div className="flex h-full w-full flex-col px-4 py-2">
-                                                    <button
-                                                        className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
-                                                        onClick={() =>
-                                                            popup(
-                                                                "employee",
-                                                                item.employee_id.toString(),
-                                                            )
-                                                        }
-                                                    >
-                                                        Edit Employee
-                                                    </button>
+                                            {editMenu === item.employee_id && (
+                                                <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
+                                                    <div className="flex h-full w-full flex-col px-4 py-2">
+                                                        <button
+                                                            className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
+                                                            onClick={() =>
+                                                                popup(
+                                                                    "employee",
+                                                                    item.employee_id.toString(),
+                                                                )
+                                                            }
+                                                        >
+                                                            Edit Employee
+                                                        </button>
 
-                                                    <button
-                                                        className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                                                        onClick={() =>
-                                                            handleDeleteEmployee(
-                                                                item.employee_id,
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete Employee
-                                                    </button>
+                                                        <button
+                                                            className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                                            onClick={() =>
+                                                                handleDeleteEmployee(
+                                                                    item.employee_id,
+                                                                )
+                                                            }
+                                                        >
+                                                            Delete Employee
+                                                        </button>
 
-                                                    <button className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500">
-                                                        Detail Employee
-                                                    </button>
+                                                        <button className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500">
+                                                            Detail Employee
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </td>
+                                            )}
+                                        </div>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>

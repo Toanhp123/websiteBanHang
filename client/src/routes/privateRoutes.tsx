@@ -33,8 +33,6 @@ const privateRoutes = (
 
         {/* Route cho admin */}
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
-            <Route path="/dashboard" element={<DashboardHome />} />
-
             <Route path="/dashboard/employeeAdd" element={<EmployeeAdd />} />
         </Route>
 
@@ -62,6 +60,8 @@ const privateRoutes = (
             <Route path="/dashboard/addWarehouse" element={<AddWarehouse />} />
 
             <Route path="/dashboard/employeeList" element={<EmployeeList />} />
+
+            <Route path="/dashboard" element={<DashboardHome />} />
         </Route>
     </>
 );

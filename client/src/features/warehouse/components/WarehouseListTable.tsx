@@ -29,8 +29,6 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
     };
 
     useEffect(() => {
-        console.log(id);
-
         handleGetAllWarehouse();
     }, [id, reload]);
 

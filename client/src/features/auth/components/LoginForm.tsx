@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginCustomer } from "../services/auth.api";
 import { isUserRole, type LoginCredentials } from "../types/auth.type";
-import { setAccessToken } from "@/stores/authStore";
+import { setAccessToken, setRole } from "@/stores/authStore";
 
 function LoginForm() {
     const [username, setUsername] = useState<string>("");
@@ -32,9 +32,11 @@ function LoginForm() {
             }
 
             if (
-                isUserRole(res.data.user.role) &&
-                res.data.user.role === "Admin"
+                (isUserRole(res.data.user.role) &&
+                    res.data.user.role === "Admin") ||
+                res.data.user.role === "Employee"
             ) {
+                setRole(res.data.user.role);
                 setAccessToken(res.data.accessToken);
                 navigate("/dashboard");
             }

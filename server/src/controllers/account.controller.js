@@ -115,6 +115,7 @@ class AccountController {
 		res.json(position);
 	}
 
+	// [PATCH] /account/employee/:employee_id
 	async updateEmployee(req, res) {
 		const { employee_id } = req.params;
 		const { changes } = req.body;
@@ -123,6 +124,24 @@ class AccountController {
 			employee_id,
 			changes
 		);
+
+		res.json(message);
+	}
+
+	// [DELETE] /account/employee/:employee_id
+	async deleteEmployee(req, res) {
+		const { employee_id } = req.params;
+
+		const message = await accountService.deleteEmployee(employee_id);
+
+		res.json(message);
+	}
+
+	// [POST] /account/employee
+	async addEmployee(req, res) {
+		const { data } = req.body;
+
+		const message = await accountService.addEmployee(data);
 
 		res.json(message);
 	}

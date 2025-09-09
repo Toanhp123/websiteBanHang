@@ -72,5 +72,7 @@ module.exports = {
 	},
 	EmployeeError: {
 		UPDATE_ERROR: "CAN'T UPDATE EMPLOYEE",
+		DELETE_ERROR: "CAN'T DELETE EMPLOYEE",
+		ADD_ERROR: "CAN'T ADD EMPLOYEE",
 	},
 };

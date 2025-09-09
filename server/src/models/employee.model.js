@@ -20,7 +20,7 @@ const Employee = sequelize.define(
 			unique: true,
 		},
 		employee_birthday: {
-			type: DataTypes.DATE,
+			type: DataTypes.DATEONLY,
 			allowNull: false,
 		},
 		employee_address: {
@@ -28,8 +28,8 @@ const Employee = sequelize.define(
 			allowNull: true,
 		},
 		employee_hire_date: {
-			type: DataTypes.DATE,
-			allowNull: false,
+			type: DataTypes.DATEONLY,
+			defaultValue: () => new Date().toISOString().slice(0, 10),
 		},
 		employee_position_id: {
 			type: DataTypes.INTEGER,
@@ -38,6 +38,10 @@ const Employee = sequelize.define(
 		employee_last_name: {
 			type: DataTypes.STRING(50),
 			allowNull: false,
+		},
+		is_active: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: true,
 		},
 	},
 	{

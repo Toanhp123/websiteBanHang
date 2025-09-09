@@ -13,7 +13,7 @@ const router = express.Router();
 router.get(
 	"/overview",
 	checkAccessToken,
-	checkRole(["Admin"]),
+	checkRole(["Admin", "Employee"]),
 	dashboardController.getOverview
 );
 
@@ -21,7 +21,7 @@ router.get(
 router.get(
 	"/saleStatistics",
 	checkAccessToken,
-	checkRole(["Admin"]),
+	checkRole(["Admin", "Employee"]),
 	dashboardController.getSaleStatistics
 );
 

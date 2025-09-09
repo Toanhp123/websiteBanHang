@@ -67,6 +67,8 @@ const errorHandler = (err, req, res, next) => {
 		WarehouseError.CREATE_ERROR,
 
 		EmployeeError.UPDATE_ERROR,
+		EmployeeError.DELETE_ERROR,
+		EmployeeError.ADD_ERROR,
 	];
 
 	const statusCode = isAppError ? err.statusCode : 500;
