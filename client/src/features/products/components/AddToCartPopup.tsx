@@ -25,7 +25,18 @@ function AddToCartPopup() {
     };
 
     const handleGetNumberItemInCart = async () => {
-        setNumberItem(await getNumberItemInCart());
+        try {
+            const res = await getNumberItemInCart();
+
+            if (typeof res === "number") {
+                setNumberItem(res);
+            } else {
+                setNumberItem(cart.length);
+            }
+        } catch (error) {
+            console.error("Failed to fetch number of items in cart:", error);
+            setNumberItem(cart.length);
+        }
     };
 
     useEffect(() => {

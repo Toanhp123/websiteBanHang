@@ -37,7 +37,7 @@ function CartBill() {
             </div>
             <div className="flex justify-between">
                 <p className="text-disable">Taxes</p>
-                <p className="font-semibold">00.00$</p>
+                <p className="font-semibold">00.00</p>
             </div>
 
             <div className="border-b border-gray-300"></div>
