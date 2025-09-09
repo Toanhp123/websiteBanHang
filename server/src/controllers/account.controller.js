@@ -97,6 +97,35 @@ class AccountController {
 
 		res.json(allEmployee);
 	}
+
+	// [GET] /account/employee/:employee_id
+	async getEmployeeDetail(req, res) {
+		const { employee_id } = req.params;
+
+		const employeeDetail = await accountService.getEmployeeDetail(
+			employee_id
+		);
+
+		res.json(employeeDetail);
+	}
+	// [Get] /account/position
+	async getAllPositionEmployee(req, res) {
+		const position = await accountService.getAllPositionEmployee();
+
+		res.json(position);
+	}
+
+	async updateEmployee(req, res) {
+		const { employee_id } = req.params;
+		const { changes } = req.body;
+
+		const message = await accountService.updateEmployee(
+			employee_id,
+			changes
+		);
+
+		res.json(message);
+	}
 }
 
 module.exports = new AccountController();

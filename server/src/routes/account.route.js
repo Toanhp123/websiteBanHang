@@ -62,6 +62,30 @@ router.get(
 	catchAsync(accountController.getAllEmployee)
 );
 
+// [GET] /account/position
+router.get(
+	"/employee/position",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.getAllPositionEmployee)
+);
+
+// [GET] /account/employee
+router.get(
+	"/employee/:employee_id",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.getEmployeeDetail)
+);
+
+// [PATCH] /account/employee/:employee_id
+router.patch(
+	"/employee/:employee_id",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.updateEmployee)
+);
+
 // [GET] /account/:username
 router.get(
 	"/:username",

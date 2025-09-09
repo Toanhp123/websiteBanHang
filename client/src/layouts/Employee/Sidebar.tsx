@@ -8,6 +8,7 @@ function Sidebar() {
     const [menuState, setMenuState] = useState<Record<string, boolean>>({
         product: true,
         warehouse: true,
+        employee: true,
     });
 
     const navigate = useNavigate();
@@ -61,6 +62,17 @@ function Sidebar() {
         },
     ];
 
+    const listOptionInEmployee = [
+        {
+            text: "List Employee",
+            func: () => handleNavigate("employeeList"),
+        },
+        {
+            text: "Add Employee",
+            func: () => handleNavigate("employeeAdd"),
+        },
+    ];
+
     return (
         <div
             className={clsx(
@@ -110,7 +122,7 @@ function Sidebar() {
                 />
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
-                    icon="fa-solid fa-bag-shopping"
+                    icon="fa-solid fa-warehouse"
                     text="Warehouse"
                     menu={true}
                     closeMenu={menuState.warehouse}
@@ -131,7 +143,10 @@ function Sidebar() {
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-user"
                     text="Employee"
-                    onClick={() => handleNavigate("employee")}
+                    menu={true}
+                    closeMenu={menuState.employee}
+                    listOption={listOptionInEmployee}
+                    onClick={() => toggleMenu("employee")}
                 />
             </div>
         </div>

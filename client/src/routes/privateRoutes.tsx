@@ -12,6 +12,8 @@ import {
     DashboardHome,
     DashboardOrders,
     DashboardProductList,
+    EmployeeAdd,
+    EmployeeList,
     WarehouseTransactions,
 } from "@/pages/Employee";
 import WarehouseList from "@/pages/Employee/WarehouseList";
@@ -32,6 +34,8 @@ const privateRoutes = (
         {/* Route cho admin */}
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
             <Route path="/dashboard" element={<DashboardHome />} />
+
+            <Route path="/dashboard/employeeAdd" element={<EmployeeAdd />} />
         </Route>
 
         {/* Route cho employee và admin */}
@@ -56,6 +60,8 @@ const privateRoutes = (
             <Route path="/dashboard/supplierList" element={<SupplierList />} />
 
             <Route path="/dashboard/addWarehouse" element={<AddWarehouse />} />
+
+            <Route path="/dashboard/employeeList" element={<EmployeeList />} />
         </Route>
     </>
 );

@@ -10,6 +10,7 @@ const {
 	CartStatus,
 	AccountStatus,
 	ProductError,
+	EmployeeError,
 } = require("../constants/errorCode.constants");
 const {
 	throwBadRequest,
@@ -384,6 +385,16 @@ class AccountService {
 					model: EmployeePosition,
 					attributes: [],
 				},
+				{
+					model: Account,
+					attributes: [],
+					include: [
+						{
+							model: AccountRole,
+							attributes: [],
+						},
+					],
+				},
 			],
 			attributes: [
 				"employee_id",
@@ -397,10 +408,119 @@ class AccountService {
 					sequelize.col("EmployeePosition.employee_position_name"),
 					"employee_position_name",
 				],
+				[sequelize.col("Account.AccountRole.role_name"), "role_name"],
+				[sequelize.col("Account.email"), "email"],
 			],
 		});
 
 		return employee;
+	}
+
+	async getEmployeeDetail(employee_id) {
+		const employee = await Employee.findOne({
+			include: [
+				{
+					model: EmployeePosition,
+					attributes: [],
+				},
+				{
+					model: Account,
+					attributes: [],
+					include: [
+						{
+							model: AccountRole,
+							attributes: [],
+						},
+					],
+				},
+			],
+			attributes: [
+				"employee_id",
+				"employee_first_name",
+				"employee_phone",
+				"employee_birthday",
+				"employee_address",
+				"employee_hire_date",
+				"employee_last_name",
+				[
+					sequelize.col("EmployeePosition.employee_position_name"),
+					"employee_position_name",
+				],
+				[sequelize.col("Account.AccountRole.role_name"), "role_name"],
+				[sequelize.col("Account.username"), "username"],
+				[sequelize.col("Account.email"), "email"],
+			],
+			where: { employee_id },
+		});
+
+		return employee;
+	}
+
+	async getAllPositionEmployee() {
+		const position = await EmployeePosition.findAll();
+
+		return position;
+	}
+
+	async updateEmployee(employee_id, changes) {
+		const transaction = await sequelize.transaction();
+
+		console.log(changes.employee_first_name);
+
+		try {
+			// Map các field thuộc bảng employee
+			const employeeFields = {};
+			if (changes.employee_first_name)
+				employeeFields.employee_first_name =
+					changes.employee_first_name;
+			if (changes.employee_last_name)
+				employeeFields.employee_last_name = changes.employee_last_name;
+			if (changes.employee_phone)
+				employeeFields.employee_phone = changes.employee_phone;
+			if (changes.employee_birthday)
+				employeeFields.employee_birthday = changes.employee_birthday;
+			if (changes.employee_address)
+				employeeFields.employee_address = changes.employee_address;
+			if (changes.employee_position_id)
+				employeeFields.employee_position_id =
+					changes.employee_position_id;
+
+			// Map các field thuộc bảng account
+			const accountFields = {};
+			if (changes.username) accountFields.username = changes.username;
+			if (changes.password)
+				accountFields.password_hash = createPasswordHash(
+					changes.accountPassword
+				);
+			if (changes.email) accountFields.email = changes.email;
+
+			if (Object.keys(employeeFields).length > 0) {
+				await Employee.update(employeeFields, {
+					where: { employee_id: employee_id },
+					transaction,
+				});
+			}
+
+			if (Object.keys(accountFields).length > 0) {
+				await Account.update(accountFields, {
+					where: { employee_id: employee_id },
+					transaction,
+				});
+			}
+
+			await transaction.commit();
+
+			return { message: "Employee updated successfully", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't update employee",
+				EmployeeError.UPDATE_ERROR
+			);
+		}
 	}
 }
 

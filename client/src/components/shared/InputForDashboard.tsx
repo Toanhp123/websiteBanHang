@@ -19,7 +19,7 @@ type InputForDashboardPros = {
 function InputForDashboard({
     id = null,
     name = null,
-    type,
+    type = "text",
     label,
     placeholder,
     acceptFile = "",
