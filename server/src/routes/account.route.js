@@ -33,6 +33,13 @@ router.put(
 // [GET] /account/cart
 router.get("/cart", checkAccessToken, catchAsync(accountController.getCart));
 
+// [GET] /account/cart/number
+router.get(
+	"/cart/number",
+	checkAccessToken,
+	catchAsync(accountController.getNumberItemInCart)
+);
+
 // [GET] /account
 router.get(
 	"/",

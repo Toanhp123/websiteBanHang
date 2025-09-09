@@ -627,6 +627,15 @@ class AccountService {
 
 		return employee;
 	}
+
+	async getNumberItemInCart(account_id) {
+		const account = await Account.findOne({ where: { account_id } });
+		const customer_id = account.customer_id;
+		const cart = await Cart.findOne({ where: { customer_id } });
+		const cart_id = cart.cart_id;
+
+		return await CartProduct.count();
+	}
 }
 
 module.exports = new AccountService();

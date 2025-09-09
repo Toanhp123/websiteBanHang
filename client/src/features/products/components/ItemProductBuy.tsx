@@ -11,10 +11,11 @@ import { addToCart } from "@/features/cart/redux/cart.slice";
 import { getAccessToken } from "@/stores/authStore";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { useProductDetail } from "@/hooks/useProductDetail";
+import { setStateMenuPopup } from "../redux/addCartMenuPopup.slice";
 
-// TODO: cần thêm chức năng add to cart
 function ItemProductBuy() {
     const { product_id } = useParams();
+
     const [mainImageShow, setMainImageShow] = useState<string>("");
     const [quantity, setQuantity] = useState<number>(0);
     const [page, setPage] = useState<number>(0);
@@ -37,6 +38,7 @@ function ItemProductBuy() {
                     totalStock: productDetail.totalStock,
                 }),
             );
+            dispatch(setStateMenuPopup(true));
         } else {
             navigate("/login");
         }

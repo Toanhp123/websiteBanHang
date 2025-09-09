@@ -8,6 +8,7 @@ import promotionReducer from "@/features/checkout/redux/promotion.slice";
 import allInvoiceDetailReducer from "@/features/invoice/redux/allInvoiceDetail.slice";
 import shippingAddressReducer from "@/features/invoice/redux/shippingAddress.slice";
 import optionSortProductReducer from "@/features/filters/redux/optionSortProduct.slice";
+import addCartMenuPopupReducer from "@/features/products/redux/addCartMenuPopup.slice";
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         allInvoiceDetail: allInvoiceDetailReducer,
         shippingAddress: shippingAddressReducer,
         optionSortProduct: optionSortProductReducer,
+        addCartMenuPopup: addCartMenuPopupReducer,
     },
 });
 

@@ -4,9 +4,14 @@ import {
     FeatureProduct,
     Hero,
 } from "@/components/sections";
+import { AddToCartPopup } from "@/features/products/components";
+import { selectStateAddCartMenuPopup } from "@/features/products/redux/addCartMenuPopup.slice";
+import { useAppSelector } from "@/hooks/useRedux";
 import { Footer, Header, Section } from "@/layouts/Customer";
 
 function HomePage() {
+    const stateAddCartMenuPopup = useAppSelector(selectStateAddCartMenuPopup);
+
     return (
         <div>
             <Header />
@@ -27,6 +32,8 @@ function HomePage() {
                 <Section>
                     <BestSeller />
                 </Section>
+
+                {stateAddCartMenuPopup === true && <AddToCartPopup />}
             </div>
 
             <Footer />

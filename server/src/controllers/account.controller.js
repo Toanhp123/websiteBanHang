@@ -156,6 +156,14 @@ class AccountController {
 
 		res.json(employeeDetail);
 	}
+
+	// [GET] /account/cart/number
+	async getNumberItemInCart(req, res) {
+		const { id } = req.user;
+		const number = await accountService.getNumberItemInCart(id);
+
+		res.json(number);
+	}
 }
 
 module.exports = new AccountController();

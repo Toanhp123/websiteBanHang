@@ -5,6 +5,7 @@ import type { ItemProductPros } from "../types/product.type";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { addToCart } from "@/features/cart/redux/cart.slice";
 import { getAccessToken } from "@/stores/authStore";
+import { setStateMenuPopup } from "../redux/addCartMenuPopup.slice";
 
 function ItemProduct({
     product_id,
@@ -27,7 +28,7 @@ function ItemProduct({
         navigate(`/shop/productDetail/${product_id}`);
     };
 
-    const handleClickButton = () => {
+    const handleAddToCart = () => {
         if (getAccessToken()) {
             if (totalStock > 0) {
                 dispatch(
@@ -41,6 +42,7 @@ function ItemProduct({
                         totalStock: totalStock,
                     }),
                 );
+                dispatch(setStateMenuPopup(true));
             }
         } else {
             navigate("/login");
@@ -97,7 +99,7 @@ function ItemProduct({
                         bgColor="bg-secondary-light"
                         textColor="text-main-primary"
                         border=""
-                        onClick={handleClickButton}
+                        onClick={handleAddToCart}
                     />
                 </div>
             </div>

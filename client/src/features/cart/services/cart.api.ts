@@ -51,3 +51,9 @@ export const deleteItemInCartAtDatabase = async (
 export const deleteCartAtDatabase = async (): Promise<void> => {
     return await axios.delete(`/account/cart`);
 };
+
+export const getNumberItemInCart = async (): Promise<number> => {
+    const res = await axios.get("/account/cart/number");
+
+    return res.data;
+};

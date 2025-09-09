@@ -1,10 +1,15 @@
 import {
+    AddToCartPopup,
     ItemProductBuy,
     ItemProductDescription,
 } from "@/features/products/components";
+import { selectStateAddCartMenuPopup } from "@/features/products/redux/addCartMenuPopup.slice";
+import { useAppSelector } from "@/hooks/useRedux";
 import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 
 function ProductDetailPage() {
+    const stateAddCartMenuPopup = useAppSelector(selectStateAddCartMenuPopup);
+
     return (
         <div>
             <Header />
@@ -19,6 +24,8 @@ function ProductDetailPage() {
                         <ItemProductDescription />
                     </div>
                 </Section>
+
+                {stateAddCartMenuPopup === true && <AddToCartPopup />}
             </div>
 
             <Footer />

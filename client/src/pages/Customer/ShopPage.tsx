@@ -1,8 +1,12 @@
 import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
 import { ListFilterOption, ListTagFilter } from "@/features/filters/components";
-import { ListProduct } from "@/features/products/components";
+import { AddToCartPopup, ListProduct } from "@/features/products/components";
+import { useAppSelector } from "@/hooks/useRedux";
+import { selectStateAddCartMenuPopup } from "@/features/products/redux/addCartMenuPopup.slice";
 
 function ShopPage() {
+    const stateAddCartMenuPopup = useAppSelector(selectStateAddCartMenuPopup);
+
     return (
         <div>
             <Header />
@@ -10,7 +14,7 @@ function ShopPage() {
             <TitleSection text="Shop" />
 
             <Section>
-                <div className="flex gap-8">
+                <div className="relative flex gap-8">
                     {/* Left menu */}
                     <div className="flex-1">
                         <ListFilterOption />
@@ -25,6 +29,8 @@ function ShopPage() {
                         </div>
                     </div>
                 </div>
+
+                {stateAddCartMenuPopup === true && <AddToCartPopup />}
             </Section>
 
             <Footer />

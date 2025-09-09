@@ -5,6 +5,7 @@ import { default as ItemProductBuy } from "./ItemProductBuy";
 import { default as ItemProductDescription } from "./ItemProductDescription";
 import { default as ProductManager } from "./ProductManager";
 import { default as AddProductForm } from "./AddProductForm";
+import { default as AddToCartPopup } from "./AddToCartPopup";
 
 export {
     SlideListProduct,
@@ -14,4 +15,5 @@ export {
     ItemProductDescription,
     ProductManager,
     AddProductForm,
+    AddToCartPopup,
 };

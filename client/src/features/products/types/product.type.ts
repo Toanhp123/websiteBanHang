@@ -99,3 +99,7 @@ export type ProductAdvancedInfo = {
     supplier: Supplier[];
     categories: Categories[];
 };
+
+export type MenuPopupState = {
+    menu: boolean;
+};
