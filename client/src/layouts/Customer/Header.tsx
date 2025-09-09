@@ -1,7 +1,6 @@
 import { useState } from "react";
 import SideBar from "./SideBar";
-import { Button, NavItem } from "@/components/shared";
-import SearchBar from "@/features/search/components/SearchBar";
+import { Button, NavItem, SearchBar } from "@/components/shared";
 import { useWindowWidth } from "@/hooks/useWindowWidth";
 import { useNavigate } from "react-router-dom";
 

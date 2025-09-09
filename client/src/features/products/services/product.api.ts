@@ -13,6 +13,7 @@ import type {
 export const getProductByCondition = async ({
     filterOption,
     option,
+    search,
 }: GetProductByConditionParams): Promise<Product[]> => {
     const params: Record<string, string | number | boolean | null> = {};
 
@@ -20,7 +21,10 @@ export const getProductByCondition = async ({
     if (filterOption?.product_type)
         params.productType = filterOption.product_type;
     if (filterOption?.available) params.availability = filterOption.available;
+
     if (option) params.sortBy = option;
+
+    if (search) params.search = search;
 
     const res = await axios.get<Product[]>("product", {
         params,

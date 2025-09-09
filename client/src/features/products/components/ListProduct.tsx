@@ -4,10 +4,15 @@ import { Pagination } from "@/components/shared";
 import { ITEMS_PER_PAGE } from "@/constants/mics.constants";
 import Loading from "@/features/loading/components/Loading";
 import { useProduct } from "@/hooks/useProduct";
+import { useSearchParams } from "react-router-dom";
 
 function ListProduct() {
     const [page, setPage] = useState<number>(1);
-    const { product, loading } = useProduct();
+    const [searchParams] = useSearchParams();
+
+    const search = searchParams.get("search") || "";
+
+    const { product, loading } = useProduct(search);
 
     const startIndex: number = (page - 1) * ITEMS_PER_PAGE;
     const endIndex: number = startIndex + ITEMS_PER_PAGE;

@@ -13,6 +13,7 @@ import { default as ButtonSidebarDashboard } from "./ButtonSidebarDashboard";
 import { default as CardItem } from "./CardItem";
 import { default as Dropdown } from "./Dropdown";
 import { default as InputForDashboard } from "./InputForDashboard";
+import { default as SearchBar } from "./SearchBar";
 
 export {
     Button,
@@ -30,4 +31,5 @@ export {
     CardItem,
     Dropdown,
     InputForDashboard,
+    SearchBar,
 };

@@ -20,6 +20,13 @@ const ProductFilter = (query) => {
 	const having = {};
 	const order = [];
 
+	if (query.search) {
+		where[Op.or] = [
+			{ product_name: { [Op.like]: `%${query.search}%` } },
+			{ product_description: { [Op.like]: `%${query.search}%` } },
+		];
+	}
+
 	if (query.category) having.category = query.category;
 	if (query.productType) having.type = query.productType;
 	if (query.availability === "Out Stock") {

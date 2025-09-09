@@ -55,6 +55,7 @@ export type SlideListProductPros = {
 export type GetProductByConditionParams = {
     filterOption?: FilterState;
     option?: SortOptions;
+    search?: string;
 };
 
 export type Warehouse = {

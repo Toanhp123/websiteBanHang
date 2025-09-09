@@ -89,8 +89,6 @@ class ProductService {
 			};
 		});
 
-		console.log(product);
-
 		return productsWithImageAndInventory;
 	}
 
