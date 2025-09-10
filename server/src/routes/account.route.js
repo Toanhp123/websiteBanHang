@@ -117,6 +117,14 @@ router.post(
 	catchAsync(accountController.addEmployee)
 );
 
+// [GET] /account/customer
+router.get(
+	"/customer",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(accountController.getAllCustomer)
+);
+
 // [GET] /account/:username
 router.get(
 	"/:username",

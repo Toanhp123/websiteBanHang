@@ -5,6 +5,8 @@ const {
 	Cart,
 	Employee,
 	EmployeePosition,
+	Customer,
+	CustomerType,
 } = require("../models");
 const {
 	CartStatus,
@@ -635,6 +637,27 @@ class AccountService {
 		const cart_id = cart.cart_id;
 
 		return await CartProduct.count();
+	}
+
+	async getAllCustomer() {
+		return await Customer.findAll({
+			include: [
+				{ model: CustomerType, attributes: [] },
+				{ model: Account, attributes: [] },
+			],
+			attributes: [
+				"customer_id",
+				"first_name",
+				"last_name",
+				"phone_number",
+				"customer_birthday",
+				[
+					sequelize.col("CustomerType.customer_type_name"),
+					"customer_type",
+				],
+				[sequelize.col("Account.email"), "email"],
+			],
+		});
 	}
 }
 

@@ -1,5 +1,6 @@
 import axios from "@/utils/axiosInstance";
 import type {
+    Customer,
     Employee,
     EmployeeDetail,
     PositionEmployee,
@@ -64,6 +65,12 @@ export const getEmployeeDetail = async (
     employee_id: number,
 ): Promise<Employee> => {
     const res = await axios.get(`/account/employee/${employee_id}`);
+
+    return res.data;
+};
+
+export const getAllCustomer = async (): Promise<Customer[]> => {
+    const res = await axios.get(`/account/customer`);
 
     return res.data;
 };

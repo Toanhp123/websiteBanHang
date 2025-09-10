@@ -8,6 +8,7 @@ import {
 import { RequireAuth } from "@/components/shared";
 import {
     AddWarehousePage,
+    CustomerListPage,
     DashboardAddProductPage,
     DashboardHomePage,
     DashboardOrdersPage,
@@ -72,6 +73,8 @@ const privateRoutes = (
                 path="/dashboard/employeeList"
                 element={<EmployeeListPage />}
             />
+
+            <Route path="/dashboard/customer" element={<CustomerListPage />} />
 
             <Route path="/dashboard" element={<DashboardHomePage />} />
         </Route>

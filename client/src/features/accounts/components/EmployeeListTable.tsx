@@ -77,7 +77,10 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
 
                     <tbody>
                         {employee.map((item) => (
-                            <tr key={item.employee_id}>
+                            <tr
+                                key={item.employee_id}
+                                className="even:bg-gray-100"
+                            >
                                 <td className="p-2">{item.employee_id}</td>
                                 <td className="p-2">
                                     {item.employee_first_name +

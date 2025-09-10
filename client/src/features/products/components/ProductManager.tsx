@@ -95,7 +95,7 @@ function ProductManager({ setProduct, setPopup }: EditProductModalProps) {
                     {visibleItems.map((product) => (
                         <tr
                             key={product.product_id}
-                            className="hover:bg-gray-200"
+                            className="even:bg-gray-100"
                         >
                             <td className="px-4 py-4">{product.product_id}</td>
                             <td className="flex justify-center px-4 py-4">

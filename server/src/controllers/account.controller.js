@@ -164,6 +164,13 @@ class AccountController {
 
 		res.json(number);
 	}
+
+	// [GET] account/customer
+	async getAllCustomer(req, res) {
+		const customer = await accountService.getAllCustomer();
+
+		res.json(customer);
+	}
 }
 
 module.exports = new AccountController();

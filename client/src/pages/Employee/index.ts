@@ -8,6 +8,7 @@ import { default as EmployeeAddPage } from "./EmployeeAddPage";
 import { default as EmployeeListPage } from "./EmployeeListPage";
 import { default as WarehouseListPage } from "./WarehouseListPage";
 import { default as SupplierListPage } from "./SupplierListPage";
+import { default as CustomerListPage } from "./CustomerListPage";
 
 export {
     DashboardHomePage,
@@ -20,4 +21,5 @@ export {
     EmployeeListPage,
     WarehouseListPage,
     SupplierListPage,
+    CustomerListPage,
 };
