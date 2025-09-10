@@ -9,6 +9,7 @@ function Sidebar() {
         product: true,
         warehouse: true,
         employee: true,
+        discount: true,
     });
 
     const navigate = useNavigate();
@@ -69,6 +70,17 @@ function Sidebar() {
         },
     ];
 
+    const listOptionInDiscount = [
+        {
+            text: "List Discount",
+            func: () => handleNavigate("discountList"),
+        },
+        {
+            text: "Add Discount",
+            func: () => handleNavigate("discountAdd"),
+        },
+    ];
+
     return (
         <div
             className={clsx(
@@ -124,6 +136,15 @@ function Sidebar() {
                     closeMenu={menuState.warehouse}
                     listOption={listOptionInWarehouse}
                     onClick={() => toggleMenu("warehouse")}
+                />
+                <ButtonSidebarDashboard
+                    closeSidebar={closeSidebar}
+                    icon="fa-solid fa-tags"
+                    text="Discount"
+                    menu={true}
+                    closeMenu={menuState.discount}
+                    listOption={listOptionInDiscount}
+                    onClick={() => toggleMenu("discount")}
                 />
             </div>
             <div className="w-full border-b border-gray-300"></div>

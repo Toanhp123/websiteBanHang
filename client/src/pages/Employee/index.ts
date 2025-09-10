@@ -9,6 +9,7 @@ import { default as EmployeeListPage } from "./EmployeeListPage";
 import { default as WarehouseListPage } from "./WarehouseListPage";
 import { default as SupplierListPage } from "./SupplierListPage";
 import { default as CustomerListPage } from "./CustomerListPage";
+import { default as AddDiscountPage } from "./AddDiscountPage";
 
 export {
     DashboardHomePage,
@@ -22,4 +23,5 @@ export {
     WarehouseListPage,
     SupplierListPage,
     CustomerListPage,
+    AddDiscountPage,
 };

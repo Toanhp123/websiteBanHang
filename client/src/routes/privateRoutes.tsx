@@ -7,6 +7,7 @@ import {
 } from "@/pages/Customer";
 import { RequireAuth } from "@/components/shared";
 import {
+    AddDiscountPage,
     AddWarehousePage,
     CustomerListPage,
     DashboardAddProductPage,
@@ -75,6 +76,11 @@ const privateRoutes = (
             />
 
             <Route path="/dashboard/customer" element={<CustomerListPage />} />
+
+            <Route
+                path="/dashboard/discountAdd"
+                element={<AddDiscountPage />}
+            />
 
             <Route path="/dashboard" element={<DashboardHomePage />} />
         </Route>

@@ -82,12 +82,6 @@ export type ProductType = {
     product_type_name: string;
 };
 
-export type EditProductModalProps = {
-    product_id?: number | null;
-    setProduct?: React.Dispatch<React.SetStateAction<number | null>>;
-    setPopup: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
 export type ProductStatus = {
     product_status_id: number;
     product_status_name: string;

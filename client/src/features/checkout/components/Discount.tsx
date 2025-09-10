@@ -1,12 +1,18 @@
 import { Button, Input } from "@/components/shared";
 import { FormCheckoutSection } from "@/layouts/Customer";
 import { useEffect, useState } from "react";
-import { checkPromotionCanApply, getPromotion } from "../services/checkout.api";
 import { useAppDispatch } from "@/hooks/useRedux";
-import type { PromotionDetail, PromotionIsValid } from "../types/checkout.type";
 import { updatePromotion } from "../redux/promotion.slice";
 import { useItemCartOnLoad } from "@/hooks/useItemCartOnLoad";
 import { setDiscountAmount, setFinalTotal } from "../redux/price.slice";
+import type {
+    PromotionDetail,
+    PromotionIsValid,
+} from "@/features/discount/types/discount.type";
+import {
+    checkPromotionCanApply,
+    getPromotion,
+} from "@/features/discount/services/discount.api";
 
 function Discount() {
     const dispatch = useAppDispatch();
