@@ -71,13 +71,13 @@ export const getWarehouseByID = async (
     return res.data;
 };
 
-export const editWarehouse = async ({
-    ...UpdateWarehouseData
-}): Promise<{ message: string; success: boolean }> => {
-    const res = await axios.put(
-        `warehouse/${UpdateWarehouseData.warehouse_id}`,
-        { UpdateWarehouseData },
-    );
+export const editWarehouse = async (
+    warehouse_id: number,
+    changes: Record<string, unknown>,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.put(`warehouse/${warehouse_id}`, {
+        changes,
+    });
 
     return res.data;
 };

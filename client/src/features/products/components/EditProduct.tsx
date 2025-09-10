@@ -1,18 +1,15 @@
 import { useGetProductAdvancedInfo } from "@/hooks/useGetProductBasicInfoFilter";
 import { getDetailProduct, updateProduct } from "../services/product.api";
-import type {
-    EditProductModalProps,
-    WarehouseQuantity,
-} from "../types/product.type";
+import type { WarehouseQuantity } from "../types/product.type";
 import { useEffect, useState } from "react";
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import InputImageUpload from "@/components/shared/InputImageUpload";
-import { useNavigate } from "react-router-dom";
+import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 
-function EditProduct({ product_id, setPopup }: EditProductModalProps) {
+function EditProduct({ id, popup }: EditPopupPros) {
     const advanceInfo = useGetProductAdvancedInfo();
-    const navigate = useNavigate();
 
+    const [originalData, setOriginalData] = useState<unknown>(null);
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [price, setPrice] = useState<string>("");
@@ -27,6 +24,26 @@ function EditProduct({ product_id, setPopup }: EditProductModalProps) {
     const [categoryID, setCategoryID] = useState<string>("");
     const [productTypeID, setProductTypeID] = useState<string>("");
     const [productStatusID, setProductStatusID] = useState<string>("");
+
+    const currentData = {
+        product_name: name,
+        product_description: description,
+        price: price,
+        product_status_id: productStatusID,
+        product_category_id: categoryID,
+        supplier_id: supplierID,
+        product_type_id: productTypeID,
+        warehouseQuantities: warehouseQuantities,
+    };
+
+    const isTextChanged =
+        originalData &&
+        JSON.stringify(originalData) !== JSON.stringify(currentData);
+
+    const isImageChanged =
+        mainImage !== null || subImages.some((file) => file !== null);
+
+    const isChanged = isTextChanged || isImageChanged;
 
     const formatDataCategories =
         advanceInfo?.categories.map((category) => ({
@@ -102,100 +119,134 @@ function EditProduct({ product_id, setPopup }: EditProductModalProps) {
         });
     };
 
-    useEffect(() => {
-        const handleGetProductDetail = async (product_id: number) => {
-            try {
-                if (advanceInfo) {
-                    const productDetail = await getDetailProduct(product_id);
+    const handleGetProductDetail = async (product_id: number) => {
+        try {
+            if (advanceInfo) {
+                const productDetail = await getDetailProduct(product_id);
 
-                    setCategoryID(
+                setCategoryID(
+                    formatDataCategories
+                        .find((item) => item.name === productDetail.category)
+                        ?.id.toString() || "",
+                );
+                setSupplierID(
+                    formatDataSupplier
+                        .find((item) => item.name === productDetail.supplier)
+                        ?.id.toString() || "",
+                );
+                setProductTypeID(
+                    formatDataProductType
+                        .find((item) => item.name === productDetail.type)
+                        ?.id.toString() || "",
+                );
+                setProductStatusID(
+                    formatDataProductStatus
+                        .find((item) => item.name === productDetail.status)
+                        ?.id.toString() || "",
+                );
+                setName(productDetail.product_name);
+                setPrice(productDetail.price.toString());
+                setDescription(productDetail.product_description);
+                setWarehouseQuantities(productDetail.Inventories);
+
+                setOriginalData({
+                    product_name: productDetail.product_name,
+                    product_description: productDetail.product_description,
+                    price: productDetail.price.toString(),
+                    product_status_id:
+                        formatDataProductStatus
+                            .find((item) => item.name === productDetail.status)
+                            ?.id.toString() || "",
+                    product_category_id:
                         formatDataCategories
                             .find(
                                 (item) => item.name === productDetail.category,
                             )
                             ?.id.toString() || "",
-                    );
-                    setSupplierID(
+                    supplier_id:
                         formatDataSupplier
                             .find(
                                 (item) => item.name === productDetail.supplier,
                             )
                             ?.id.toString() || "",
-                    );
-                    setProductTypeID(
+                    product_type_id:
                         formatDataProductType
                             .find((item) => item.name === productDetail.type)
                             ?.id.toString() || "",
-                    );
-                    setProductStatusID(
-                        formatDataProductStatus
-                            .find((item) => item.name === productDetail.status)
-                            ?.id.toString() || "",
-                    );
-                    setName(productDetail.product_name);
-                    setPrice(productDetail.price.toString());
-                    setDescription(productDetail.product_description);
-                    setWarehouseQuantities(productDetail.Inventories);
-                }
-            } catch (error) {
-                console.log(error);
+                    warehouseQuantities: productDetail.Inventories,
+                });
             }
-        };
-
-        if (product_id) {
-            handleGetProductDetail(product_id);
+        } catch (error) {
+            console.log(error);
         }
-    }, [advanceInfo]);
+    };
+
+    const getChangedFields = () => {
+        if (!originalData) return {};
+
+        const changes: Record<string, unknown> = {};
+
+        Object.entries(currentData).forEach(([key, value]) => {
+            if ((originalData as Record<string, unknown>)[key] !== value) {
+                changes[key] = value;
+            }
+        });
+
+        if (mainImage) {
+            changes.mainImage = mainImage;
+        }
+
+        const validSubImages = subImages.filter((file) => file !== null);
+        if (validSubImages.length > 0) {
+            changes.subImages = validSubImages;
+        }
+
+        return changes;
+    };
 
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const changes = getChangedFields();
+
         const formData = new FormData();
 
-        if (mainImage) {
-            formData.append("mainImage", mainImage);
-        }
-
-        subImages.forEach((file) => {
-            if (file) {
-                formData.append("subImages", file);
+        Object.entries(changes).forEach(([key, value]) => {
+            if (key === "subImages" && Array.isArray(value)) {
+                value.forEach((file) => {
+                    if (file instanceof File) {
+                        formData.append("subImages", file);
+                    }
+                });
+            } else if (key === "mainImage" && value instanceof File) {
+                formData.append("mainImage", value);
+            } else if (key === "warehouseQuantities" && Array.isArray(value)) {
+                formData.append(
+                    "warehouseQuantities",
+                    JSON.stringify(warehouseQuantities),
+                );
+            } else {
+                formData.append(key, value as string);
             }
         });
 
-        if (!product_id) return;
-
-        const productInfo = {
-            product_id: product_id.toString(),
-            product_name: name,
-            product_description: description,
-            price: price,
-            product_status_id: productStatusID,
-            product_category_id: categoryID,
-            supplier_id: supplierID,
-            product_type_id: productTypeID,
-        };
-
-        Object.entries(productInfo).map(([key, value]) => {
-            formData.append(key, value);
-        });
-
-        formData.append(
-            "warehouseQuantities",
-            JSON.stringify(warehouseQuantities),
-        );
-
         try {
-            const res = await updateProduct(formData);
+            const res = await updateProduct(formData, Number(id));
 
             if (res.success) {
                 console.log(res.message);
-
-                navigate("/dashboard/productList");
+                popup("product", "");
             }
         } catch (error) {
             console.error("Failed to save:", error);
         }
     };
+
+    useEffect(() => {
+        if (id) {
+            handleGetProductDetail(Number(id));
+        }
+    }, [advanceInfo]);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
@@ -209,7 +260,7 @@ function EditProduct({ product_id, setPopup }: EditProductModalProps) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => setPopup(false)}
+                        onClick={() => popup("product", "")}
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -242,6 +293,7 @@ function EditProduct({ product_id, setPopup }: EditProductModalProps) {
 
                         <div className="grid grid-cols-2 items-center gap-8">
                             <InputForDashboard
+                                type="number"
                                 label="Product Price"
                                 placeholder="Text Here"
                                 value={price}
@@ -354,12 +406,15 @@ function EditProduct({ product_id, setPopup }: EditProductModalProps) {
                     <button
                         type="button"
                         className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                        onClick={() => setPopup(false)}
+                        onClick={() => popup("product", "")}
                     >
                         Cancel
                     </button>
 
-                    <button className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white">
+                    <button
+                        className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white disabled:bg-gray-500"
+                        disabled={!isChanged}
+                    >
                         Save
                     </button>
                 </div>

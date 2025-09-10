@@ -121,34 +121,23 @@ class ProductController {
 	}
 	// [PUT] /updateProduct
 	async updateProduct(req, res) {
-		const {
-			product_id,
-			product_name,
-			product_description,
-			price,
-			product_status_id,
-			product_category_id,
-			supplier_id,
-			product_type_id,
-			warehouseQuantities,
-		} = req.body;
-
+		const { product_id } = req.params;
 		const { id } = req.user;
+		const { warehouseQuantities, ...formData } = req.body;
 
-		const parsedWarehouseQuantities = warehouseQuantities
-			? JSON.parse(warehouseQuantities)
+		const mainImage = req.files?.mainImage?.[0] || null;
+		const subImages = req.files?.subImages || [];
+
+		const parsedWarehouseQuantities = formData.warehouseQuantities
+			? JSON.parse(formData.warehouseQuantities)
 			: [];
 
 		const message = await productService.updateProduct(
 			id,
 			product_id,
-			product_name,
-			product_description,
-			price,
-			product_status_id,
-			product_category_id,
-			supplier_id,
-			product_type_id,
+			mainImage,
+			subImages,
+			formData,
 			parsedWarehouseQuantities
 		);
 

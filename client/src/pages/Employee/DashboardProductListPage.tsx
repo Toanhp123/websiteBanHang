@@ -4,25 +4,27 @@ import { MainLayout } from "@/layouts/Employee";
 import { useState } from "react";
 
 function DashboardProductListPage() {
-    const [popupEditProduct, setPopupEditProduct] = useState<boolean>(false);
-    const [product, setProduct] = useState<number | null>(null);
+    const [popup, setPopup] = useState<Record<string, string>>({
+        product: "",
+    });
+
+    const toggleMenu = (menu: string, value: string) => {
+        setPopup((prev) => ({
+            ...prev,
+            [menu]: value,
+        }));
+    };
 
     return (
         <MainLayout>
             <div className="space-y-8">
                 <h1 className="text-2xl font-semibold">Product List</h1>
 
-                <ProductManager
-                    setPopup={setPopupEditProduct}
-                    setProduct={setProduct}
-                />
+                <ProductManager id={popup.product} popup={toggleMenu} />
             </div>
 
-            {popupEditProduct && (
-                <EditProduct
-                    product_id={product}
-                    setPopup={setPopupEditProduct}
-                />
+            {popup.product !== "" && (
+                <EditProduct id={popup.product} popup={toggleMenu} />
             )}
         </MainLayout>
     );

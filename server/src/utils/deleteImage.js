@@ -1,21 +1,19 @@
 const fs = require("fs");
 const path = require("path");
 
-const deleteImages = (mainImage, subImages) => {
-	fs.unlink(path.join("uploads/images/", mainImage.filename), (unlinkErr) => {
-		if (unlinkErr)
-			console.error("Failed to delete unused file:", unlinkErr);
-	});
-
-	subImages.forEach((subImage) => {
-		fs.unlink(
-			path.join("uploads/images/", subImage.filename),
-			(unlinkErr) => {
-				if (unlinkErr)
-					console.error("Failed to delete unused file:", unlinkErr);
-			}
-		);
-	});
+const deleteImages = (mainImage = null, subImages = []) => {
+	if (mainImage) {
+		fs.unlink(mainImage.path, (err) => {
+			if (err) console.error("Failed to delete unused file:", err);
+		});
+	}
+	if (subImages.length > 0) {
+		subImages.forEach((subImage) => {
+			fs.unlink(subImage.path, (err) => {
+				if (err) console.error("Failed to delete unused file:", err);
+			});
+		});
+	}
 };
 
 module.exports = { deleteImages };

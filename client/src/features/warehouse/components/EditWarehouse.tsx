@@ -7,10 +7,22 @@ import { useGetAllEmployee } from "@/hooks/useGetAllEmployee";
 function EditWarehouse({ id, popup }: EditPopupPros) {
     const allEmployee = useGetAllEmployee();
 
+    const [originalData, setOriginalData] = useState<unknown>(null);
     const [warehouseName, setWarehouseName] = useState<string>("");
     const [location, setLocation] = useState<string>("");
     const [priority, setPriority] = useState<string>("");
     const [employeeID, setEmployeeID] = useState("");
+
+    const currentData = {
+        warehouse_name: warehouseName,
+        location: location,
+        priority: priority,
+        employee_id: employeeID,
+    };
+
+    const isChanged =
+        originalData &&
+        JSON.stringify(originalData) !== JSON.stringify(currentData);
 
     const formatDataEmployee =
         allEmployee?.map((employee) => ({
@@ -25,13 +37,36 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
         try {
             const res = await getWarehouseByID(warehouse_id);
 
+            const data = {
+                warehouse_name: res.warehouse_name,
+                location: res.location,
+                priority: res.priority.toString(),
+                employee_id: res.employee_id.toString(),
+            };
+
             setWarehouseName(res.warehouse_name);
             setLocation(res.location);
             setPriority(res.priority.toString());
             setEmployeeID(res.employee_id.toString());
+
+            setOriginalData(data);
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const getChangedFields = () => {
+        if (!originalData) return {};
+
+        const changes: Record<string, unknown> = {};
+
+        Object.entries(currentData).forEach(([key, value]) => {
+            if ((originalData as Record<string, unknown>)[key] !== value) {
+                changes[key] = value;
+            }
+        });
+
+        return changes;
     };
 
     const handleSaveEditWarehouse = async (
@@ -39,16 +74,10 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
     ) => {
         e.preventDefault();
 
-        const UpdateWarehouseData = {
-            warehouse_id: id,
-            warehouse_name: warehouseName,
-            location,
-            priority: Number(priority),
-            employee_id: Number(employeeID),
-        };
+        const changes = getChangedFields();
 
         try {
-            const res = await editWarehouse(UpdateWarehouseData);
+            const res = await editWarehouse(Number(id), changes);
 
             if (res.success) {
                 console.log(res.message);
@@ -130,7 +159,10 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                         Cancel
                     </button>
 
-                    <button className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white">
+                    <button
+                        className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white disabled:bg-gray-500"
+                        disabled={!isChanged}
+                    >
                         Save
                     </button>
                 </div>

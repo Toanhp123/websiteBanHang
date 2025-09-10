@@ -427,13 +427,9 @@ class ProductService {
 	async updateProduct(
 		account_id,
 		product_id,
-		product_name,
-		product_description,
-		price,
-		product_status_id,
-		product_category_id,
-		supplier_id,
-		product_type_id,
+		mainImage,
+		subImages,
+		formData,
 		parsedWarehouseQuantities
 	) {
 		const transaction = await sequelize.transaction();
@@ -442,21 +438,50 @@ class ProductService {
 			const account = await Account.findOne({
 				where: { account_id },
 			});
-
 			const employee_id = account.employee_id;
 
 			await Product.update(
 				{
-					product_name,
-					product_description,
-					price,
-					product_status_id,
-					product_category_id,
-					supplier_id,
-					product_type_id,
+					...formData,
 				},
 				{ where: { product_id }, transaction }
 			);
+
+			// TODO: cần làm tiếp phần update ảnh
+			// if (mainImage) {
+			// 	deleteImages(mainImage, []);
+
+			// 	const mainImageURL = "uploads/images/" + mainImage.filename;
+
+			// 	await ProductImage.update(
+			// 		{
+			// 			image_url: mainImageURL,
+			// 		},
+			// 		{ where: { product_id, is_main: true }, transaction }
+			// 	);
+			// }
+
+			// if (subImages.length > 0) {
+			// 	deleteImages(null, subImages);
+
+			// 	const subImagesURL = subImages.map(
+			// 		(subImage) => "uploads/images/" + subImage.filename
+			// 	);
+
+			// 	await Promise.all(
+			// 		subImagesURL.map(async (subImage) => {
+			// 			await ProductImage.update(
+			// 				{
+			// 					image_url: subImage,
+			// 				},
+			// 				{
+			// 					where: { product_id, is_main: false },
+			// 					transaction,
+			// 				}
+			// 			);
+			// 		})
+			// 	);
+			// }
 
 			await Promise.all(
 				parsedWarehouseQuantities.map(async (warehouseQuantity) => {
@@ -480,7 +505,6 @@ class ProductService {
 					if (!created) {
 						oldQuantity = inventory.quantity;
 						newQuantity = warehouseQuantity.quantity;
-
 						await inventory.update(
 							{ quantity: newQuantity },
 							{ transaction }
@@ -512,6 +536,8 @@ class ProductService {
 			await transaction.rollback();
 
 			console.log(error);
+
+			deleteImages(mainImage, subImages);
 
 			throwServerError("Can't update product", ProductError.ERROR_ITEM);
 		}

@@ -90,15 +90,20 @@ export const getProductAdvancedInfo =
 
 export const updateProduct = async (
     formData: FormData,
+    product_id: number,
 ): Promise<{
     success: boolean;
     message: string;
 }> => {
-    const res = await axios.put(`product/updateProduct`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
+    const res = await axios.put(
+        `product/updateProduct/${product_id}`,
+        formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
         },
-    });
+    );
 
     return res.data;
 };

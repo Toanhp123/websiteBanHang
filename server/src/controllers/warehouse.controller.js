@@ -83,20 +83,14 @@ class WarehouseController {
 
 	// [PUT] /warehouse/:warehouse_id
 	async updateWarehouse(req, res) {
-		const {
-			warehouse_id,
-			warehouse_name,
-			location,
-			priority,
-			employee_id,
-		} = req.body.UpdateWarehouseData;
+		const { warehouse_id } = req.params;
+		const { changes } = req.body;
+
+		console.log(changes);
 
 		const message = await warehouseService.updateWarehouse(
 			warehouse_id,
-			warehouse_name,
-			location,
-			priority,
-			employee_id
+			changes
 		);
 
 		res.json(message);

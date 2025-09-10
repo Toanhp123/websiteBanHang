@@ -94,7 +94,7 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
         const changes: Record<string, unknown> = {};
 
         Object.entries(currentData).forEach(([key, value]) => {
-            if ((originalData as unknown)[key] !== value) {
+            if ((originalData as Record<string, unknown>)[key] !== value) {
                 changes[key] = value;
             }
         });

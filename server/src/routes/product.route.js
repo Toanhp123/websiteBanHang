@@ -45,7 +45,7 @@ route.post(
 );
 
 route.put(
-	"/updateProduct",
+	"/updateProduct/:product_id",
 	checkAccessToken,
 	checkRole(["Admin", "Employee"]),
 	upload.fields([

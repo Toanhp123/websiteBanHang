@@ -225,18 +225,12 @@ class WarehouseService {
 		return warehouse;
 	}
 
-	async updateWarehouse(
-		warehouse_id,
-		warehouse_name,
-		location,
-		priority,
-		employee_id
-	) {
+	async updateWarehouse(warehouse_id, changes) {
 		const transaction = await sequelize.transaction();
 
 		try {
 			await Warehouse.update(
-				{ warehouse_name, location, priority: priority, employee_id },
+				{ ...changes },
 				{ where: { warehouse_id }, transaction }
 			);
 

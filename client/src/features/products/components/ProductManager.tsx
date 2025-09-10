@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { EditProductModalProps, Product } from "../types/product.type";
+import type { Product } from "../types/product.type";
 import { deleteProduct, getProductByCondition } from "../services/product.api";
 import type { SortOptions } from "@/features/filters/types/filter.type";
 import { formatDate } from "@/utils/formatDate";
@@ -7,8 +7,9 @@ import { useAppSelector } from "@/hooks/useRedux";
 import { selectOptionSortProduct } from "@/features/filters/redux/optionSortProduct.slice";
 import { DropdownSortProduct, Pagination } from "@/components/shared";
 import { ITEMS_PER_PAGE_COL } from "@/constants/mics.constants";
+import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 
-function ProductManager({ setProduct, setPopup }: EditProductModalProps) {
+function ProductManager({ id, popup }: EditPopupPros) {
     const [listProduct, setListProduct] = useState<Product[]>([]);
     const [editMenu, setEditMenu] = useState<number | null>(null);
     const option = useAppSelector(selectOptionSortProduct);
@@ -42,16 +43,9 @@ function ProductManager({ setProduct, setPopup }: EditProductModalProps) {
         }
     };
 
-    const handleEditProduct = (id: number) => {
-        if (setProduct) {
-            setProduct(id);
-            setPopup(true);
-        }
-    };
-
     useEffect(() => {
         handleGetAllProduct(option);
-    }, [option]);
+    }, [option, id]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -145,8 +139,9 @@ function ProductManager({ setProduct, setPopup }: EditProductModalProps) {
                                                 <button
                                                     className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
                                                     onClick={() =>
-                                                        handleEditProduct(
-                                                            product.product_id,
+                                                        popup(
+                                                            "product",
+                                                            product.product_id.toString(),
                                                         )
                                                     }
                                                 >
