@@ -1,7 +1,7 @@
 import { AddWarehouseForm } from "@/features/warehouse/components";
 import { MainLayout } from "@/layouts/Employee";
 
-function AddWarehouse() {
+function AddWarehousePage() {
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -13,4 +13,4 @@ function AddWarehouse() {
     );
 }
 
-export default AddWarehouse;
+export default AddWarehousePage;

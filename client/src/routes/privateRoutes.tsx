@@ -7,17 +7,17 @@ import {
 } from "@/pages/Customer";
 import { RequireAuth } from "@/components/shared";
 import {
-    AddWarehouse,
-    DashboardAddProduct,
-    DashboardHome,
-    DashboardOrders,
-    DashboardProductList,
-    EmployeeAdd,
-    EmployeeList,
-    WarehouseTransactions,
+    AddWarehousePage,
+    DashboardAddProductPage,
+    DashboardHomePage,
+    DashboardOrdersPage,
+    DashboardProductListPage,
+    EmployeeAddPage,
+    EmployeeListPage,
+    SupplierListPage,
+    WarehouseListPage,
+    WarehouseTransactionsPage,
 } from "@/pages/Employee";
-import WarehouseList from "@/pages/Employee/WarehouseList";
-import SupplierList from "@/pages/Employee/SupplierList";
 
 const privateRoutes = (
     <>
@@ -33,35 +33,47 @@ const privateRoutes = (
 
         {/* Route cho admin */}
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
-            <Route path="/dashboard/employeeAdd" element={<EmployeeAdd />} />
+            <Route
+                path="/dashboard/employeeAdd"
+                element={<EmployeeAddPage />}
+            />
         </Route>
 
         {/* Route cho employee và admin */}
         <Route element={<RequireAuth allowedRoles={["Admin", "Employee"]} />}>
-            <Route path="/dashboard/orders" element={<DashboardOrders />} />
+            <Route path="/dashboard/orders" element={<DashboardOrdersPage />} />
             <Route
                 path="/dashboard/productList"
-                element={<DashboardProductList />}
+                element={<DashboardProductListPage />}
             />
             <Route
                 path="/dashboard/addProduct"
-                element={<DashboardAddProduct />}
+                element={<DashboardAddProductPage />}
             />
             <Route
                 path="/dashboard/warehouseTransactions"
-                element={<WarehouseTransactions />}
+                element={<WarehouseTransactionsPage />}
             />
             <Route
                 path="/dashboard/warehouseList"
-                element={<WarehouseList />}
+                element={<WarehouseListPage />}
             />
-            <Route path="/dashboard/supplierList" element={<SupplierList />} />
+            <Route
+                path="/dashboard/supplierList"
+                element={<SupplierListPage />}
+            />
 
-            <Route path="/dashboard/addWarehouse" element={<AddWarehouse />} />
+            <Route
+                path="/dashboard/addWarehouse"
+                element={<AddWarehousePage />}
+            />
 
-            <Route path="/dashboard/employeeList" element={<EmployeeList />} />
+            <Route
+                path="/dashboard/employeeList"
+                element={<EmployeeListPage />}
+            />
 
-            <Route path="/dashboard" element={<DashboardHome />} />
+            <Route path="/dashboard" element={<DashboardHomePage />} />
         </Route>
     </>
 );

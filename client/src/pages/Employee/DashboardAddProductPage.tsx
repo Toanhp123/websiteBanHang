@@ -1,7 +1,7 @@
 import { AddProductForm } from "@/features/products/components";
 import { MainLayout } from "@/layouts/Employee";
 
-function DashboardAddProduct() {
+function DashboardAddProductPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -13,4 +13,4 @@ function DashboardAddProduct() {
     );
 }
 
-export default DashboardAddProduct;
+export default DashboardAddProductPage;

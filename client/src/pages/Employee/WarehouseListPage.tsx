@@ -1,8 +1,11 @@
-import { SupplierListTable } from "@/features/products/components";
+import {
+    EditWarehouse,
+    WarehouseListTable,
+} from "@/features/warehouse/components";
 import { MainLayout } from "@/layouts/Employee";
 import { useState } from "react";
 
-function SupplierList() {
+function WarehouseListPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         warehouse: "",
     });
@@ -17,16 +20,16 @@ function SupplierList() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Supplier List</h1>
+                <h1 className="text-2xl font-semibold">Warehouse List</h1>
 
-                <SupplierListTable id={popup.warehouse} popup={toggleMenu} />
+                <WarehouseListTable id={popup.warehouse} popup={toggleMenu} />
             </div>
 
-            {/* {popup.warehouse !== "" && (
+            {popup.warehouse !== "" && (
                 <EditWarehouse id={popup.warehouse} popup={toggleMenu} />
-            )} */}
+            )}
         </MainLayout>
     );
 }
 
-export default SupplierList;
+export default WarehouseListPage;

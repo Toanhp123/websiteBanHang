@@ -1,19 +1,23 @@
-import { default as DashboardHome } from "./DashboardHome";
-import { default as DashboardOrders } from "./DashboardOrders";
-import { default as DashboardProductList } from "./DashboardProductList";
-import { default as DashboardAddProduct } from "./DashboardAddProduct";
-import { default as WarehouseTransactions } from "./WarehouseTransactions";
-import { default as AddWarehouse } from "./AddWarehouse";
-import { default as EmployeeAdd } from "./EmployeeAdd";
-import { default as EmployeeList } from "./EmployeeList";
+import { default as DashboardHomePage } from "./DashboardHomePage";
+import { default as DashboardOrdersPage } from "./DashboardOrdersPage";
+import { default as DashboardProductListPage } from "./DashboardProductListPage";
+import { default as DashboardAddProductPage } from "./DashboardAddProductPage";
+import { default as WarehouseTransactionsPage } from "./WarehouseTransactionsPage";
+import { default as AddWarehousePage } from "./AddWarehousePage";
+import { default as EmployeeAddPage } from "./EmployeeAddPage";
+import { default as EmployeeListPage } from "./EmployeeListPage";
+import { default as WarehouseListPage } from "./WarehouseListPage";
+import { default as SupplierListPage } from "./SupplierListPage";
 
 export {
-    DashboardHome,
-    DashboardOrders,
-    DashboardProductList,
-    DashboardAddProduct,
-    WarehouseTransactions,
-    AddWarehouse,
-    EmployeeAdd,
-    EmployeeList,
+    DashboardHomePage,
+    DashboardOrdersPage,
+    DashboardProductListPage,
+    DashboardAddProductPage,
+    WarehouseTransactionsPage,
+    AddWarehousePage,
+    EmployeeAddPage,
+    EmployeeListPage,
+    WarehouseListPage,
+    SupplierListPage,
 };

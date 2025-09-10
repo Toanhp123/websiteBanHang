@@ -4,7 +4,7 @@ import {
 } from "@/features/dashboard/components";
 import { MainLayout } from "@/layouts/Employee";
 
-function DashboardHome() {
+function DashboardHomePage() {
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -23,4 +23,4 @@ function DashboardHome() {
     );
 }
 
-export default DashboardHome;
+export default DashboardHomePage;

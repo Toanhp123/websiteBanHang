@@ -1,7 +1,7 @@
 import { InvoiceManager } from "@/features/invoice/components";
 import { MainLayout } from "@/layouts/Employee";
 
-function DashboardOrders() {
+function DashboardOrdersPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -13,4 +13,4 @@ function DashboardOrders() {
     );
 }
 
-export default DashboardOrders;
+export default DashboardOrdersPage;

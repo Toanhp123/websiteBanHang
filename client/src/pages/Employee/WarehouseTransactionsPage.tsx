@@ -9,7 +9,7 @@ import {
 } from "@/features/warehouse/components";
 import { useState } from "react";
 
-function WarehouseTransactions() {
+function WarehouseTransactionsPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         import: "",
         export: "",
@@ -74,4 +74,4 @@ function WarehouseTransactions() {
     );
 }
 
-export default WarehouseTransactions;
+export default WarehouseTransactionsPage;

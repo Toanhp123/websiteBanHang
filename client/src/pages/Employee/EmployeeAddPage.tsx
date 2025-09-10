@@ -1,7 +1,7 @@
 import { AddEmployeeForm } from "@/features/accounts/components";
 import { MainLayout } from "@/layouts/Employee";
 
-function EmployeeAdd() {
+function EmployeeAddPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -13,4 +13,4 @@ function EmployeeAdd() {
     );
 }
 
-export default EmployeeAdd;
+export default EmployeeAddPage;

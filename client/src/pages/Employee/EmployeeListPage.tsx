@@ -4,7 +4,7 @@ import EmployeeListTable from "@/features/accounts/components/EmployeeListTable"
 import { MainLayout } from "@/layouts/Employee";
 import { useState } from "react";
 
-function EmployeeList() {
+function EmployeeListPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         employee: "",
     });
@@ -35,4 +35,4 @@ function EmployeeList() {
     );
 }
 
-export default EmployeeList;
+export default EmployeeListPage;

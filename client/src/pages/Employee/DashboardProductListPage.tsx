@@ -3,7 +3,7 @@ import EditProduct from "@/features/products/components/EditProduct";
 import { MainLayout } from "@/layouts/Employee";
 import { useState } from "react";
 
-function DashboardProductList() {
+function DashboardProductListPage() {
     const [popupEditProduct, setPopupEditProduct] = useState<boolean>(false);
     const [product, setProduct] = useState<number | null>(null);
 
@@ -28,4 +28,4 @@ function DashboardProductList() {
     );
 }
 
-export default DashboardProductList;
+export default DashboardProductListPage;
