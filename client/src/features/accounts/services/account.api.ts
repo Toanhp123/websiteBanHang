@@ -74,3 +74,14 @@ export const getAllCustomer = async (): Promise<Customer[]> => {
 
     return res.data;
 };
+
+export const updateAccountStatus = async (
+    customer_id: number,
+    status: string,
+) => {
+    const res = await axios.patch(`/account/customer/status/${customer_id}`, {
+        status,
+    });
+
+    return res.data;
+};

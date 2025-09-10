@@ -32,4 +32,5 @@ export type Customer = {
     customer_birthday: string;
     customer_type: string;
     email: string;
+    account_status: "pending" | "approved" | "rejected";
 };

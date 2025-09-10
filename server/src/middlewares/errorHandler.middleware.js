@@ -45,6 +45,7 @@ const errorHandler = (err, req, res, next) => {
 		AccountStatus.WRONG_EMAIL_FORMAT,
 
 		AccountStatus.ERROR_UPDATE_PASSWORD,
+		AccountStatus.ERROR_UPDATE_STATUS,
 
 		ProfileStatus.NOT_FOUND,
 

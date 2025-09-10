@@ -656,8 +656,33 @@ class AccountService {
 					"customer_type",
 				],
 				[sequelize.col("Account.email"), "email"],
+				[sequelize.col("Account.account_status"), "account_status"],
 			],
 		});
+	}
+
+	async updateAccountStatus(customer_id, account_status) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Account.update(
+				{ account_status },
+				{ where: { customer_id }, transaction }
+			);
+
+			transaction.commit();
+
+			return { message: "Update account status success", success: true };
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't update account status",
+				AccountStatus.ERROR_UPDATE_STATUS
+			);
+		}
 	}
 }
 

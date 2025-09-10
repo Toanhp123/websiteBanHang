@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { getAllCustomer } from "../services/account.api";
+import { getAllCustomer, updateAccountStatus } from "../services/account.api";
 import type { Customer } from "../types/accounts.type";
 
 function CustomerListTable() {
     const [editMenu, setEditMenu] = useState<number | null>(null);
     const [customerList, setCustomerList] = useState<Customer[]>([]);
+    const [reload, setReload] = useState(false);
 
     const handleGetAllCustomer = async () => {
         try {
@@ -18,13 +19,28 @@ function CustomerListTable() {
         }
     };
 
+    const handleChangeAccountStatus = async (
+        customer_id: number,
+        status: string,
+    ) => {
+        try {
+            const res = await updateAccountStatus(customer_id, status);
+
+            if (res) {
+                setReload((prev) => !prev);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleOpenEditMenu = (id: number) => {
         setEditMenu((prev) => (prev === id ? null : id));
     };
 
     useEffect(() => {
         handleGetAllCustomer();
-    }, []);
+    }, [reload]);
 
     return (
         <div
@@ -51,7 +67,8 @@ function CustomerListTable() {
                         <th className="p-2">Email</th>
                         <th className="p-2">Phone</th>
                         <th className="p-2">Birth Day</th>
-                        <th className="p-2">Type Account</th>
+                        <th className="p-2">Type</th>
+                        <th className="p-2">Status</th>
                         <th className="p-2 text-right">Action</th>
                     </tr>
                 </thead>
@@ -72,6 +89,7 @@ function CustomerListTable() {
                                 {customer.customer_birthday}
                             </td>
                             <td className="p-2">{customer.customer_type}</td>
+                            <td className="p-2">{customer.account_status}</td>
                             <td className="p-2 text-right">
                                 <div className="relative">
                                     <button
@@ -90,22 +108,32 @@ function CustomerListTable() {
                                             <div className="flex h-full w-full flex-col px-4 py-2">
                                                 <button
                                                     className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
-                                                    // onClick={() =>
-                                                    //     handleEditProduct(
-                                                    //         product.product_id,
-                                                    //     )
-                                                    // }
+                                                    onClick={() =>
+                                                        handleChangeAccountStatus(
+                                                            customer.customer_id,
+                                                            "approved",
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        customer.account_status ===
+                                                        "approved"
+                                                    }
                                                 >
                                                     Unban account
                                                 </button>
 
                                                 <button
                                                     className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                                                    // onClick={() =>
-                                                    //     handleDeleteProduct(
-                                                    //         product.product_id,
-                                                    //     )
-                                                    // }
+                                                    onClick={() =>
+                                                        handleChangeAccountStatus(
+                                                            customer.customer_id,
+                                                            "rejected",
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        customer.account_status ===
+                                                        "rejected"
+                                                    }
                                                 >
                                                     Ban Account
                                                 </button>

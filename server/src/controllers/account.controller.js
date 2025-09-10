@@ -171,6 +171,19 @@ class AccountController {
 
 		res.json(customer);
 	}
+
+	// [GET] account/customer/status/:customer_id
+	async updateAccountStatus(req, res) {
+		const { customer_id } = req.params;
+		const { status } = req.body;
+
+		const message = await accountService.updateAccountStatus(
+			customer_id,
+			status
+		);
+
+		res.json(message);
+	}
 }
 
 module.exports = new AccountController();

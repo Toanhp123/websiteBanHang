@@ -125,6 +125,14 @@ router.get(
 	catchAsync(accountController.getAllCustomer)
 );
 
+// [PATCH] /account/status/:customer_id
+router.patch(
+	"/customer/status/:customer_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(accountController.updateAccountStatus)
+);
+
 // [GET] /account/:username
 router.get(
 	"/:username",
