@@ -102,3 +102,9 @@ export const updateProduct = async (
 
     return res.data;
 };
+
+export const addSupplier = async ({ ...data }): Promise<Supplier> => {
+    const res = await axios.post(`product/addSupplier`, { data });
+
+    return res.data;
+};

@@ -56,10 +56,6 @@ function Sidebar() {
             text: "Add Warehouse",
             func: () => handleNavigate("addWarehouse"),
         },
-        {
-            text: "Add Supplier",
-            func: () => handleNavigate("addSupplier"),
-        },
     ];
 
     const listOptionInEmployee = [

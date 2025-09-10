@@ -55,6 +55,13 @@ route.put(
 	catchAsync(productController.updateProduct)
 );
 
+route.post(
+	"/addSupplier",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(productController.addSupplier)
+);
+
 route.delete(
 	"/:product_id",
 	checkAccessToken,

@@ -1,4 +1,7 @@
-const { ProductError } = require("../constants/errorCode.constants");
+const {
+	ProductError,
+	SupplierError,
+} = require("../constants/errorCode.constants");
 const {
 	Account,
 	Product,
@@ -511,6 +514,27 @@ class ProductService {
 			console.log(error);
 
 			throwServerError("Can't update product", ProductError.ERROR_ITEM);
+		}
+	}
+
+	async addSupplier(data) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const supplier = await Supplier.create(
+				{ ...data },
+				{ transaction }
+			);
+
+			transaction.commit();
+
+			return supplier;
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't add supplier", SupplierError.ADD_ITEM);
 		}
 	}
 }

@@ -75,4 +75,7 @@ module.exports = {
 		DELETE_ERROR: "CAN'T DELETE EMPLOYEE",
 		ADD_ERROR: "CAN'T ADD EMPLOYEE",
 	},
+	SupplierError: {
+		ADD_ITEM: "CAN'T ADD SUPPLIER",
+	},
 };

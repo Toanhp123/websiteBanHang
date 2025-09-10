@@ -154,6 +154,15 @@ class ProductController {
 
 		res.json(message);
 	}
+
+	// [POST] product/addSupplier
+	async addSupplier(req, res) {
+		const { data } = req.body;
+
+		const message = await productService.addSupplier(data);
+
+		res.json(message);
+	}
 }
 
 module.exports = new ProductController();
