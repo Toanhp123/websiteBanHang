@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import type { ItemProductPros } from "../types/product.type";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { addToCart } from "@/features/cart/redux/cart.slice";
-import { getAccessToken } from "@/stores/authStore";
+import { getAccessToken, getRole } from "@/stores/authStore";
 import { setStateMenuPopup } from "../redux/addCartMenuPopup.slice";
 
 function ItemProduct({
@@ -29,7 +29,7 @@ function ItemProduct({
     };
 
     const handleAddToCart = () => {
-        if (getAccessToken()) {
+        if (getAccessToken() && getRole() === "Customer") {
             if (totalStock > 0) {
                 dispatch(
                     addToCart({

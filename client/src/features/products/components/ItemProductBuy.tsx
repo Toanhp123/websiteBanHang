@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "@/features/loading/components/Loading";
 import { addToCart } from "@/features/cart/redux/cart.slice";
-import { getAccessToken } from "@/stores/authStore";
+import { getAccessToken, getRole } from "@/stores/authStore";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { useProductDetail } from "@/hooks/useProductDetail";
 import { setStateMenuPopup } from "../redux/addCartMenuPopup.slice";
@@ -26,7 +26,7 @@ function ItemProductBuy() {
         useProductDetail(product_id);
 
     const handleAddItemToCart = (): void => {
-        if (getAccessToken()) {
+        if (getAccessToken() && getRole() === "Customer") {
             dispatch(
                 addToCart({
                     id_product: productDetail.product_id,

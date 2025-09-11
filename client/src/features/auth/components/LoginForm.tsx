@@ -27,6 +27,7 @@ function LoginForm() {
                 isUserRole(res.data.user.role) &&
                 res.data.user.role === "Customer"
             ) {
+                setRole(res.data.user.role);
                 setAccessToken(res.data.accessToken);
                 navigate(from, { replace: true });
             }
