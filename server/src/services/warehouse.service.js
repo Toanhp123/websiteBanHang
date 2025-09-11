@@ -1,4 +1,7 @@
-const { WarehouseError } = require("../constants/errorCode.constants");
+const {
+	WarehouseError,
+	ProductError,
+} = require("../constants/errorCode.constants");
 const {
 	sequelize,
 	WarehouseReceipt,
@@ -9,6 +12,7 @@ const {
 	InventoryAudit,
 	Inventory,
 	Account,
+	Product,
 } = require("../models");
 const { throwServerError } = require("../utils/errorThrowFunc");
 
@@ -149,6 +153,10 @@ class WarehouseService {
 					model: Warehouse,
 					attributes: [],
 				},
+				{
+					model: Product,
+					attributes: [],
+				},
 			],
 			attributes: [
 				"audit_id",
@@ -166,10 +174,11 @@ class WarehouseService {
 					"employee_last_name",
 				],
 				[sequelize.col("Warehouse.warehouse_name"), "warehouse_name"],
+				[sequelize.col("Product.product_name"), "product_name"],
 			],
 			limit,
 			offset,
-			order: [["audit_date", "DESC"]],
+			order: [["audit_id", "DESC"]],
 		});
 
 		const total = await InventoryAudit.count();

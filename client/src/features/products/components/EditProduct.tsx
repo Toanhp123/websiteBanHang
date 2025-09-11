@@ -201,6 +201,22 @@ function EditProduct({ id, popup }: EditPopupPros) {
             changes.subImages = validSubImages;
         }
 
+        const originalWarehouses =
+            (
+                originalData as {
+                    warehouseQuantities?: WarehouseQuantity[];
+                }
+            ).warehouseQuantities || [];
+
+        const diffWarehouses = warehouseQuantities.filter((w) => {
+            const old = (originalWarehouses as WarehouseQuantity[]).find(
+                (o) => o.warehouse_id === w.warehouse_id,
+            );
+            return !old || old.quantity !== w.quantity;
+        });
+
+        changes.warehouseQuantities = diffWarehouses;
+
         return changes;
     };
 
@@ -221,10 +237,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
             } else if (key === "mainImage" && value instanceof File) {
                 formData.append("mainImage", value);
             } else if (key === "warehouseQuantities" && Array.isArray(value)) {
-                formData.append(
-                    "warehouseQuantities",
-                    JSON.stringify(warehouseQuantities),
-                );
+                formData.append("warehouseQuantities", JSON.stringify(value));
             } else {
                 formData.append(key, value as string);
             }

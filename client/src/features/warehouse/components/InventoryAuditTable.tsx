@@ -63,6 +63,7 @@ function InventoryAuditTable() {
                     <tr>
                         <th className="px-4 py-2">Audit ID</th>
                         <th className="px-4 py-2">Employee Name</th>
+                        <th className="px-4 py-2">Product Name</th>
                         <th className="px-4 py-2">Old Quantity</th>
                         <th className="px-4 py-2">New Quantity</th>
                         <th className="px-4 py-2">Change Amount</th>
@@ -81,6 +82,7 @@ function InventoryAuditTable() {
                                     " " +
                                     items.employee_last_name}
                             </td>
+                            <td className="px-4 py-2">{items.product_name}</td>
                             <td className="px-4 py-2">{items.old_quantity}</td>
                             <td className="px-4 py-2">{items.new_quantity}</td>
                             <td className="px-4 py-2">{items.change_amount}</td>

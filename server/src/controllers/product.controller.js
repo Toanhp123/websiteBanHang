@@ -128,8 +128,8 @@ class ProductController {
 		const mainImage = req.files?.mainImage?.[0] || null;
 		const subImages = req.files?.subImages || [];
 
-		const parsedWarehouseQuantities = formData.warehouseQuantities
-			? JSON.parse(formData.warehouseQuantities)
+		const parsedWarehouseQuantities = warehouseQuantities
+			? JSON.parse(warehouseQuantities)
 			: [];
 
 		const message = await productService.updateProduct(

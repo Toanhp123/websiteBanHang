@@ -59,6 +59,7 @@ export type InventoryAuditBasicInfo = {
     employee_first_name: string;
     employee_last_name: string;
     warehouse_name: string;
+    product_name: string;
 };
 
 export type InventoryAuditBasicInfoResponse = {
