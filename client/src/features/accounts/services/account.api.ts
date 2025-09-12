@@ -6,8 +6,12 @@ import type {
     PositionEmployee,
 } from "../types/accounts.type";
 
-export const changePassword = async ({ ...changePassword }): Promise<void> => {
-    await axios.put("account/password", { changePassword });
+export const changePassword = async ({
+    ...changePassword
+}): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.put("account/password", { changePassword });
+
+    return res.data;
 };
 
 export const getAllEmployee = async (): Promise<Employee[]> => {

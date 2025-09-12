@@ -7,6 +7,7 @@ import type {
     RegisterResponse,
     UserInfo,
 } from "../types/auth.type";
+import type { RegisterFormInputs } from "../validations/register.schema";
 
 /**
  * Hàm xử lý Login:
@@ -50,12 +51,10 @@ export const refreshToken = async (): Promise<string> => {
  * @returns trả về thông báo đăng ký thành công
  */
 export const registerCustomer = async (
-    user: UserInfo,
-    registerCredentials: RegisterCredentials,
+    data: RegisterFormInputs,
 ): Promise<RegisterResponse> => {
     const res = await axios.post<RegisterResponse>("/auth/registerCustomer", {
-        ...user,
-        ...registerCredentials,
+        ...data,
     });
 
     return res.data;

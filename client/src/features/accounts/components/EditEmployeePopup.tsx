@@ -6,32 +6,38 @@ import {
     updateEmployee,
 } from "../services/account.api";
 import { useGetAllPositionEmployee } from "@/hooks/useGetAllPositionEmployee";
+import { useForm } from "react-hook-form";
+import {
+    editEmployeeSchema,
+    type EditEmployeeFormInputs,
+} from "../validations/editEmployee.schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function EditEmployeePopup({ id, popup }: EditPopupPros) {
     const allPositionEmployee = useGetAllPositionEmployee();
 
     const [originalData, setOriginalData] = useState<unknown>(null);
-    const [employeeFirstName, setEmployeeFirstName] = useState<string>("");
-    const [employeeLastName, setEmployeeLastName] = useState<string>("");
-    const [employeePhone, setEmployeePhone] = useState<string>("");
-    const [employeeBirthDay, setEmployeeBirthDay] = useState<string>("");
-    const [employeeEmail, setEmployeeEmail] = useState<string>("");
-    const [employeeLocation, setEmployeeLocation] = useState<string>("");
-    const [accountUsername, setAccountUsername] = useState<string>("");
-    const [accountPassword, setAccountPassword] = useState<string>("");
-    const [accountPositionID, setAccountPositionID] = useState<string>("");
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<EditEmployeeFormInputs>({
+        resolver: yupResolver(editEmployeeSchema),
+        defaultValues: {
+            employee_first_name: "",
+            employee_last_name: "",
+            employee_phone: "",
+            email: "",
+            username: "",
+            employee_address: "",
+            employee_birthday: "",
+            employee_position_id: "",
+        },
+    });
 
-    const currentData = {
-        employee_first_name: employeeFirstName,
-        employee_last_name: employeeLastName,
-        employee_phone: employeePhone,
-        email: employeeEmail,
-        username: accountUsername,
-        employee_address: employeeLocation,
-        employee_birthday: employeeBirthDay,
-        employee_position_id: accountPositionID,
-        password: accountPassword,
-    };
+    const currentData = watch();
 
     const isChanged =
         originalData &&
@@ -56,31 +62,19 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
                 employee_address: res.employee_address,
                 employee_birthday: res.employee_birthday,
                 employee_position_id:
-                    formatDataPositionEmployee
-                        .find(
-                            (item) => item.name === res.employee_position_name,
+                    allPositionEmployee
+                        ?.find(
+                            (p) =>
+                                p.employee_position_name ===
+                                res.employee_position_name,
                         )
-                        ?.id.toString() || "",
-                password: "",
+                        ?.employee_position_id.toString() || "",
+                password: null,
             };
 
-            setEmployeeFirstName(res.employee_first_name);
-            setEmployeeLastName(res.employee_last_name);
-            setEmployeePhone(res.employee_phone);
-            setEmployeeEmail(res.email);
-            setAccountUsername(res.username);
-            setEmployeeLocation(res.employee_address);
-            setEmployeeBirthDay(res.employee_birthday);
-
-            if (allPositionEmployee) {
-                setAccountPositionID(
-                    formatDataPositionEmployee
-                        .find(
-                            (item) => item.name === res.employee_position_name,
-                        )
-                        ?.id.toString() || "",
-                );
-            }
+            Object.entries(data).forEach(([key, value]) => {
+                setValue(key as keyof EditEmployeeFormInputs, value);
+            });
 
             setOriginalData(data);
         } catch (error) {
@@ -88,12 +82,12 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
         }
     };
 
-    const getChangedFields = () => {
+    const getChangedFields = (data: EditEmployeeFormInputs) => {
         if (!originalData) return {};
 
         const changes: Record<string, unknown> = {};
 
-        Object.entries(currentData).forEach(([key, value]) => {
+        Object.entries(data).forEach(([key, value]) => {
             if ((originalData as Record<string, unknown>)[key] !== value) {
                 changes[key] = value;
             }
@@ -102,10 +96,8 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
         return changes;
     };
 
-    const handelSaveEdit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const changes = getChangedFields();
+    const handelSaveEdit = async (data: EditEmployeeFormInputs) => {
+        const changes = getChangedFields(data);
 
         try {
             await updateEmployee(Number(id), changes);
@@ -126,7 +118,7 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
             <form
                 className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-xl"
-                onSubmit={(e) => handelSaveEdit(e)}
+                onSubmit={handleSubmit(handelSaveEdit)}
             >
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
@@ -151,35 +143,35 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
                                 <InputForDashboard
                                     label="First Name"
                                     placeholder="Text Here"
-                                    value={employeeFirstName}
-                                    setValue={setEmployeeFirstName}
+                                    register={register("employee_first_name")}
+                                    error={errors.employee_first_name?.message}
                                 />
                                 <InputForDashboard
                                     label="Last Name"
+                                    register={register("employee_last_name")}
                                     placeholder="Text Here"
-                                    value={employeeLastName}
-                                    setValue={setEmployeeLastName}
+                                    error={errors.employee_last_name?.message}
                                 />
                                 <InputForDashboard
                                     type="number"
                                     label="Phone Number"
+                                    register={register("employee_phone")}
                                     placeholder="Text Here"
-                                    value={employeePhone}
-                                    setValue={setEmployeePhone}
+                                    error={errors.employee_phone?.message}
                                 />
                                 <InputForDashboard
                                     type="date"
+                                    register={register("employee_birthday")}
+                                    error={errors.employee_birthday?.message}
                                     label="Birth Day"
-                                    value={employeeBirthDay}
-                                    setValue={setEmployeeBirthDay}
                                 />
                             </div>
 
                             <InputForDashboard
                                 label="Location"
+                                register={register("employee_address")}
+                                error={errors.employee_address?.message}
                                 placeholder="Text Here"
-                                value={employeeLocation}
-                                setValue={setEmployeeLocation}
                             />
                         </div>
                     </div>
@@ -194,14 +186,18 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
                                     <InputForDashboard
                                         label="Username"
                                         placeholder="Text Here"
-                                        value={accountUsername}
-                                        setValue={setAccountUsername}
+                                        register={register("username")}
+                                        error={errors.username?.message}
                                     />
                                     <Dropdown
                                         text="Position"
                                         options={formatDataPositionEmployee}
-                                        value={accountPositionID}
-                                        setValue={setAccountPositionID}
+                                        register={register(
+                                            "employee_position_id",
+                                        )}
+                                        error={
+                                            errors.employee_position_id?.message
+                                        }
                                     />
                                 </div>
 
@@ -209,15 +205,14 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
                                     type="password"
                                     label="New Password"
                                     placeholder="Text Here"
-                                    value={accountPassword}
-                                    setValue={setAccountPassword}
-                                    required={false}
+                                    register={register("password")}
+                                    error={errors.password?.message}
                                 />
                                 <InputForDashboard
                                     label="Email"
                                     placeholder="Text Here"
-                                    value={employeeEmail}
-                                    setValue={setEmployeeEmail}
+                                    register={register("email")}
+                                    error={errors.email?.message}
                                 />
                             </div>
                         </div>

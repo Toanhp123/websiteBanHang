@@ -3,22 +3,35 @@ import type { EditPopupPros } from "../types/warehouse.type";
 import { editWarehouse, getWarehouseByID } from "../services/warehouse.api";
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import { useGetAllEmployee } from "@/hooks/useGetAllEmployee";
+import {
+    editWarehouseSchema,
+    type EditWarehouseFormInputs,
+} from "../validations/editWarehouse.schema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function EditWarehouse({ id, popup }: EditPopupPros) {
     const allEmployee = useGetAllEmployee();
 
     const [originalData, setOriginalData] = useState<unknown>(null);
-    const [warehouseName, setWarehouseName] = useState<string>("");
-    const [location, setLocation] = useState<string>("");
-    const [priority, setPriority] = useState<string>("");
-    const [employeeID, setEmployeeID] = useState("");
 
-    const currentData = {
-        warehouse_name: warehouseName,
-        location: location,
-        priority: priority,
-        employee_id: employeeID,
-    };
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<EditWarehouseFormInputs>({
+        resolver: yupResolver(editWarehouseSchema),
+        defaultValues: {
+            warehouse_name: "",
+            location: "",
+            priority: "",
+            employee_id: "",
+        },
+    });
+
+    const currentData = watch();
 
     const isChanged =
         originalData &&
@@ -44,10 +57,9 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                 employee_id: res.employee_id.toString(),
             };
 
-            setWarehouseName(res.warehouse_name);
-            setLocation(res.location);
-            setPriority(res.priority.toString());
-            setEmployeeID(res.employee_id.toString());
+            Object.entries(data).forEach(([key, value]) => {
+                setValue(key as keyof EditWarehouseFormInputs, value);
+            });
 
             setOriginalData(data);
         } catch (error) {
@@ -55,12 +67,12 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
         }
     };
 
-    const getChangedFields = () => {
+    const getChangedFields = (data: EditWarehouseFormInputs) => {
         if (!originalData) return {};
 
         const changes: Record<string, unknown> = {};
 
-        Object.entries(currentData).forEach(([key, value]) => {
+        Object.entries(data).forEach(([key, value]) => {
             if ((originalData as Record<string, unknown>)[key] !== value) {
                 changes[key] = value;
             }
@@ -69,12 +81,8 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
         return changes;
     };
 
-    const handleSaveEditWarehouse = async (
-        e: React.FormEvent<HTMLFormElement>,
-    ) => {
-        e.preventDefault();
-
-        const changes = getChangedFields();
+    const handleSaveEditWarehouse = async (data: EditWarehouseFormInputs) => {
+        const changes = getChangedFields(data);
 
         try {
             const res = await editWarehouse(Number(id), changes);
@@ -99,7 +107,7 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
             <form
                 className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl"
-                onSubmit={(e) => handleSaveEditWarehouse(e)}
+                onSubmit={handleSubmit(handleSaveEditWarehouse)}
             >
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
@@ -119,8 +127,8 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                         <InputForDashboard
                             label="Warehouse Name"
                             placeholder="Type Here"
-                            value={warehouseName}
-                            setValue={setWarehouseName}
+                            register={register("warehouse_name")}
+                            error={errors.warehouse_name?.message}
                         />
 
                         <InputForDashboard
@@ -128,8 +136,8 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                             type="number"
                             label="Warehouse Priority"
                             placeholder="0"
-                            value={priority}
-                            setValue={setPriority}
+                            register={register("priority")}
+                            error={errors.priority?.message}
                         />
                     </div>
 
@@ -137,15 +145,15 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                         name="location"
                         label="Warehouse Location"
                         placeholder="Type Here"
-                        value={location}
-                        setValue={setLocation}
+                        register={register("location")}
+                        error={errors.location?.message}
                     />
 
                     <Dropdown
                         text="Employee"
                         options={formatDataEmployee}
-                        value={employeeID}
-                        setValue={setEmployeeID}
+                        register={register("employee_id")}
+                        error={errors.employee_id?.message}
                     />
                 </div>
 

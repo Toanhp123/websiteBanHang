@@ -49,7 +49,7 @@ class AuthController {
 		res.status(200).json({ message: "Logout success" });
 	}
 
-	// [POST] /auth/register
+	// [POST] /auth/registerCustomer
 	async registerCustomer(req, res) {
 		const user = req.user;
 

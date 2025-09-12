@@ -1,69 +1,71 @@
 import { useState } from "react";
-import { registerCustomer } from "../services/auth.api";
-import type { RegisterCredentials, UserInfo } from "../types/auth.type";
 import { Button, Input } from "@/components/shared";
 import { Link, useNavigate } from "react-router-dom";
+import {
+    tab1Schema,
+    tab2Schema,
+    tab3Schema,
+    type RegisterFormInputs,
+} from "../validations/register.schema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { registerCustomer } from "../services/auth.api";
 
 function RegisterForm() {
     const navigate = useNavigate();
     const [tab, setTab] = useState<number>(1);
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [phone, setPhone] = useState<string>("");
-    const [birthday, setBirthday] = useState<string>(
-        new Date().toISOString().split("T")[0],
-    );
-    const [retypePass, setRetypePass] = useState<string>("");
+    const [formData, setFormData] = useState<Partial<RegisterFormInputs>>({});
 
-    const userInfo: UserInfo = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        birthday: birthday,
-        phoneNumber: phone,
-    };
-
-    const registerCredentials: RegisterCredentials = {
-        username: username,
-        password:
-            password === retypePass && password !== "" ? password : undefined,
-    };
-
-    const handleRegister = async (
-        e: React.FormEvent<HTMLFormElement>,
-    ): Promise<void> => {
-        e.preventDefault();
-
-        handleNextTab();
-
-        if (registerCredentials.password !== undefined) {
-            try {
-                const res = await registerCustomer(
-                    userInfo,
-                    registerCredentials,
-                );
-
-                if (res) {
-                    navigate("/login");
-                }
-            } catch (error) {
-                console.log(error);
-            }
+    const getResolver = (tab: number) => {
+        switch (tab) {
+            case 1:
+                return yupResolver(tab1Schema);
+            case 2:
+                return yupResolver(tab2Schema);
+            case 3:
+                return yupResolver(tab3Schema);
+            default:
+                return yupResolver(tab1Schema);
         }
     };
 
-    const handleNextTab = (): void => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        trigger,
+    } = useForm<RegisterFormInputs>({
+        resolver: getResolver(tab),
+    });
+
+    const handleRegister = async (data: RegisterFormInputs): Promise<void> => {
+        handleNextTab();
+        setFormData((prev) => ({ ...prev, ...data }));
+
+        try {
+            const finalData = {
+                ...formData,
+            } as RegisterFormInputs;
+
+            const res = await registerCustomer(finalData);
+
+            if (res) {
+                navigate("/login");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleNextTab = async (): Promise<void> => {
+        const valid = await trigger();
+        if (!valid) return;
         if (tab === 3) return;
         setTab((tab) => tab + 1);
     };
 
     const handleBackTab = (): void => {
         if (tab === 1) return;
-        setPassword("");
-        setRetypePass("");
 
         setTab((tab) => tab - 1);
     };
@@ -97,7 +99,7 @@ function RegisterForm() {
             <form
                 id="registerForm"
                 className="w-full max-w-4xl space-y-6"
-                onSubmit={(e) => handleRegister(e)}
+                onSubmit={handleSubmit(handleRegister)}
             >
                 {/* Trang 1 của from đăng ký */}
                 {tab === 1 && (
@@ -105,17 +107,15 @@ function RegisterForm() {
                         <Input
                             label="Username"
                             placeholder="Username"
-                            value={username}
-                            setValue={setUsername}
-                            required={true}
+                            register={register("username")}
+                            error={errors.username?.message}
                         />
 
                         <Input
                             label="Email"
                             placeholder="Email"
-                            value={email}
-                            setValue={setEmail}
-                            required={true}
+                            register={register("email")}
+                            error={errors.email?.message}
                         />
                     </div>
                 )}
@@ -127,36 +127,32 @@ function RegisterForm() {
                             <Input
                                 label="First Name"
                                 placeholder="First Name"
-                                value={firstName}
-                                setValue={setFirstName}
-                                required={true}
+                                register={register("firstName")}
+                                error={errors.firstName?.message}
                             />
 
                             <Input
                                 label="Last Name"
                                 placeholder="Last Name"
-                                value={lastName}
-                                setValue={setLastName}
-                                required={true}
+                                register={register("lastName")}
+                                error={errors.lastName?.message}
                             />
                         </div>
 
                         <Input
                             label="Phone"
                             placeholder="Phone"
-                            value={phone}
-                            setValue={setPhone}
-                            required={true}
-                            inputFormat="tel"
+                            inputFormat="number"
+                            register={register("phone")}
+                            error={errors.phone?.message}
                         />
 
                         <Input
                             label="Birthday"
                             placeholder="Birthday"
-                            value={birthday}
-                            setValue={setBirthday}
-                            required={true}
                             inputFormat="date"
+                            register={register("birthday")}
+                            error={errors.birthday?.message}
                         />
                     </div>
                 )}
@@ -167,19 +163,17 @@ function RegisterForm() {
                         <Input
                             label="Password"
                             placeholder="Password"
-                            value={password}
-                            setValue={setPassword}
-                            required={true}
                             inputFormat="password"
+                            register={register("password")}
+                            error={errors.password?.message}
                         />
 
                         <Input
                             label="Retype Password"
                             placeholder="Retype Password"
-                            value={retypePass}
-                            setValue={setRetypePass}
-                            required={true}
                             inputFormat="password"
+                            register={register("retypePass")}
+                            error={errors.retypePass?.message}
                         />
                     </div>
                 )}

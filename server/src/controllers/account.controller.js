@@ -78,8 +78,9 @@ class AccountController {
 
 		const { changePassword } = req.body;
 
-		await accountService.changePassword(changePassword, id);
-		res.json({ message: "Change quantity in cart success" });
+		const message = await accountService.changePassword(changePassword, id);
+
+		res.json(message);
 	}
 
 	// [POST] /account/reset

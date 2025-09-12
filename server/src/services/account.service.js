@@ -334,8 +334,8 @@ class AccountService {
 
 		const check = await checkPassword(pass, pass_hash);
 
-		if (check && newPass === reNewPass) {
-			try {
+		try {
+			if (check && newPass === reNewPass) {
 				const newPassHash = await createPasswordHash(newPass);
 				await Account.update(
 					{ password_hash: newPassHash },
@@ -343,16 +343,20 @@ class AccountService {
 				);
 
 				await transaction.commit();
-			} catch (error) {
-				await transaction.rollback();
 
-				console.log(error);
-
-				throwServerError(
-					"Can't update password",
-					AccountStatus.ERROR_UPDATE_PASSWORD
-				);
+				return { message: "Change password success", success: true };
+			} else {
+				return { message: "Can't change password ", success: false };
 			}
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't update password",
+				AccountStatus.ERROR_UPDATE_PASSWORD
+			);
 		}
 	}
 
@@ -467,6 +471,8 @@ class AccountService {
 	async updateEmployee(employee_id, changes) {
 		const transaction = await sequelize.transaction();
 
+		console.log(changes);
+
 		try {
 			// Map các field thuộc bảng employee
 			const employeeFields = {};
@@ -490,7 +496,7 @@ class AccountService {
 			if (changes.username) accountFields.username = changes.username;
 			if (changes.password)
 				accountFields.password_hash = await createPasswordHash(
-					changes.accountPassword
+					changes.password
 				);
 			if (changes.email) accountFields.email = changes.email;
 

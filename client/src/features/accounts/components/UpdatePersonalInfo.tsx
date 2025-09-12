@@ -1,6 +1,7 @@
 import { Button, Input } from "@/components/shared";
 import { useState } from "react";
 
+// TODO: cần làm
 function UpdatePersonalInfo() {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -14,14 +15,12 @@ function UpdatePersonalInfo() {
                     value={firstName}
                     setValue={setFirstName}
                     label="First Name"
-                    required={true}
                     placeholder="First Name"
                 />
                 <Input
                     value={lastName}
                     setValue={setLastName}
                     label="Last Name"
-                    required={true}
                     placeholder="last Name"
                 />
             </div>
@@ -31,7 +30,6 @@ function UpdatePersonalInfo() {
                 setValue={setEmail}
                 label="Email"
                 inputFormat="email"
-                required={true}
                 placeholder="Email Address"
             />
             <Input
@@ -39,7 +37,6 @@ function UpdatePersonalInfo() {
                 setValue={setPhone}
                 label="Phone"
                 inputFormat="tel"
-                required={true}
                 placeholder="Phone Number"
             />
 

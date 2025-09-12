@@ -324,6 +324,11 @@ class AuthService {
 
 	async checkEmailToGetOTP(email) {
 		const res = await accountService.getAccountByEmail(email);
+
+		if (!res) {
+			return false;
+		}
+
 		const customer_id = res.dataValues.customer_id;
 
 		if (res && customer_id) {

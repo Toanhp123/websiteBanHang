@@ -25,7 +25,7 @@ router.post(
 	catchAsync(authController.logout)
 );
 
-// [POST] /auth/register
+// [POST] /auth/registerCustomer
 router.post(
 	"/registerCustomer",
 	validateUserRegister,

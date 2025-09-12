@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useId } from "react";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 type InputForDashboardPros = {
     id?: string | null;
@@ -7,14 +8,15 @@ type InputForDashboardPros = {
     type?: string;
     label?: string;
     placeholder?: string;
-    value?: string;
     file?: File | null;
     acceptFile?: string;
-    required?: boolean;
     readOnly?: boolean;
+    value?: string;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
     setFile?: React.Dispatch<React.SetStateAction<File | null>>;
     setListFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    register?: UseFormRegisterReturn;
+    error?: string;
 };
 
 function InputForDashboard({
@@ -24,13 +26,14 @@ function InputForDashboard({
     label,
     placeholder,
     acceptFile = "",
-    value = "",
     file = null,
-    required = true,
-    readOnly = false,
+    value,
     setValue,
+    readOnly = false,
     setFile,
     setListFile,
+    error,
+    register,
 }: InputForDashboardPros) {
     const autoId = useId();
     const inputId = id ?? autoId;
@@ -53,15 +56,17 @@ function InputForDashboard({
                         )}
                         placeholder={placeholder}
                         accept={acceptFile}
-                        required={required}
-                        value={value}
                         readOnly={readOnly}
-                        onChange={(e) => {
-                            if (setValue) {
-                                setValue(e.target.value);
-                            }
-                        }}
+                        value={register ? undefined : value}
+                        onChange={
+                            register
+                                ? undefined
+                                : (e) => setValue?.(e.target.value)
+                        }
+                        {...register}
                     />
+
+                    {error && <p className="text-sm text-red-500">{error}</p>}
                 </div>
             ) : (
                 <div>

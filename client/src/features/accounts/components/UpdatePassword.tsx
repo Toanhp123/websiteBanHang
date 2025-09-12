@@ -1,53 +1,69 @@
 import { Button, Input } from "@/components/shared";
-import { useState } from "react";
 import { changePassword } from "../services/account.api";
+import {
+    changePasswordSchema,
+    type ChangePasswordFormInputs,
+} from "../validations/changePassword.schema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 function UpdatePassword() {
-    const [pass, setPass] = useState<string>("");
-    const [newPass, setNewPass] = useState<string>("");
-    const [reNewPass, setReNewPass] = useState<string>("");
+    const navigate = useNavigate();
 
-    const handleChangePassword = async (
-        e: React.FormEvent<HTMLFormElement>,
-    ) => {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<ChangePasswordFormInputs>({
+        resolver: yupResolver(changePasswordSchema),
+    });
 
-        const formData = new FormData(e.currentTarget);
-
+    const handleChangePassword = async (data: ChangePasswordFormInputs) => {
         const password = {
-            pass: formData.get("pass") as string,
-            newPass: formData.get("newPass") as string,
-            reNewPass: formData.get("reNewPass") as string,
+            pass: data.pass,
+            newPass: data.newPass,
+            reNewPass: data.reNewPass,
         };
 
-        await changePassword(password);
+        try {
+            const res = await changePassword(password);
+
+            console.log(res.message);
+
+            if (res.success) {
+                navigate("/");
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
-        <form className="space-y-6" onSubmit={(e) => handleChangePassword(e)}>
+        <form
+            className="space-y-6"
+            onSubmit={handleSubmit(handleChangePassword)}
+        >
             <Input
                 name="pass"
-                value={pass}
-                setValue={setPass}
                 label="Password"
                 placeholder="Enter Password"
-                required={true}
+                register={register("pass")}
+                error={errors.pass?.message}
             />
             <Input
                 name="newPass"
-                value={newPass}
-                setValue={setNewPass}
                 label="New Password"
                 placeholder="Enter New Password"
-                required={true}
+                register={register("newPass")}
+                error={errors.newPass?.message}
             />
             <Input
                 name="reNewPass"
-                value={reNewPass}
-                setValue={setReNewPass}
                 label="Confirm New Password"
                 placeholder="Enter New Password"
-                required={true}
+                register={register("reNewPass")}
+                error={errors.reNewPass?.message}
             />
 
             <div className="w-55">

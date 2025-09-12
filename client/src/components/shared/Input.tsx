@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 type InputPros = {
     name?: string;
@@ -7,12 +8,14 @@ type InputPros = {
     type?: "text" | "radio" | "range";
     inputFormat?: string;
     placeholder?: string;
-    required?: boolean;
     icon?: string;
     checked?: boolean;
     value?: string;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
     setValueList?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    register?: UseFormRegisterReturn;
+    error?: string;
+    required?: boolean;
 };
 
 // TODO: css cho input range và radio
@@ -23,17 +26,19 @@ function Input({
     type = "text",
     inputFormat = "text",
     placeholder = "",
-    required = false,
-    value = "",
+    value,
     setValue,
     setValueList,
     checked = false,
+    register,
+    error,
+    required = false,
 }: InputPros) {
     return (
         <div className="md:text-md flex flex-col gap-2">
             {label !== "" && (
                 <label className={clsx("font-semibold", labelColor)}>
-                    {label} {required && "*"}
+                    {label}
                 </label>
             )}
 
@@ -41,23 +46,30 @@ function Input({
                 name={name}
                 type={inputFormat}
                 placeholder={placeholder}
-                value={value}
-                onChange={(e) => {
-                    if (setValue) {
-                        setValue(e.target.value);
-                    } else if (setValueList) {
-                        setValueList(e);
-                    }
-                }}
+                required={required}
                 className={clsx(
                     type === "text" &&
                         "focus:ring-focus-input rounded-2xl border border-gray-300 px-4 py-1 text-[16px] focus:ring-3 focus:outline-none md:rounded-4xl md:py-2 md:text-xl",
                     type === "radio" && "",
                     type === "range" && "",
                 )}
-                required={required}
-                checked={checked}
+                checked={type === "radio" ? checked : undefined}
+                {...register}
+                value={register ? undefined : value}
+                onChange={
+                    register
+                        ? undefined
+                        : (e) => {
+                              if (setValue) {
+                                  setValue(e.target.value);
+                              } else if (setValueList) {
+                                  setValueList(e);
+                              }
+                          }
+                }
             />
+
+            {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
     );
 }

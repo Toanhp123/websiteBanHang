@@ -7,29 +7,50 @@ import {
     verifyOtp,
 } from "../services/auth.api";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import {
+    forgotPassEmailSchema,
+    forgotPassResetSchema,
+    type ForgotPassEmailFormInputs,
+    type ForgotPassResetFormInputs,
+} from "../validations/forgotPass.schema";
+
 function ForgotPass() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState<string>("");
     const [tab, setTab] = useState<number>(1);
-    const [isValid, setIsValid] = useState<boolean>(true);
     const [loading, setLoading] = useState(false);
+    const [isValid, setIsValid] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
-    const [pass, setPass] = useState<string>("");
-    const [rePass, setRePass] = useState<string>("");
 
-    const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const {
+        register: registerEmail,
+        watch: watchEmail,
+        handleSubmit: handleSubmitEmail,
+        formState: { errors: errorsEmail },
+    } = useForm<ForgotPassEmailFormInputs>({
+        resolver: yupResolver(forgotPassEmailSchema),
+    });
 
-        if (pass && rePass && pass === rePass && rePass.length >= 6) {
-            try {
-                const res = await resetPassword(pass, email);
+    const {
+        register: registerPass,
+        handleSubmit: handleSubmitPass,
+        formState: { errors: errorsPass },
+    } = useForm<ForgotPassResetFormInputs>({
+        resolver: yupResolver(forgotPassResetSchema),
+    });
 
-                if (res) {
-                    navigate("/login");
-                }
-            } catch (error) {
-                console.log(error);
+    const email = watchEmail().email;
+
+    const handleResetPassword = async (data: ForgotPassResetFormInputs) => {
+        try {
+            const res = await resetPassword(data.pass, email);
+
+            if (res) {
+                navigate("/login");
             }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -52,13 +73,11 @@ function ForgotPass() {
     };
 
     const handleGetVerifyCode = async (
-        e: React.FormEvent<HTMLFormElement>,
+        data: ForgotPassEmailFormInputs,
     ): Promise<void> => {
-        e.preventDefault();
-
         try {
             setLoading(true);
-            const isEmailValid = await checkEmailToGetOTP(email);
+            const isEmailValid = await checkEmailToGetOTP(data.email);
 
             if (isEmailValid) {
                 setTab((prev) => prev + 1);
@@ -109,16 +128,14 @@ function ForgotPass() {
                 {tab === 1 && (
                     <form
                         className="space-y-6"
-                        onSubmit={(e) => handleGetVerifyCode(e)}
+                        onSubmit={handleSubmitEmail(handleGetVerifyCode)}
                     >
                         <div>
                             <Input
                                 label="Email"
-                                required={true}
                                 placeholder="Enter Email Here"
-                                value={email}
-                                setValue={setEmail}
-                                inputFormat="email"
+                                register={registerEmail("email")}
+                                error={errorsEmail.email?.message}
                             />
 
                             {!isValid && (
@@ -161,24 +178,22 @@ function ForgotPass() {
 
                 {tab === 3 && (
                     <form
-                        onSubmit={(e) => handleResetPassword(e)}
+                        onSubmit={handleSubmitPass(handleResetPassword)}
                         className="space-y-4"
                     >
                         <Input
                             label="Password"
-                            required={true}
                             placeholder="Enter Password"
                             inputFormat="password"
-                            value={pass}
-                            setValue={setPass}
+                            register={registerPass("pass")}
+                            error={errorsPass.pass?.message}
                         />
                         <Input
                             label="Confirm Password"
-                            required={true}
                             placeholder="Enter Password"
                             inputFormat="password"
-                            value={rePass}
-                            setValue={setRePass}
+                            register={registerPass("rePass")}
+                            error={errorsPass.rePass?.message}
                         />
 
                         <Button text="Reset Password" />

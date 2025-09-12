@@ -2,32 +2,18 @@ import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 import { useEffect, useState } from "react";
 import { getEmployeeDetail } from "../services/account.api";
 import { InputForDashboard } from "@/components/shared";
+import type { Employee } from "../types/accounts.type";
+import Loading from "@/features/loading/components/Loading";
 
 function EmployeeDetailPopup({ id, popup }: EditPopupPros) {
-    const [employeeFirstName, setEmployeeFirstName] = useState<string>("");
-    const [employeeLastName, setEmployeeLastName] = useState<string>("");
-    const [employeePhone, setEmployeePhone] = useState<string>("");
-    const [employeeBirthDay, setEmployeeBirthDay] = useState<string>("");
-    const [employeeEmail, setEmployeeEmail] = useState<string>("");
-    const [employeeLocation, setEmployeeLocation] = useState<string>("");
-    const [accountPosition, setAccountPosition] = useState<string>("");
-    const [employeeHireDate, setEmployeeHireDate] = useState<string>("");
+    const [employee, setEmployee] = useState<Employee | null>(null);
 
     const handleGetEmployeeDetail = async (employee_id: number) => {
         try {
             const res = await getEmployeeDetail(employee_id);
 
-            console.log(res);
-
             if (res) {
-                setEmployeeFirstName(res.employee_first_name);
-                setEmployeeLastName(res.employee_last_name);
-                setEmployeePhone(res.employee_phone);
-                setEmployeeBirthDay(res.employee_birthday);
-                setEmployeeEmail(res.email);
-                setEmployeeLocation(res.employee_address);
-                setAccountPosition(res.employee_position_name);
-                setEmployeeHireDate(res.employee_hire_date);
+                setEmployee(res);
             }
         } catch (error) {
             console.log(error);
@@ -38,7 +24,9 @@ function EmployeeDetailPopup({ id, popup }: EditPopupPros) {
         if (id) {
             handleGetEmployeeDetail(Number(id));
         }
-    }, []);
+    }, [id]);
+
+    if (!employee) return <Loading />;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
@@ -65,40 +53,35 @@ function EmployeeDetailPopup({ id, popup }: EditPopupPros) {
                             <InputForDashboard
                                 label="First Name"
                                 placeholder="Text Here"
-                                value={employeeFirstName}
+                                value={employee.employee_first_name}
                                 readOnly={true}
-                                setValue={setEmployeeFirstName}
                             />
                             <InputForDashboard
                                 label="Last Name"
                                 placeholder="Text Here"
-                                value={employeeLastName}
+                                value={employee.employee_last_name}
                                 readOnly={true}
-                                setValue={setEmployeeLastName}
                             />
                             <InputForDashboard
                                 type="number"
                                 label="Phone Number"
                                 placeholder="Text Here"
-                                value={employeePhone}
+                                value={employee.employee_phone}
                                 readOnly={true}
-                                setValue={setEmployeePhone}
                             />
                             <InputForDashboard
                                 type="date"
                                 label="Birth Day"
-                                value={employeeBirthDay}
+                                value={employee.employee_birthday}
                                 readOnly={true}
-                                setValue={setEmployeeBirthDay}
                             />
                         </div>
 
                         <InputForDashboard
                             label="Location"
                             placeholder="Text Here"
-                            value={employeeLocation}
+                            value={employee.employee_address}
                             readOnly={true}
-                            setValue={setEmployeeLocation}
                         />
                     </div>
 
@@ -110,22 +93,19 @@ function EmployeeDetailPopup({ id, popup }: EditPopupPros) {
                             <InputForDashboard
                                 label="Email"
                                 placeholder="Text Here"
-                                value={employeeEmail}
+                                value={employee.email}
                                 readOnly={true}
-                                setValue={setEmployeeEmail}
                             />
                             <InputForDashboard
                                 label="Position"
                                 placeholder="Text Here"
-                                value={accountPosition}
+                                value={employee.employee_position_name}
                                 readOnly={true}
-                                setValue={setAccountPosition}
                             />
                             <InputForDashboard
                                 label="Hire Date"
                                 placeholder="Text Here"
-                                value={employeeHireDate}
-                                setValue={setEmployeeHireDate}
+                                value={employee.employee_hire_date}
                                 readOnly={true}
                             />
                         </div>

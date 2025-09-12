@@ -4,24 +4,31 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginCustomer } from "../services/auth.api";
 import { isUserRole, type LoginCredentials } from "../types/auth.type";
 import { setAccessToken, setRole } from "@/stores/authStore";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema, type LoginFormInputs } from "../validations/login.schema";
 
 function LoginForm() {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
     const location = useLocation();
     const navigate = useNavigate();
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginFormInputs>({
+        resolver: yupResolver(loginSchema),
+    });
+
     // Hàm xử lý login
-    const handleLogin = async (
-        e: React.FormEvent<HTMLFormElement>,
-        { username, password }: LoginCredentials,
-    ): Promise<void> => {
-        e.preventDefault();
+    const handleLogin = async (data: LoginFormInputs): Promise<void> => {
         const from = location.state?.from?.pathname || "/";
 
         try {
-            const res = await loginCustomer({ username, password });
+            const res = await loginCustomer({
+                username: data.username,
+                password: data.password,
+            });
 
             if (
                 isUserRole(res.data.user.role) &&
@@ -53,24 +60,22 @@ function LoginForm() {
     return (
         <form
             className="w-full max-w-4xl space-y-6"
-            onSubmit={(e) => handleLogin(e, { username, password })}
+            onSubmit={handleSubmit(handleLogin)}
         >
             <div className="flex flex-col gap-4">
                 <Input
                     label="Username"
                     placeholder="Username"
-                    value={username}
-                    setValue={setUsername}
-                    required={true}
+                    register={register("username")}
+                    error={errors.username?.message}
                 />
 
                 <Input
                     label="Password"
                     placeholder="Password"
-                    value={password}
-                    setValue={setPassword}
+                    register={register("password")}
                     inputFormat="password"
-                    required={true}
+                    error={errors.password?.message}
                 />
 
                 <div className="flex items-center justify-end">

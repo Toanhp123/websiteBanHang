@@ -1,22 +1,17 @@
 import { Button, Dropdown, InputForDashboard } from "@/components/shared";
 import { useGetAllPositionEmployee } from "@/hooks/useGetAllPositionEmployee";
-import { useState } from "react";
 import { addEmployee } from "../services/account.api";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+    addEmployeeSchema,
+    type AddEmployeeFormInputs,
+} from "../validations/addEmployee.schema";
 
 function AddEmployeeForm() {
     const allPositionEmployee = useGetAllPositionEmployee();
     const navigate = useNavigate();
-
-    const [employeeFirstName, setEmployeeFirstName] = useState<string>("");
-    const [employeeLastName, setEmployeeLastName] = useState<string>("");
-    const [employeePhone, setEmployeePhone] = useState<string>("");
-    const [employeeBirthDay, setEmployeeBirthDay] = useState<string>("");
-    const [employeeEmail, setEmployeeEmail] = useState<string>("");
-    const [employeeLocation, setEmployeeLocation] = useState<string>("");
-    const [accountUsername, setAccountUsername] = useState<string>("");
-    const [accountPassword, setAccountPassword] = useState<string>("");
-    const [accountPositionID, setAccountPositionID] = useState<string>("");
 
     const formatDataPositionEmployee =
         allPositionEmployee?.map((position) => ({
@@ -24,120 +19,121 @@ function AddEmployeeForm() {
             name: position.employee_position_name,
         })) || [];
 
-    const handleAddEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<AddEmployeeFormInputs>({
+        resolver: yupResolver(addEmployeeSchema),
+    });
 
-        const data = {
-            employee_first_name: employeeFirstName,
-            employee_last_name: employeeLastName,
-            employee_phone: employeePhone,
-            email: employeeEmail,
-            username: accountUsername,
-            employee_address: employeeLocation,
-            employee_birthday: employeeBirthDay,
-            employee_position_id: accountPositionID,
-            password: accountPassword,
-        };
-
+    const onSubmit = async (data: AddEmployeeFormInputs) => {
         try {
-            const res = await addEmployee(data);
-
+            const res = await addEmployee({
+                employee_first_name: data.employeeFirstName,
+                employee_last_name: data.employeeLastName,
+                employee_phone: data.employeePhone,
+                email: data.employeeEmail,
+                username: data.accountUsername,
+                employee_address: data.employeeLocation,
+                employee_birthday: data.employeeBirthDay,
+                employee_position_id: data.accountPositionID,
+                password: data.accountPassword,
+            });
             if (res.success) {
-                console.log(res.message);
-
                 navigate("/dashboard/employeeList");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     return (
         <form
             className="grid grid-cols-5 gap-6"
-            onSubmit={(e) => handleAddEmployee(e)}
+            onSubmit={handleSubmit(onSubmit)}
         >
             <div className="col-span-3 space-y-6">
                 {/* Basic Info */}
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
-                    <div>
-                        <h1 className="text-xl font-semibold">Basic Info</h1>
-                        <div className="mt-4 border-b border-gray-300"></div>
-                    </div>
+                    <h1 className="text-xl font-semibold">Basic Info</h1>
 
                     <div className="grid grid-cols-2 gap-8">
                         <InputForDashboard
                             label="First Name"
                             placeholder="Type Here"
-                            value={employeeFirstName}
-                            setValue={setEmployeeFirstName}
+                            register={register("employeeFirstName")}
+                            error={errors.employeeFirstName?.message}
                         />
+
                         <InputForDashboard
                             label="Last Name"
                             placeholder="Type Here"
-                            value={employeeLastName}
-                            setValue={setEmployeeLastName}
+                            register={register("employeeLastName")}
+                            error={errors.employeeLastName?.message}
                         />
+
                         <InputForDashboard
                             type="number"
                             label="Phone Number"
                             placeholder="Type Here"
-                            value={employeePhone}
-                            setValue={setEmployeePhone}
+                            register={register("employeePhone")}
+                            error={errors.employeePhone?.message}
                         />
+
                         <InputForDashboard
                             type="date"
                             label="Birth Day"
-                            placeholder="Type Here"
-                            value={employeeBirthDay}
-                            setValue={setEmployeeBirthDay}
+                            register={register("employeeBirthDay")}
+                            error={errors.employeeBirthDay?.message}
                         />
                     </div>
 
                     <InputForDashboard
                         label="Location"
                         placeholder="Type Here"
-                        value={employeeLocation}
-                        setValue={setEmployeeLocation}
+                        register={register("employeeLocation")}
+                        error={errors.employeeLocation?.message}
                     />
+
                     <InputForDashboard
                         label="Email Address"
                         placeholder="Type Here"
-                        value={employeeEmail}
-                        setValue={setEmployeeEmail}
+                        register={register("employeeEmail")}
+                        error={errors.employeeEmail?.message}
                     />
                 </div>
             </div>
 
             <div className="col-span-2 space-y-6">
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
-                    <div>
-                        <h1 className="text-xl font-semibold">Account Info</h1>
-                        <div className="mt-4 border-b border-gray-300"></div>
-                    </div>
+                    <h1 className="text-xl font-semibold">Account Info</h1>
 
                     <InputForDashboard
                         label="Username"
                         placeholder="Type Here"
-                        value={accountUsername}
-                        setValue={setAccountUsername}
+                        register={register("accountUsername")}
+                        error={errors.accountUsername?.message}
                     />
+
                     <InputForDashboard
                         label="Password"
+                        type="password"
                         placeholder="Type Here"
-                        value={accountPassword}
-                        setValue={setAccountPassword}
+                        register={register("accountPassword")}
+                        error={errors.accountPassword?.message}
                     />
+
                     <Dropdown
                         text="Position"
                         options={formatDataPositionEmployee}
-                        value={accountPositionID}
-                        setValue={setAccountPositionID}
+                        register={register("accountPositionID")}
+                        error={errors.accountPositionID?.message}
                     />
                 </div>
 
                 <div className="inline-flex">
-                    <Button text="Add product" textSize="small" />
+                    <Button text="Add Employee" textSize="small" />
                 </div>
             </div>
         </form>

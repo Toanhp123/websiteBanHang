@@ -50,7 +50,7 @@ function ShippingAddress() {
                 );
             });
         }
-    }, [selectOption]);
+    }, [selectOption, listShippingAddress, dispatch]);
 
     return (
         <FormCheckoutSection>

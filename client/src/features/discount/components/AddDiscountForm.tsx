@@ -1,4 +1,4 @@
-import { Dropdown, InputForDashboard } from "@/components/shared";
+import { InputForDashboard } from "@/components/shared";
 
 function AddDiscountForm() {
     return (
@@ -20,7 +20,6 @@ function AddDiscountForm() {
                             label="Discount Name"
                             placeholder="Type Here"
                         />
-                        {/* <Dropdown options={{}} text="Discount Distribution" value="" setValue={}> */}
                         <InputForDashboard
                             label="Discount Distribution"
                             placeholder="Type Here"
