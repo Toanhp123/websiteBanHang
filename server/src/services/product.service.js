@@ -563,6 +563,12 @@ class ProductService {
 			throwServerError("Can't add supplier", SupplierError.ADD_ITEM);
 		}
 	}
+
+	async getAllProductMinimal() {
+		return Product.findAll({
+			attributes: ["product_id", "product_name"],
+		});
+	}
 }
 
 module.exports = new ProductService();

@@ -152,6 +152,13 @@ class ProductController {
 
 		res.json(message);
 	}
+
+	// [GET] product/minimal
+	async getAllProductMinimal(req, res) {
+		const product = await productService.getAllProductMinimal();
+
+		res.json(product);
+	}
 }
 
 module.exports = new ProductController();

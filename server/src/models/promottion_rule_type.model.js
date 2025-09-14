@@ -32,6 +32,17 @@ PromotionRuleType.associate = (models) => {
 	PromotionRuleType.hasMany(models.RuleEffectCompatibility, {
 		foreignKey: "rule_type_id",
 	});
+	PromotionRuleType.hasMany(models.PromotionRangeRuleCompatibility, {
+		foreignKey: "rule_type_id",
+	});
+	PromotionRuleType.hasMany(models.PromotionRuleCompatibility, {
+		foreignKey: "rule_type_id",
+		as: "mainRuleType",
+	});
+	PromotionRuleType.hasMany(models.PromotionRuleCompatibility, {
+		foreignKey: "rule_type_id",
+		as: "compatibleRuleType",
+	});
 };
 
 module.exports = PromotionRuleType;

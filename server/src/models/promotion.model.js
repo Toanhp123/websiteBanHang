@@ -61,6 +61,9 @@ Promotion.associate = (models) => {
 	Promotion.hasMany(models.CustomerPromotion, {
 		foreignKey: "promotion_id",
 	});
+	Promotion.hasMany(models.PromotionRangeRuleCompatibility, {
+		foreignKey: "range_apply",
+	});
 };
 
 module.exports = Promotion;

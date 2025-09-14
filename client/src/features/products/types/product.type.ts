@@ -98,3 +98,8 @@ export type ProductAdvancedInfo = {
 export type MenuPopupState = {
     menu: boolean;
 };
+
+export type ProductMinimal = {
+    product_id: number;
+    product_name: string;
+};

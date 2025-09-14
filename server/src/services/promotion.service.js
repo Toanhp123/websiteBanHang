@@ -1,5 +1,15 @@
-const { sequelize } = require("../models");
+const {
+	sequelize,
+	PromotionRuleType,
+	PromotionRangeRuleCompatibility,
+	PromotionRuleCompatibility,
+	RuleEffectCompatibility,
+	PromotionEffectType,
+} = require("../models");
 const { applyPromotion } = require("../utils/handleDiscount");
+const {
+	intersectionPromotionEffectType,
+} = require("../utils/intersectionPromotionEffectType");
 
 class PromotionService {
 	async getDetailPromotion(promotion_id) {
@@ -49,6 +59,89 @@ class PromotionService {
 		const res = applyPromotion(promotion, cart);
 
 		return res;
+	}
+
+	async getAllPromotionRuleType(range_apply) {
+		if (range_apply) {
+			const mainRules = await PromotionRangeRuleCompatibility.findAll({
+				include: [
+					{
+						model: PromotionRuleType,
+						attributes: [],
+					},
+				],
+				attributes: [
+					"rule_type_id",
+					[
+						sequelize.col("PromotionRuleType.rule_type_name"),
+						"rule_type_name",
+					],
+					[
+						sequelize.col(
+							"PromotionRuleType.rule_type_description"
+						),
+						"rule_type_description",
+					],
+				],
+				where: { range_apply },
+				raw: true,
+				nest: true,
+			});
+
+			const result = await Promise.all(
+				mainRules.map(async (rule) => {
+					const compatible = await PromotionRuleCompatibility.findAll(
+						{
+							include: [
+								{
+									model: PromotionRuleType,
+									as: "compatibleRuleType",
+									attributes: [
+										"rule_type_id",
+										"rule_type_name",
+										"rule_type_description",
+									],
+								},
+							],
+							attributes: [],
+							where: { main_rule_type_id: rule.rule_type_id },
+							raw: true,
+							nest: true,
+						}
+					);
+
+					return {
+						...rule,
+						compatible_rules: compatible.map(
+							(c) => c.compatibleRuleType
+						),
+					};
+				})
+			);
+
+			return result;
+		}
+	}
+
+	async getAllPromotionEffectType(listRuleType) {
+		const effectTypeList = await RuleEffectCompatibility.findAll({
+			include: [
+				{
+					model: PromotionEffectType,
+				},
+			],
+			attributes: [],
+			where: { rule_type_id: listRuleType },
+			raw: true,
+			nest: true,
+		});
+
+		const result = intersectionPromotionEffectType(
+			effectTypeList,
+			listRuleType.length
+		);
+
+		return result;
 	}
 }
 

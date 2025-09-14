@@ -66,7 +66,13 @@ function InputForDashboard({
                         {...register}
                     />
 
-                    {error && <p className="text-sm text-red-500">{error}</p>}
+                    {error ? (
+                        <p className="min-h-[20px] text-sm text-red-500">
+                            {error}
+                        </p>
+                    ) : (
+                        <div className="min-h-[20px]"></div>
+                    )}
                 </div>
             ) : (
                 <div>

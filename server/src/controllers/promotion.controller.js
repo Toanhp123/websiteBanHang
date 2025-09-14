@@ -23,6 +23,28 @@ class PromotionController {
 
 		res.json(canApply);
 	}
+
+	// [GET] /promotion/rule/type
+	async getAllPromotionRuleType(req, res) {
+		const { rangeApply } = req.query;
+
+		const ruleType = await promotionService.getAllPromotionRuleType(
+			rangeApply
+		);
+
+		res.json(ruleType);
+	}
+
+	// [GET] /promotion/effect/type
+	async getAllPromotionEffectType(req, res) {
+		const listRuleType = req.query["listRuleType[]"];
+
+		const effectType = await promotionService.getAllPromotionEffectType(
+			listRuleType
+		);
+
+		res.json(effectType);
+	}
 }
 
 module.exports = new PromotionController();

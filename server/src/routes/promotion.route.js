@@ -6,6 +6,20 @@ const promotionController = require("../controllers/promotion.controller");
 
 const router = express.Router();
 
+// [GET] /promotion/rule/type
+router.get(
+	"/rule/type",
+	checkAccessToken,
+	catchAsync(promotionController.getAllPromotionRuleType)
+);
+
+// [GET] /promotion/effect/type
+router.get(
+	"/effect/type",
+	checkAccessToken,
+	catchAsync(promotionController.getAllPromotionEffectType)
+);
+
 // [GET] /promotion/validate/:username
 router.get(
 	"/:promotion_id",

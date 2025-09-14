@@ -5,6 +5,7 @@ import type {
     Product,
     ProductAdvancedInfo,
     ProductDetail,
+    ProductMinimal,
     ProductType,
     Supplier,
     Warehouse,
@@ -110,6 +111,12 @@ export const updateProduct = async (
 
 export const addSupplier = async ({ ...data }): Promise<Supplier> => {
     const res = await axios.post(`product/addSupplier`, { data });
+
+    return res.data;
+};
+
+export const getProductMinimal = async (): Promise<ProductMinimal[]> => {
+    const res = await axios.get(`product/minimal`);
 
     return res.data;
 };

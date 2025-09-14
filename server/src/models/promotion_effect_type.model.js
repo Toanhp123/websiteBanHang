@@ -5,7 +5,7 @@ const sequelize = require("../configs/database.config");
 const PromotionEffectType = sequelize.define(
 	"PromotionEffectType",
 	{
-		promotion_effect_id: {
+		effect_type_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
 		},

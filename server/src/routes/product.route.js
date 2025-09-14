@@ -73,6 +73,8 @@ route.get("/type", catchAsync(productController.getProductType));
 
 route.get("/status", catchAsync(productController.getProductStatus));
 
+route.get("/minimal", catchAsync(productController.getAllProductMinimal));
+
 route.get("/stock/:productID", catchAsync(productController.getProductStock));
 
 route.get("/:product_id", catchAsync(productController.getProductByID));
