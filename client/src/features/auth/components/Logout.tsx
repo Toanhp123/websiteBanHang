@@ -13,14 +13,18 @@ function Logout() {
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-8">
             <div className="space-y-2">
-                <h1 className="text-2xl font-semibold md:text-3xl">Logout</h1>
-                <p className="text-disable">Are you sure want to log out?</p>
+                <h1 className="text-2xl font-semibold md:text-3xl">
+                    Đăng xuất
+                </h1>
+                <p className="text-disable font-semibold">
+                    Bạn có chắc chắn muốn đăng xuất không?
+                </p>
             </div>
 
-            <div className="w-40">
-                <Button text="Yes, Logout" onClick={handleLogout} />
+            <div className="inline-flex">
+                <Button text="Đồng ý, đăng xuất" onClick={handleLogout} />
             </div>
         </div>
     );

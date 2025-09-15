@@ -97,20 +97,20 @@ function ForgotPass() {
 
             <div className="w-full space-y-1">
                 <h1 className="text-xl font-bold md:text-2xl">
-                    {tab === 1 && "Forgot Password?"}
-                    {tab === 2 && "Verify Code"}
-                    {tab === 3 && "Set New Password"}
+                    {tab === 1 && "Quên mật khẩu?"}
+                    {tab === 2 && "Xác minh mã"}
+                    {tab === 3 && "Đặt lại mật khẩu mới"}
                 </h1>
 
                 <div className="text-sm text-gray-500 md:text-xl">
                     {tab === 1 && (
                         <p className="text-disable">
-                            Don't worry, We 'll send you reset instruction
+                            Đừng lo, chúng tôi sẽ giúp bạn đặt lại mật khẩu
                         </p>
                     )}
                     {tab === 2 && (
                         <p className="text-disable">
-                            Please enter the code we just send to email{" "}
+                            Vui lòng nhập mã mà chúng tôi vừa gửi đến email{" "}
                             <span className="text-main-primary font-semibold">
                                 {email}
                             </span>
@@ -118,7 +118,7 @@ function ForgotPass() {
                     )}
                     {tab === 3 && (
                         <p className="text-disable">
-                            Must be at least 6 character
+                            Mật khẩu phải có ít nhất 6 ký tự
                         </p>
                     )}
                 </div>
@@ -133,20 +133,20 @@ function ForgotPass() {
                         <div>
                             <Input
                                 label="Email"
-                                placeholder="Enter Email Here"
+                                placeholder="Nhập email tại đây"
                                 register={registerEmail("email")}
                                 error={errorsEmail.email?.message}
                             />
 
                             {!isValid && (
                                 <p className="mt-1 font-semibold text-red-500">
-                                    Can't find email
+                                    Không tìm thấy email
                                 </p>
                             )}
                         </div>
 
                         <Button
-                            text="Submit"
+                            text="Xác nhận"
                             loading={loading}
                             disabled={loading}
                         />
@@ -155,7 +155,7 @@ function ForgotPass() {
 
                 {tab === 2 && (
                     <form className="space-y-6">
-                        <h1 className="text-xl font-semibold">Code *</h1>
+                        <h1 className="text-xl font-semibold">Mã OTP *</h1>
 
                         <div>
                             <InputOTP
@@ -169,7 +169,7 @@ function ForgotPass() {
                         </div>
 
                         <Button
-                            text="Submit"
+                            text="Xác nhận"
                             loading={loading}
                             disabled={loading}
                         />
@@ -182,33 +182,33 @@ function ForgotPass() {
                         className="space-y-4"
                     >
                         <Input
-                            label="Password"
-                            placeholder="Enter Password"
+                            label="Mật khẩu"
+                            placeholder="Nhập mật khẩu"
                             inputFormat="password"
                             register={registerPass("pass")}
                             error={errorsPass.pass?.message}
                         />
                         <Input
-                            label="Confirm Password"
-                            placeholder="Enter Password"
+                            label="Xác nhận mật khẩu"
+                            placeholder="Nhập lại mật khẩu"
                             inputFormat="password"
                             register={registerPass("rePass")}
                             error={errorsPass.rePass?.message}
                         />
 
-                        <Button text="Reset Password" />
+                        <Button text="Đặt lại mật khẩu" />
                     </form>
                 )}
             </div>
 
             <div className="flex gap-1 font-semibold md:text-[18px]">
-                <p>Remember Password?</p>
+                <p>Nhớ mật khẩu rồi?</p>
 
                 <Link
                     to="/login"
                     className="text-green-700 underline underline-offset-2 hover:text-green-600 md:text-[18px]"
                 >
-                    Sign In
+                    Đăng nhập
                 </Link>
             </div>
         </div>

@@ -46,7 +46,7 @@ function ItemProductBuy() {
 
     // TODO: cần thêm logic
     const handleBuyItemNow = (): void => {
-        navigate("/cart/checkout/${product_id}");
+        // navigate(`/cart/checkout/${product_id}`);
     };
 
     const handleBackImageSlide = (): void => {
@@ -74,7 +74,6 @@ function ItemProductBuy() {
 
     return (
         <div className="flex gap-8">
-            {/* TODO: giao diện ảnh đang bị lỗi */}
             <div className="grid flex-2 grid-cols-5 gap-4">
                 <div className="relative col-span-5">
                     <div className="absolute flex h-full w-full items-center justify-between px-4">
@@ -119,20 +118,19 @@ function ItemProductBuy() {
                     <TagItem
                         text={
                             productDetail?.totalStock > 0
-                                ? "In Stock"
-                                : "Out Stock"
+                                ? "Còn hàng"
+                                : "Hết hàng"
                         }
                         isTagOnly={true}
-                        type="test"
                     />
                 </div>
 
                 <div className="flex gap-2">
-                    <p className="text-2xl md:text-3xl">
-                        {Number(productDetail.price)}
-                    </p>
                     <p className="text-2xl text-gray-500 line-through md:text-3xl">
-                        $50.00
+                        50.000₫
+                    </p>
+                    <p className="text-2xl md:text-3xl">
+                        {Number(productDetail.price)}₫
                     </p>
                 </div>
 
@@ -149,13 +147,13 @@ function ItemProductBuy() {
                     />
 
                     <Button
-                        text="Add To Cart"
+                        text="Thêm vào giỏ"
                         textSize="small"
                         onClick={() => handleAddItemToCart()}
                         disabled={quantity === 0}
                     />
                     <Button
-                        text="Buy Now"
+                        text="Mua ngay"
                         textColor="text-black"
                         textSize="small"
                         bgColor="bg-surface"

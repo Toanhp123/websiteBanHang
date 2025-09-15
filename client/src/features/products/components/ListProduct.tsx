@@ -7,12 +7,10 @@ import { useProduct } from "@/hooks/useProduct";
 import { useSearchParams } from "react-router-dom";
 
 function ListProduct() {
-    const [page, setPage] = useState<number>(1);
     const [searchParams] = useSearchParams();
-
     const search = searchParams.get("search") || "";
-
     const { product, loading } = useProduct(search);
+    const [page, setPage] = useState<number>(1);
 
     const startIndex: number = (page - 1) * ITEMS_PER_PAGE;
     const endIndex: number = startIndex + ITEMS_PER_PAGE;

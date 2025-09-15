@@ -17,15 +17,15 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
         <div className="overflow-hidden rounded-2xl border border-gray-300">
             <div className="bg-surface grid grid-cols-3 divide-x divide-gray-500 py-4">
                 <div className="px-8">
-                    <p className="text-disable">Order ID</p>
+                    <p className="text-disable">Mã đơn hàng</p>
                     <p className="font-bold">{invoice.invoice_id}</p>
                 </div>
                 <div className="px-8">
-                    <p className="text-disable">Payment Method</p>
+                    <p className="text-disable">Phương thức thanh toán</p>
                     <p className="font-bold">PayPal</p>
                 </div>
                 <div className="px-8">
-                    <p className="text-disable">Order Date</p>
+                    <p className="text-disable">Ngày đặt hàng</p>
                     <p className="font-bold">
                         {formatDate(invoice.invoice_date)}
                     </p>
@@ -48,7 +48,7 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                             </p>
 
                             <p className="text-disable">
-                                quantity: {invoiceDetail.quantity}
+                                Số lượng: {invoiceDetail.quantity}
                             </p>
                         </div>
                     </div>
@@ -61,35 +61,35 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                 <div className="flex items-center gap-4">
                     <TagItem text={invoice.status} isTagOnly={true} />
 
-                    {invoice.status === "canceled" && (
+                    {invoice.status === "cancelled" && (
                         <p className="font-semibold">
-                            Your order has been canceled
+                            Đơn hàng của bạn đã bị hủy
                         </p>
                     )}
                     {invoice.status === "pending" && (
                         <div className="flex flex-1 justify-between">
                             <p className="font-semibold">
-                                Your order is being process
+                                Đơn hàng của bạn đang được xử lý
                             </p>
 
                             <p
-                                className="text-main-primary font-semibold"
+                                className="text-main-primary cursor-pointer font-semibold"
                                 onClick={() =>
                                     handleDeleteInvoice(invoice.invoice_id)
                                 }
                             >
-                                Cancel Order
+                                Hủy đơn hàng
                             </p>
                         </div>
                     )}
                     {invoice.status === "paid" && (
                         <p className="font-semibold">
-                            Your order has been accepted
+                            Đơn hàng của bạn đã được chấp nhận
                         </p>
                     )}
                     {invoice.status === "refunded" && (
                         <p className="font-semibold">
-                            Your order has been refunded
+                            Đơn hàng của bạn đã được hoàn tiền
                         </p>
                     )}
                 </div>

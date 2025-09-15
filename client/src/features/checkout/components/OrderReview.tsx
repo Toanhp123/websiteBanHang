@@ -20,7 +20,6 @@ function OrderReview() {
         setExpand((expand) => !expand);
     };
 
-    // TODO: cần suy nghĩ việc set lại state để OrderSummary đọc nhưng có thể làm ảnh hưởng đến việc component SelectQuantity
     useEffect(() => {
         if (cart && cart.length > 0) {
             const initialQuantities = cart.reduce(
@@ -39,7 +38,7 @@ function OrderReview() {
         <FormCheckoutSection>
             <div>
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-bold">Order Review</h1>
+                    <h1 className="text-xl font-bold">Xem lại đơn hàng</h1>
 
                     <div>
                         <Button
@@ -56,18 +55,14 @@ function OrderReview() {
                         />
                     </div>
                 </div>
-                <p>{cart.length} items in cart</p>
+                <p>{cart.length} sản phẩm trong giỏ hàng</p>
             </div>
 
-            <div
-                className={clsx(
-                    expand === true ? "" : "max-h-0 overflow-hidden",
-                )}
-            >
-                {cart.map((item, index) => (
-                    <div key={index}>
+            <div className={clsx(expand ? "" : "max-h-0 overflow-hidden")}>
+                {cart.map((item) => (
+                    <div key={item.id_product}>
                         <div className="flex justify-between gap-4">
-                            <div className="flex h-24 w-24 items-center justify-center rounded-xl border border-gray-300 p-1">
+                            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-gray-300">
                                 <img
                                     src={`http://localhost:3000/${item.img}`}
                                     alt="image"
@@ -104,7 +99,7 @@ function OrderReview() {
                                     />
 
                                     <div>
-                                        <p>{item.price}</p>
+                                        <p>{item.price}₫</p>
                                     </div>
                                 </div>
                             </div>

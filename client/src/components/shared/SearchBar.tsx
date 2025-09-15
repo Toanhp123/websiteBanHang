@@ -25,14 +25,14 @@ function SearchBar() {
                         "after:absolute after:top-1/2 after:-right-0 after:h-2/4 after:w-px after:-translate-y-1/2 after:bg-white after:opacity-50 after:content-['']"
                     }
                 >
-                    <p>Search</p>
+                    <p>Tìm kiếm</p>
                     <i className="fa-solid fa-magnifying-glass text-xs text-gray-200"></i>
                 </button>
 
                 <input
                     className="mx-4 flex-6/8 text-white focus:outline-none"
                     type="text"
-                    placeholder="Search for product..."
+                    placeholder="Tìm kiếm sản phẩm..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />

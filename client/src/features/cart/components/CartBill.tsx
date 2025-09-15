@@ -22,32 +22,32 @@ function CartBill() {
 
     return (
         <div className="w-full space-y-4 rounded-xl border border-gray-300 p-4">
-            <div className="text-xl font-bold">Order Summary</div>
+            <div className="text-xl font-bold">Tóm Tắt Đơn Hàng</div>
 
             <div className="border-b border-gray-300"></div>
 
             <div className="flex justify-between">
-                <p className="text-disable">Items</p>
+                <p className="text-disable">Sản Phẩm</p>
                 <p className="font-semibold">{orderSummary.items}</p>
             </div>
             <div className="flex justify-between">
-                <p className="text-disable">Sub Total</p>
-                <p className="font-semibold">{orderSummary.subTotal}</p>
+                <p className="text-disable">Tạm Tính</p>
+                <p className="font-semibold">{orderSummary.subTotal}₫</p>
             </div>
             <div className="flex justify-between">
-                <p className="text-disable">Taxes</p>
-                <p className="font-semibold">00.00</p>
+                <p className="text-disable">Thuế</p>
+                <p className="font-semibold">0.00</p>
             </div>
 
             <div className="border-b border-gray-300"></div>
 
             <div className="flex justify-between">
-                <p className="text-disable">Total</p>
-                <p className="font-semibold">{orderSummary.subTotal}</p>
+                <p className="text-disable">Tổng Cộng</p>
+                <p className="font-semibold">{orderSummary.subTotal}₫</p>
             </div>
 
             <Button
-                text="Process To Checkout"
+                text="Thanh Toán"
                 textSize="small"
                 onClick={handleClick}
                 disabled={cart.length === 0}

@@ -49,7 +49,7 @@ export type ItemStock = {
 };
 
 export type SlideListProductPros = {
-    options: "latest" | "best sell";
+    options: "Mới nhất" | "Bán chạy";
 };
 
 export type GetProductByConditionParams = {

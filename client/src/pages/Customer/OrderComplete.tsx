@@ -15,17 +15,21 @@ function OrderComplete() {
         <div>
             <Header />
 
-            <TitleSection text="Order Complete" />
+            <TitleSection text="Hoàn tất đơn hàng" />
 
             <div>
                 <Section>
                     <div className="space-y-12">
-                        <div className="space-y-1 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                            <div className="bg-surface mb-4 flex h-15 w-15 items-center justify-center rounded-full">
+                                <i className="fa-solid fa-check"></i>
+                            </div>
                             <h1 className="text-2xl font-semibold">
-                                Your Order Is Completed!
+                                Đơn hàng của bạn đã hoàn tất!
                             </h1>
                             <p className="text-disable font-semibold">
-                                Thank you. Your Order have received
+                                Cảm ơn bạn. Chúng tôi đã nhận được đơn hàng của
+                                bạn.
                             </p>
                         </div>
 

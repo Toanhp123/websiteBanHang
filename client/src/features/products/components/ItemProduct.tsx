@@ -51,12 +51,14 @@ function ItemProduct({
 
     return (
         <div className="relative flex flex-col justify-center rounded-2xl border border-gray-200 bg-white p-4">
+            {/* Nhãn giảm giá */}
             <div className="absolute top-4 left-4 rounded-l-[8px] rounded-r-2xl bg-green-700 px-4 py-1 text-white">
-                50% off
+                Giảm 50%
             </div>
 
+            {/* Nút yêu thích */}
             <div
-                className="shadow-light absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full pt-1 text-xl"
+                className="shadow-light absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white pt-1 text-xl"
                 onClick={() => setLike((like) => !like)}
             >
                 {like ? (
@@ -66,33 +68,38 @@ function ItemProduct({
                 )}
             </div>
 
-            <div className="h-60" onClick={() => handleClickItem()}>
+            {/* Hình ảnh sản phẩm */}
+            <div className="h-60 cursor-pointer" onClick={handleClickItem}>
                 <div className="p-2">
                     <img
                         src={`http://localhost:3000/${mainImage}`}
-                        alt="image"
+                        alt="Ảnh sản phẩm"
                     />
                 </div>
             </div>
 
             <div className="flex flex-col gap-2">
+                {/* Danh mục và tồn kho */}
                 <div className="flex items-center justify-between">
                     <p className="text-green-600">{category}</p>
-                    <p className="font-semibold">Stock: {totalStock}</p>
+                    <p className="font-semibold">Còn: {totalStock}</p>
                 </div>
 
+                {/* Tên sản phẩm */}
                 <h1 className="text-[18px] font-bold">{product_name}</h1>
 
-                <div className="bg-sur flex items-center justify-between text-[18px]">
-                    <div className="flex gap-2">
-                        <p className="font-semibold text-gray-500 line-through">
-                            $50.00
-                        </p>
-                        <p className="font-semibold">{Number(price)}</p>
-                    </div>
+                {/* Giá và nút thêm vào giỏ */}
+                <div className="grid grid-cols-2 text-[18px]">
+                    <p className="font-semibold text-gray-500 line-through">
+                        50.000₫
+                    </p>
+
+                    <div></div>
+
+                    <p className="font-semibold">{Number(price)}₫</p>
 
                     <Button
-                        text="Add"
+                        text="Thêm"
                         textSize="small"
                         type="small"
                         icon="fa-solid fa-bag-shopping"

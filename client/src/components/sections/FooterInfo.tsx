@@ -6,59 +6,54 @@ function FooterInfo() {
                     <li className="mb-4 text-xl font-bold text-white">Logo</li>
                     <li>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Voluptatibus quidem suscipit earum atque aliquam
+                        Chúng tôi cam kết mang đến cho khách hàng dịch vụ tốt
+                        nhất.
                     </li>
                 </ul>
 
                 <ul className="space-y-2">
                     <li className="mb-4 text-xl font-bold text-white">
-                        Company
+                        Công ty
                     </li>
-                    <li>About Us</li>
+                    <li>Về chúng tôi</li>
                     <li>Blog</li>
-                    <li>Contact Us</li>
-                    <li>Career</li>
+                    <li>Liên hệ</li>
+                    <li>Tuyển dụng</li>
                 </ul>
 
                 <ul className="space-y-2">
                     <li className="mb-4 text-xl font-bold text-white">
-                        Customer Services
+                        Dịch vụ khách hàng
                     </li>
-                    <li>My Account</li>
-                    <li>Track Your Order</li>
-                    <li>Return</li>
-                    <li>FAQ</li>
+                    <li>Tài khoản của tôi</li>
+                    <li>Theo dõi đơn hàng</li>
+                    <li>Đổi trả</li>
+                    <li>Câu hỏi thường gặp</li>
                 </ul>
 
                 <ul className="space-y-2">
                     <li className="mb-4 text-xl font-bold text-white">
-                        Our information
+                        Thông tin
                     </li>
-                    <li>Privacy</li>
-                    <li>User Term & Condition</li>
-                    <li>Return Policy</li>
+                    <li>Chính sách bảo mật</li>
+                    <li>Điều khoản sử dụng</li>
+                    <li>Chính sách đổi trả</li>
                 </ul>
 
                 <ul className="space-y-2">
                     <li className="mb-4 text-xl font-bold text-white">
-                        Contact Us
+                        Liên hệ
                     </li>
                     <li>+0123-456-789</li>
                     <li>example@gmail.com</li>
-                    <li>Address</li>
+                    <li>Địa chỉ công ty</li>
                 </ul>
             </div>
 
             <div className="border-b border-green-600"></div>
 
-            <div className="flex items-center justify-between text-white">
-                <p>Copyright 2024. All Right Reserved</p>
-
-                <div className="flex items-center justify-center">
-                    <p>English</p>
-                    <div className="mx-2 h-6 border-r border-white"></div>
-                    <p>USD</p>
-                </div>
+            <div className="flex items-center text-white">
+                <p>Bản quyền © 2024. Đã đăng ký mọi quyền.</p>
             </div>
         </div>
     );

@@ -6,9 +6,14 @@ import {
 import { selectStateAddCartMenuPopup } from "@/features/products/redux/addCartMenuPopup.slice";
 import { useAppSelector } from "@/hooks/useRedux";
 import { Footer, Header, Section, TitleSection } from "@/layouts/Customer";
+import { useEffect } from "react";
 
 function ProductDetailPage() {
     const stateAddCartMenuPopup = useAppSelector(selectStateAddCartMenuPopup);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
 
     return (
         <div>

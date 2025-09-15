@@ -29,9 +29,9 @@ const ProductFilter = (query) => {
 
 	if (query.category) having.category = query.category;
 	if (query.productType) having.type = query.productType;
-	if (query.availability === "Out Stock") {
+	if (query.availability === "Hết hàng") {
 		having.totalStock = 0;
-	} else if (query.availability === "In Stock") {
+	} else if (query.availability === "Còn hàng") {
 		having.totalStock = { [Op.gt]: 0 };
 	} else {
 		having.totalStock = { [Op.gte]: 0 };
@@ -39,16 +39,16 @@ const ProductFilter = (query) => {
 
 	if (query.sortBy) {
 		switch (query.sortBy) {
-			case "latest":
+			case "Mới nhất":
 				order.push(["product_date_add", "DESC"]);
 				break;
-			case "oldest":
+			case "Cũ nhất":
 				order.push(["product_date_add", "ASC"]);
 				break;
-			case "Price Low To High":
+			case "Giá thấp đến thấp":
 				order.push(["price", "ASC"]);
 				break;
-			case "Price High To Low":
+			case "Giá cao đến thấp":
 				order.push(["price", "DESC"]);
 				break;
 			default:

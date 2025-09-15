@@ -11,10 +11,10 @@ import {
 import { Fragment, useEffect, useState } from "react";
 
 const options = [
-    { id: 1, name: "latest" },
-    { id: 2, name: "oldest" },
-    { id: 3, name: "Price Low To High" },
-    { id: 4, name: "Price High To Low" },
+    { id: 1, name: "Mới nhất" },
+    { id: 2, name: "Cũ nhất" },
+    { id: 3, name: "Giá cao đến thấp" },
+    { id: 4, name: "Giá thấp đến cao" },
 ];
 
 function DropdownSortProduct() {

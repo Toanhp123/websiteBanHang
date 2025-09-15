@@ -11,7 +11,7 @@ function ShopPage() {
         <div>
             <Header />
 
-            <TitleSection text="Shop" />
+            <TitleSection text="Sản phẩm" />
 
             <Section>
                 <div className="relative flex gap-8">

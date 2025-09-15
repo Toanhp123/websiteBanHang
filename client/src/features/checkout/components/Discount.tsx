@@ -72,7 +72,7 @@ function Discount() {
     return (
         <FormCheckoutSection>
             <div>
-                <h1 className="text-xl font-bold">Discount Code</h1>
+                <h1 className="text-xl font-bold">Mã giảm giá</h1>
 
                 {isValid === "nothing" ? (
                     ""
@@ -89,14 +89,15 @@ function Discount() {
 
             <div className="flex gap-2">
                 <Input
-                    placeholder="Enter your coupon here"
+                    placeholder="Nhập mã tại đây"
                     value={promotion}
                     setValue={setPromotion}
+                    showError={false}
                 />
                 <Button
                     disabled={loading}
                     loading={loading}
-                    text="Apply"
+                    text="Áp dụng"
                     textSize="small"
                     onClick={() => handleApplyPromotion(promotion)}
                 />

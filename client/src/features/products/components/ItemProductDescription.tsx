@@ -10,8 +10,8 @@ function ItemProductDescription() {
     const { productDetail, loading } = useProductDetail(product_id);
 
     const additionInfo = {
-        "Product Type": productDetail.type,
-        Supplier: productDetail.supplier,
+        "Loại sản phẩm": productDetail.type,
+        "Nhà cung cấp": productDetail.supplier,
     };
 
     return (
@@ -25,7 +25,7 @@ function ItemProductDescription() {
                     )}
                     onClick={() => setTab(1)}
                 >
-                    Description
+                    Mô tả
                 </h1>
 
                 <h1
@@ -36,7 +36,7 @@ function ItemProductDescription() {
                     )}
                     onClick={() => setTab(2)}
                 >
-                    Addition Information
+                    Thông tin bổ sung
                 </h1>
             </div>
 
@@ -62,9 +62,9 @@ function ItemProductDescription() {
                     {tab === 2 && (
                         <div className="overflow-clip rounded-3xl border border-gray-300">
                             <div className="bg-surface grid grid-cols-4 px-6 py-3">
-                                <div className="font-bold">Attribute</div>
+                                <div className="font-bold">Thuộc tính</div>
                                 <div className="col-span-3 font-bold">
-                                    Details
+                                    Chi tiết
                                 </div>
                             </div>
 

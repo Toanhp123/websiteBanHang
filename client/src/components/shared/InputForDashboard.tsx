@@ -17,6 +17,7 @@ type InputForDashboardPros = {
     setListFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     register?: UseFormRegisterReturn;
     error?: string;
+    showError?: boolean;
 };
 
 function InputForDashboard({
@@ -34,6 +35,7 @@ function InputForDashboard({
     setListFile,
     error,
     register,
+    showError = true,
 }: InputForDashboardPros) {
     const autoId = useId();
     const inputId = id ?? autoId;
@@ -66,12 +68,16 @@ function InputForDashboard({
                         {...register}
                     />
 
-                    {error ? (
-                        <p className="min-h-[20px] text-sm text-red-500">
-                            {error}
-                        </p>
+                    {showError ? (
+                        error ? (
+                            <p className="min-h-[20px] text-sm text-red-500">
+                                {error}
+                            </p>
+                        ) : (
+                            <div className="min-h-[20px]"></div>
+                        )
                     ) : (
-                        <div className="min-h-[20px]"></div>
+                        ""
                     )}
                 </div>
             ) : (

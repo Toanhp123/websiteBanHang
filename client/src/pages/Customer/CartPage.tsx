@@ -6,16 +6,16 @@ function CartPage() {
         <div>
             <Header />
 
-            <TitleSection text="Shopping Cart" />
+            <TitleSection text="Giỏ Hàng" />
 
             <Section>
                 <div className="flex gap-8">
-                    {/* Left menu */}
+                    {/* Menu Trái */}
                     <div className="flex-3">
                         <CartItemList />
                     </div>
 
-                    {/* Right menu */}
+                    {/* Menu Phải */}
                     <div className="flex-1">
                         <CartBill />
                     </div>

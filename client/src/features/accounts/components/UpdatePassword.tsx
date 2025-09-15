@@ -46,28 +46,28 @@ function UpdatePassword() {
         >
             <Input
                 name="pass"
-                label="Password"
-                placeholder="Enter Password"
+                label="Mật khẩu"
+                placeholder="Nhập mật khẩu"
                 register={register("pass")}
                 error={errors.pass?.message}
             />
             <Input
                 name="newPass"
-                label="New Password"
-                placeholder="Enter New Password"
+                label="Mật khẩu mới"
+                placeholder="Nhập mật khẩu mới"
                 register={register("newPass")}
                 error={errors.newPass?.message}
             />
             <Input
                 name="reNewPass"
-                label="Confirm New Password"
-                placeholder="Enter New Password"
+                label="Xác nhận mật khẩu mới"
+                placeholder="Nhập lại mật khẩu mới"
                 register={register("reNewPass")}
                 error={errors.reNewPass?.message}
             />
 
             <div className="w-55">
-                <Button text="Update Password" />
+                <Button text="Cập nhật mật khẩu" />
             </div>
         </form>
     );

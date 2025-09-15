@@ -15,6 +15,7 @@ type InputPros = {
     setValueList?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     register?: UseFormRegisterReturn;
     error?: string;
+    showError?: boolean;
     required?: boolean;
 };
 
@@ -32,6 +33,7 @@ function Input({
     checked = false,
     register,
     error,
+    showError = true,
     required = false,
 }: InputPros) {
     return (
@@ -54,7 +56,6 @@ function Input({
                     type === "range" && "",
                 )}
                 checked={type === "radio" ? checked : undefined}
-                {...register}
                 value={register ? undefined : value}
                 onChange={
                     register
@@ -67,12 +68,19 @@ function Input({
                               }
                           }
                 }
+                {...register}
             />
 
-            {error ? (
-                <p className="min-h-[20px] text-sm text-red-500">{error}</p>
+            {type === "text" && showError ? (
+                error ? (
+                    <p className="min-h-[20px] text-sm text-red-500">{error}</p>
+                ) : (
+                    // TODO: để xử lý sau
+                    // <div className="min-h-[20px]"></div>
+                    ""
+                )
             ) : (
-                <div className="min-h-[20px]"></div>
+                ""
             )}
         </div>
     );

@@ -5,18 +5,15 @@ function BestSeller() {
     return (
         <div className="space-y-12">
             <div>
-                <p className="w-full text-center text-xl font-semibold sm:text-start">
-                    Best Seller
-                </p>
                 <div className="flex items-center">
                     <h1 className="flex-1 text-2xl font-bold sm:flex-4 md:text-3xl">
-                        <span className="text-main-primary">Best Seller </span>
-                        Products
+                        <span className="text-main-primary">Sản Phẩm </span>
+                        Bán Chạy Nhất
                     </h1>
 
                     <div className="flex-1">
                         <Button
-                            text="View All"
+                            text="Xem Tất Cả"
                             icon="fa-solid fa-arrow-right"
                             iconBefore={false}
                         />
@@ -25,7 +22,7 @@ function BestSeller() {
             </div>
 
             <div>
-                <SlideListProduct options="best sell" />
+                <SlideListProduct options="Bán chạy" />
             </div>
         </div>
     );

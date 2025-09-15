@@ -5,18 +5,15 @@ function FeatureProduct() {
     return (
         <div className="space-y-12">
             <div>
-                <p className="w-full text-center text-xl font-semibold sm:text-start">
-                    Products
-                </p>
                 <div className="flex items-center">
                     <h1 className="flex-1 text-2xl font-bold sm:flex-4 md:text-3xl">
-                        Feature{" "}
-                        <span className="text-main-primary">Products</span>
+                        Sản Phẩm
+                        <span className="text-main-primary"> Mới Nhất</span>
                     </h1>
 
                     <div className="flex-1">
                         <Button
-                            text="View All"
+                            text="Xem Tất Cả"
                             icon="fa-solid fa-arrow-right"
                             iconBefore={false}
                         />
@@ -25,7 +22,7 @@ function FeatureProduct() {
             </div>
 
             <div>
-                <SlideListProduct options="latest" />
+                <SlideListProduct options="Mới nhất" />
             </div>
         </div>
     );

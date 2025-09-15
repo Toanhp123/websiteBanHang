@@ -6,7 +6,7 @@ function AboutUsPage() {
         <div>
             <Header />
 
-            <TitleSection text="About Us" />
+            <TitleSection text="Giới Thiệu" />
 
             <Section>
                 <div></div>

@@ -66,40 +66,40 @@ function OrderSummary() {
 
     return (
         <FormCheckoutSection>
-            <h1 className="text-xl font-bold">Order Summary</h1>
+            <h1 className="text-xl font-bold">Tóm tắt đơn hàng</h1>
 
             <div className="border-b border-gray-300"></div>
 
             <div className="flex justify-between">
-                <p className="text-disable">Items</p>
+                <p className="text-disable">Sản phẩm</p>
                 <p className="font-semibold">{orderSummary.items}</p>
             </div>
             <div className="flex justify-between">
-                <p className="text-disable">Sub Total</p>
+                <p className="text-disable">Tạm tính</p>
                 <p className="font-semibold">{orderSummary.subTotal}</p>
             </div>
             <div className="flex justify-between">
-                <p className="text-disable">Shipping</p>
-                <p className="font-semibold">00.00$</p>
+                <p className="text-disable">Phí vận chuyển</p>
+                <p className="font-semibold">00.00₫</p>
             </div>
             <div className="flex justify-between">
-                <p className="text-disable">Taxes</p>
-                <p className="font-semibold">00.00$</p>
+                <p className="text-disable">Thuế</p>
+                <p className="font-semibold">00.00₫</p>
             </div>
             <div className="flex justify-between">
-                <p className="text-disable">Coupon Discount</p>
+                <p className="text-disable">Giảm giá</p>
                 <p className="font-semibold">{orderSummary.discount}</p>
             </div>
 
             <div className="border-b border-gray-300"></div>
 
             <div className="flex justify-between">
-                <p className="text-disable">Total</p>
+                <p className="text-disable">Tổng cộng</p>
                 <p className="font-semibold">{orderSummary.final_total}</p>
             </div>
 
             <Button
-                text="Process To Checkout"
+                text="Tiến hành đặt hàng"
                 textSize="small"
                 onClick={handleCreateBill}
                 disabled={

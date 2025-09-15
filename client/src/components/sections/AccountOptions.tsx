@@ -19,12 +19,15 @@ type ListAccountOptions = {
 function AccountOptions() {
     const [select, setSelect] = useState<number>(0);
     const listOptions: ListAccountOptions[] = [
-        { title: "Personal Information", feature: <UpdatePersonalInfo /> },
-        { title: "My Order", feature: <ListInvoice /> },
-        { title: "Manage Address", feature: <UpdateAddressShipping /> },
-        { title: "Payments Method", feature: <UpdatePersonalInfo /> },
-        { title: "Password Manager", feature: <UpdatePassword /> },
-        { title: "Logout", feature: <Logout /> },
+        {
+            title: "Thay đổi thông tin cá nhân",
+            feature: <UpdatePersonalInfo />,
+        },
+        { title: "Đơn hàng của tôi", feature: <ListInvoice /> },
+        { title: "Quản lý địa chỉ", feature: <UpdateAddressShipping /> },
+        { title: "Phương thức thanh toán", feature: <UpdatePersonalInfo /> },
+        { title: "Đổi mật khẩu", feature: <UpdatePassword /> },
+        { title: "Đăng xuất", feature: <Logout /> },
     ];
 
     const handleSetSelect = (index: number): void => {

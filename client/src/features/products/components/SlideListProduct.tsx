@@ -9,15 +9,15 @@ function SlideListProduct({ options }: SlideListProductPros) {
 
     useEffect(() => {
         const handleGetProduct = async () => {
-            if (options === "latest") {
-                setProduct(await getProductByCondition({ option: "latest" }));
-            } else if (options === "best sell") {
-                setProduct(await getProductByCondition({ option: "best" }));
+            if (options === "Mới nhất") {
+                setProduct(await getProductByCondition({ option: "Mới nhất" }));
+            } else if (options === "Bán chạy") {
+                setProduct(await getProductByCondition({ option: "Bán chạy" }));
             }
         };
 
         handleGetProduct();
-    }, []);
+    }, [options]);
 
     return (
         <Swiper

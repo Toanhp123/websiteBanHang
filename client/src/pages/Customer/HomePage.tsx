@@ -17,9 +17,7 @@ function HomePage() {
             <Header />
 
             <div>
-                <Section>
-                    <Hero />
-                </Section>
+                <Hero />
 
                 <Section>
                     <Categories />

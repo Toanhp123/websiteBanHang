@@ -17,18 +17,20 @@ function ListTagFilter() {
             <div className="flex items-center justify-between">
                 <p className="font-semibold text-gray-700">
                     {/* TODO: cần làm thêm để tự động hiển thị thời gian thực */}
-                    Showing 1-12 of 2560 results
+                    Hiển thị 1-12 trong tổng số 2560 kết quả
                 </p>
 
                 <div className="flex items-center gap-4">
-                    <p className="font-semibold text-gray-700">Sort by: </p>
+                    <p className="font-semibold text-gray-700">Sắp xếp theo:</p>
 
                     <DropdownSortProduct />
                 </div>
             </div>
 
             <div className="flex items-center gap-4">
-                <p className="font-semibold text-gray-700">Active Filter:</p>
+                <p className="font-semibold text-gray-700">
+                    Bộ lọc đang áp dụng:
+                </p>
 
                 <div className="flex gap-2">
                     {Object.entries(listFilter)
@@ -42,10 +44,10 @@ function ListTagFilter() {
                     .filter(([_, value]) => value !== TypeFilter.ALL)
                     .some((value) => value[1] !== null && value[1] !== "") && (
                     <p
-                        className="text-main-primary font-semibold underline"
+                        className="text-main-primary cursor-pointer font-semibold underline"
                         onClick={handleDeleteFilterOption}
                     >
-                        Clear All
+                        Xóa tất cả
                     </p>
                 )}
             </div>

@@ -15,10 +15,10 @@ function ListFilterOption() {
     const availability = {
         type: TypeFilter.AVAILABLE,
         itemType: [
-            { id: 1, name: "In Stock" },
+            { id: 1, name: "Còn hàng" },
             {
                 id: 2,
-                name: "Out Stock",
+                name: "Hết hàng",
             },
         ],
     };

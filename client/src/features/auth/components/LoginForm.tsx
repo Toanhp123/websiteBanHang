@@ -1,8 +1,7 @@
 import { Button, Input } from "@/components/shared";
-import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginCustomer } from "../services/auth.api";
-import { isUserRole, type LoginCredentials } from "../types/auth.type";
+import { isUserRole } from "../types/auth.type";
 import { setAccessToken, setRole } from "@/stores/authStore";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,7 +19,6 @@ function LoginForm() {
         resolver: yupResolver(loginSchema),
     });
 
-    // Hàm xử lý login
     const handleLogin = async (data: LoginFormInputs): Promise<void> => {
         const from = location.state?.from?.pathname || "/";
 
@@ -53,8 +51,8 @@ function LoginForm() {
         }
     };
 
-    // TODO: làm hàm xử lý login bằng google
-    // Hàm xử lý login bằng google
+    // TODO: làm hàm xử lý đăng nhập bằng Google
+    // Hàm xử lý đăng nhập bằng Google
     // const handleLoginWithGoogle = async (): Promise<void> => {};
 
     return (
@@ -64,15 +62,15 @@ function LoginForm() {
         >
             <div className="flex flex-col gap-4">
                 <Input
-                    label="Username"
-                    placeholder="Username"
+                    label="Tên đăng nhập"
+                    placeholder="Nhập tên đăng nhập"
                     register={register("username")}
                     error={errors.username?.message}
                 />
 
                 <Input
-                    label="Password"
-                    placeholder="Password"
+                    label="Mật khẩu"
+                    placeholder="Nhập mật khẩu"
                     register={register("password")}
                     inputFormat="password"
                     error={errors.password?.message}
@@ -84,23 +82,23 @@ function LoginForm() {
                             to="/forgotPassword"
                             className="flex-1 font-semibold text-green-700 underline underline-offset-2 hover:text-green-600"
                         >
-                            Forget password?
+                            Quên mật khẩu?
                         </Link>
                     </div>
                 </div>
             </div>
 
             <div className="space-y-3 md:space-y-5">
-                <Button text="Sign In" />
+                <Button text="Đăng nhập" />
 
                 <div className="flex items-center justify-center gap-2">
                     <div className="flex-1 border-t border-gray-300"></div>
-                    <div className="text-disable">or Sign In with</div>
+                    <div className="text-disable">hoặc đăng nhập với</div>
                     <div className="flex-1 border-t border-gray-300"></div>
                 </div>
 
                 <Button
-                    text="Sign In With Google"
+                    text="Đăng nhập bằng Google"
                     textColor="text-black"
                     icon="fa-brands fa-google"
                     bgColor="bg-white hover:text-white"

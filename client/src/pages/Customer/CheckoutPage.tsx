@@ -6,16 +6,16 @@ function CheckoutPage() {
         <div>
             <Header />
 
-            <TitleSection text="Checkout" />
+            <TitleSection text="Thanh Toán" />
 
             <Section>
                 <div className="flex gap-8">
-                    {/* Left menu */}
+                    {/* Menu Trái */}
                     <div className="flex-1">
                         <BillingDetails />
                     </div>
 
-                    {/* Right menu */}
+                    {/* Menu Phải */}
                     <div className="">
                         <BillingSummary />
                     </div>

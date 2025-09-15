@@ -55,7 +55,7 @@ function ShippingAddress() {
     return (
         <FormCheckoutSection>
             <div className="space-y-4">
-                <h1 className="text-xl font-bold">Exits Shipping Address</h1>
+                <h1 className="text-xl font-bold">Địa Chỉ Giao Hàng Có Sẵn</h1>
 
                 <div className="grid grid-cols-1 gap-4 divide-y divide-gray-300 rounded-2xl border border-gray-300 px-4 pt-4">
                     <div className="max-h-30 overflow-auto">
@@ -93,7 +93,7 @@ function ShippingAddress() {
                         <div className="flex items-center justify-between pb-4 pl-4">
                             <div className="flex gap-4">
                                 <h1 className="font-semibold">
-                                    New Shipping Address
+                                    Địa Chỉ Giao Hàng Mới
                                 </h1>
                             </div>
                         </div>
@@ -113,7 +113,7 @@ function ShippingAddress() {
 
             {selectOption === "custom" && (
                 <div className="space-y-4">
-                    <h1 className="text-xl font-bold">Shipping Address</h1>
+                    <h1 className="text-xl font-bold">Thông Tin Giao Hàng</h1>
 
                     <form className="space-y-6">
                         <div className="grid grid-cols-2 gap-8">
@@ -121,19 +121,19 @@ function ShippingAddress() {
                                 name="first_name"
                                 setValueList={handleChange}
                                 value={billDetail.first_name}
-                                label="First Name"
+                                label="Họ"
                                 required={true}
                                 labelColor="text-disable"
-                                placeholder="First Name"
+                                placeholder="Nhập Họ"
                             />
                             <Input
                                 name="last_name"
                                 setValueList={handleChange}
                                 value={billDetail.last_name}
-                                label="Last Name"
+                                label="Tên"
                                 required={true}
                                 labelColor="text-disable"
-                                placeholder="Last Name"
+                                placeholder="Nhập Tên"
                             />
                         </div>
 
@@ -141,20 +141,20 @@ function ShippingAddress() {
                             name="email"
                             setValueList={handleChange}
                             value={billDetail.email}
-                            label="Email Address"
+                            label="Địa Chỉ Email"
                             required={true}
                             labelColor="text-disable"
-                            placeholder="Enter Email Address"
+                            placeholder="Nhập Email"
                         />
 
                         <Input
                             name="street_address"
                             setValueList={handleChange}
                             value={billDetail.street_address}
-                            label="Street Address"
+                            label="Địa Chỉ"
                             required={true}
                             labelColor="text-disable"
-                            placeholder="Enter Street Address"
+                            placeholder="Nhập Địa Chỉ"
                         />
 
                         <div className="grid grid-cols-2 gap-8">
@@ -162,37 +162,37 @@ function ShippingAddress() {
                                 name="country"
                                 setValueList={handleChange}
                                 value={billDetail.country}
-                                label="Country"
+                                label="Quốc Gia"
                                 required={true}
                                 labelColor="text-disable"
-                                placeholder="Select Country"
+                                placeholder="Chọn Quốc Gia"
                             />
                             <Input
                                 name="city"
                                 setValueList={handleChange}
                                 value={billDetail.city}
-                                label="City"
+                                label="Thành Phố"
                                 required={true}
                                 labelColor="text-disable"
-                                placeholder="Select City"
+                                placeholder="Chọn Thành Phố"
                             />
                             <Input
                                 name="zip_code"
                                 setValueList={handleChange}
                                 value={billDetail.zip_code}
-                                label="Zip Code"
+                                label="Mã Bưu Điện"
                                 required={true}
                                 labelColor="text-disable"
-                                placeholder="Enter Zip Code"
+                                placeholder="Nhập Mã Bưu Điện"
                             />
                             <Input
                                 name="phone"
                                 setValueList={handleChange}
                                 value={billDetail.phone}
-                                label="Phone Number"
+                                label="Số Điện Thoại"
                                 required={true}
                                 labelColor="text-disable"
-                                placeholder="Enter Phone Number"
+                                placeholder="Nhập Số Điện Thoại"
                             />
                         </div>
                     </form>

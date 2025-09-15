@@ -37,11 +37,11 @@ function CartItemList() {
                 <thead>
                     <tr className="bg-surface">
                         <th className="rounded-tl-xl rounded-bl-xl"></th>
-                        <th className="px-4 py-2">Product</th>
-                        <th className="px-4 py-2 text-left">Price</th>
-                        <th className="px-4 py-2 text-center">Quantity</th>
+                        <th className="px-4 py-2">Sản Phẩm</th>
+                        <th className="px-4 py-2 text-left">Giá</th>
+                        <th className="px-4 py-2 text-center">Số Lượng</th>
                         <th className="rounded-tr-xl rounded-br-xl px-6 py-2 text-right">
-                            Subtotal
+                            Tạm Tính
                         </th>
                     </tr>
                 </thead>
@@ -89,8 +89,8 @@ function CartItemList() {
                                         saveChangeCartToDatabase={true}
                                     />
                                 </td>
-                                <td className="border-b border-gray-300 px-6 py-2 text-right">
-                                    {item.price * item.quantity}
+                                <td className="border-b border-gray-300 px-6 py-2 text-right font-semibold">
+                                    {item.price * item.quantity}₫
                                 </td>
                             </tr>
                         ))}
@@ -117,10 +117,10 @@ function CartItemList() {
                         <td className="text-center">
                             {cart.length > 0 && (
                                 <p
-                                    className="text-main-primary mt-5 font-semibold underline"
+                                    className="text-main-primary mt-5 cursor-pointer font-semibold underline"
                                     onClick={handleDeleteCart}
                                 >
-                                    Clear Shopping Cart
+                                    Xóa Giỏ Hàng
                                 </p>
                             )}
                         </td>

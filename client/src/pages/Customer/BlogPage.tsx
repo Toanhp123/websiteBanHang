@@ -6,19 +6,14 @@ function BlogPage() {
         <div>
             <Header />
 
-            <TitleSection text="Out Blog" />
+            <TitleSection text="Tin Tức" />
 
             <Section>
                 <div className="space-y-12">
                     <div className="space-y-2 text-center">
-                        <p className="text-xl font-semibold">New & Blogs</p>
-
                         <h1 className="text-2xl font-bold md:text-3xl">
-                            Our Latest
-                            <span className="text-main-primary">
-                                {" "}
-                                New & Blogs
-                            </span>
+                            Bài Viết
+                            <span className="text-main-primary"> Mới Nhất</span>
                         </h1>
                     </div>
 

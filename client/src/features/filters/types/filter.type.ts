@@ -34,13 +34,11 @@ export type ItemTypeState = {
 };
 
 export type SortOptions =
-    | "latest"
-    | "best"
-    | "name decs"
-    | "name up"
-    | "oldest"
-    | "Price Low To High"
-    | "Price High To Low";
+    | "Mới nhất"
+    | "Bán chạy"
+    | "Cũ nhất"
+    | "Giá thấp đến cao"
+    | "Giá cao đến thấp";
 
 export type SortOptionsState = {
     option: SortOptions;

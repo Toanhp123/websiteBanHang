@@ -4,48 +4,34 @@ import { useAppSelector } from "@/hooks/useRedux";
 import {
     deleteBillDetail,
     selectBillDetail,
-    updateBillDetail,
 } from "@/features/checkout/redux/billingDetail.slice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { createInvoiceAddress } from "../services/invoice.api";
 import { addShippingAddress } from "../redux/shippingAddress.slice";
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+    updateAddressShipping,
+    type UpdateAddressShippingFormInputs,
+} from "../validations/updateAddressShipping.schema";
+
 function UpdateAddressShipping() {
     const billDetailSlice = useAppSelector(selectBillDetail);
     const dispatch = useDispatch();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const { name, value } = e.target;
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm<UpdateAddressShippingFormInputs>({
+        resolver: yupResolver(updateAddressShipping),
+        defaultValues: { ...billDetailSlice },
+    });
 
-        dispatch(
-            updateBillDetail({
-                key: name as keyof typeof billDetailSlice,
-                value,
-            }),
-        );
-    };
-
-    const handleAddAddressShipping = async (
-        e: React.FormEvent<HTMLFormElement>,
-    ) => {
-        e.preventDefault();
-
-        const formData = new FormData(e.currentTarget);
-
-        const invoiceAddress = {
-            first_name: formData.get("first_name") as string,
-            last_name: formData.get("last_name") as string,
-            email: formData.get("email") as string,
-            street_address: formData.get("street_address") as string,
-            city: formData.get("city") as string,
-            country: formData.get("country") as string,
-            zip_code: formData.get("zip_code") as string,
-            phone: formData.get("phone") as string,
-        };
-
-        const shippingAddress = await createInvoiceAddress(invoiceAddress);
-
+    const onSubmit = async (data: UpdateAddressShippingFormInputs) => {
+        const shippingAddress = await createInvoiceAddress(data);
         dispatch(addShippingAddress(shippingAddress));
     };
 
@@ -58,98 +44,68 @@ function UpdateAddressShipping() {
             <ListAddressShipping />
 
             <div className="space-y-4">
-                <h1 className="text-xl font-bold">Add New Address</h1>
-
-                <div>
-                    <form
-                        onSubmit={(e) => handleAddAddressShipping(e)}
-                        className="space-y-6"
-                    >
-                        <div className="grid grid-cols-2 gap-8">
-                            <Input
-                                name="first_name"
-                                setValueList={handleChange}
-                                value={billDetailSlice.first_name}
-                                label="First Name"
-                                required={true}
-                                labelColor="text-disable"
-                                placeholder="First Name"
-                            />
-                            <Input
-                                name="last_name"
-                                setValueList={handleChange}
-                                value={billDetailSlice.last_name}
-                                label="Last Name"
-                                required={true}
-                                labelColor="text-disable"
-                                placeholder="Last Name"
-                            />
-                        </div>
-
+                <h1 className="text-xl font-bold">Thêm địa chỉ mới</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid grid-cols-2 gap-8">
                         <Input
-                            name="email"
-                            setValueList={handleChange}
-                            value={billDetailSlice.email}
-                            label="Email Address"
-                            required={true}
-                            labelColor="text-disable"
-                            placeholder="Enter Email Address"
+                            label="Họ"
+                            placeholder="Nhập họ"
+                            register={register("first_name")}
+                            error={errors.first_name?.message}
                         />
-
                         <Input
-                            name="street_address"
-                            setValueList={handleChange}
-                            value={billDetailSlice.street_address}
-                            label="Street Address"
-                            required={true}
-                            labelColor="text-disable"
-                            placeholder="Enter Street Address"
+                            label="Tên"
+                            placeholder="Nhập tên"
+                            register={register("last_name")}
+                            error={errors.last_name?.message}
                         />
+                    </div>
 
-                        <div className="grid grid-cols-2 gap-8">
-                            <Input
-                                name="country"
-                                setValueList={handleChange}
-                                value={billDetailSlice.country}
-                                label="Country"
-                                required={true}
-                                labelColor="text-disable"
-                                placeholder="Select Country"
-                            />
-                            <Input
-                                name="city"
-                                setValueList={handleChange}
-                                value={billDetailSlice.city}
-                                label="City"
-                                required={true}
-                                labelColor="text-disable"
-                                placeholder="Select City"
-                            />
-                            <Input
-                                name="zip_code"
-                                setValueList={handleChange}
-                                value={billDetailSlice.zip_code}
-                                label="Zip Code"
-                                required={true}
-                                labelColor="text-disable"
-                                placeholder="Enter Zip Code"
-                            />
-                            <Input
-                                name="phone"
-                                setValueList={handleChange}
-                                value={billDetailSlice.phone}
-                                label="Phone Number"
-                                required={true}
-                                labelColor="text-disable"
-                                placeholder="Enter Phone Number"
-                            />
-                        </div>
+                    <Input
+                        label="Địa chỉ Email"
+                        placeholder="Nhập địa chỉ Email"
+                        register={register("email")}
+                        error={errors.email?.message}
+                    />
 
-                        <div className="w-45">
-                            <Button text="Add Address" />
-                        </div>
-                    </form>
-                </div>
+                    <Input
+                        label="Địa chỉ đường"
+                        placeholder="Nhập địa chỉ đường"
+                        register={register("street_address")}
+                        error={errors.street_address?.message}
+                    />
+
+                    <div className="grid grid-cols-2 gap-8">
+                        <Input
+                            label="Quốc gia"
+                            placeholder="Chọn quốc gia"
+                            register={register("country")}
+                            error={errors.country?.message}
+                        />
+                        <Input
+                            label="Thành phố"
+                            placeholder="Chọn thành phố"
+                            register={register("city")}
+                            error={errors.city?.message}
+                        />
+                        <Input
+                            label="Mã bưu điện"
+                            placeholder="Nhập mã bưu điện"
+                            register={register("zip_code")}
+                            error={errors.zip_code?.message}
+                        />
+                        <Input
+                            label="Số điện thoại"
+                            placeholder="Nhập số điện thoại"
+                            register={register("phone")}
+                            error={errors.phone?.message}
+                        />
+                    </div>
+
+                    <div className="w-45">
+                        <Button text="Thêm địa chỉ" />
+                    </div>
+                </form>
             </div>
         </div>
     );

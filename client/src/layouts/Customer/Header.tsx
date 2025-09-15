@@ -81,10 +81,10 @@ function Header() {
                                     <h1>Browse All Categories</h1>
                                 </button>
 
-                                <NavItem text="Home" to="#" />
-                                <NavItem text="Shop" to="shop" />
-                                <NavItem text="About Us" to="aboutUs" />
-                                <NavItem text="Blog" to="blog" />
+                                <NavItem text="Trang Chủ" to="#" />
+                                <NavItem text="Sản Phẩm" to="shop" />
+                                <NavItem text="Giới Thiệu" to="aboutUs" />
+                                <NavItem text="Tin Tức" to="blog" />
                             </div>
 
                             <div className="text-surface flex flex-1/4 items-center justify-end gap-2 pr-12">
