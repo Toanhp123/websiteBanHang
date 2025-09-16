@@ -43,6 +43,7 @@ const Product = sequelize.define(
 		},
 		product_code: {
 			type: DataTypes.STRING,
+			allowNull: false,
 		},
 		is_delete: {
 			type: DataTypes.BOOLEAN,

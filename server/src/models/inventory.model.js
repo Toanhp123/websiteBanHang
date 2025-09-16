@@ -15,7 +15,7 @@ const Inventory = sequelize.define(
 		},
 		quantity: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			defaultValue: 0,
 		},
 		last_checked_at: {
 			type: DataTypes.DATE,

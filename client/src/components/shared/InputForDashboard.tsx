@@ -13,7 +13,6 @@ type InputForDashboardPros = {
     readOnly?: boolean;
     value?: string;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
-    setFile?: React.Dispatch<React.SetStateAction<File | null>>;
     setListFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     register?: UseFormRegisterReturn;
     error?: string;
@@ -31,7 +30,6 @@ function InputForDashboard({
     value,
     setValue,
     readOnly = false,
-    setFile,
     setListFile,
     error,
     register,
@@ -57,7 +55,6 @@ function InputForDashboard({
                                 "cursor-not-allowed focus:ring-0 focus:outline-none",
                         )}
                         placeholder={placeholder}
-                        accept={acceptFile}
                         readOnly={readOnly}
                         value={register ? undefined : value}
                         onChange={
@@ -67,18 +64,6 @@ function InputForDashboard({
                         }
                         {...register}
                     />
-
-                    {showError ? (
-                        error ? (
-                            <p className="min-h-[20px] text-sm text-red-500">
-                                {error}
-                            </p>
-                        ) : (
-                            <div className="min-h-[20px]"></div>
-                        )
-                    ) : (
-                        ""
-                    )}
                 </div>
             ) : (
                 <div>
@@ -87,13 +72,13 @@ function InputForDashboard({
                         id={inputId}
                         name={inputName}
                         className="hidden"
+                        accept={acceptFile}
                         onChange={(e) => {
-                            if (setFile) {
-                                setFile(e.target.files?.[0] || null);
-                            } else if (setListFile) {
+                            if (setListFile) {
                                 setListFile(e);
                             }
                         }}
+                        {...register}
                     />
 
                     <div className="flex items-center gap-4 overflow-hidden rounded-md bg-gray-100">
@@ -109,6 +94,19 @@ function InputForDashboard({
                         </p>
                     </div>
                 </div>
+            )}
+
+            {showError ? (
+                error ? (
+                    <p className="mt-2 min-h-[20px] text-sm text-red-500">
+                        {error}
+                    </p>
+                ) : (
+                    // <div className="min-h-[20px]"></div>
+                    ""
+                )
+            ) : (
+                ""
             )}
         </div>
     );

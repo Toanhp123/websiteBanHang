@@ -38,7 +38,8 @@ function Dropdown({ options, text, error, register }: DropdownPros) {
             {error ? (
                 <p className="min-h-[20px] text-sm text-red-500">{error}</p>
             ) : (
-                <div className="min-h-[20px]"></div>
+                // <div className="min-h-[20px]"></div>
+                ""
             )}
         </div>
     );

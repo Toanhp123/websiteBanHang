@@ -70,35 +70,12 @@ class ProductController {
 		const mainImage = req.files?.mainImage?.[0] || null;
 		const subImages = req.files?.subImages || [];
 
-		const {
-			product_name,
-			product_description,
-			product_category_id,
-			price,
-			supplier_id,
-			product_type_id,
-			warehouseQuantities,
-			product_code,
-		} = req.body;
-
-		const { id } = req.user;
-
-		const parsedWarehouseQuantities = warehouseQuantities
-			? JSON.parse(warehouseQuantities)
-			: [];
+		const { ...formData } = req.body;
 
 		const message = await productService.addProduct(
-			id,
 			mainImage,
 			subImages,
-			product_name,
-			product_description,
-			product_category_id,
-			price,
-			supplier_id,
-			product_type_id,
-			parsedWarehouseQuantities,
-			product_code
+			formData
 		);
 
 		res.json(message);
@@ -122,23 +99,16 @@ class ProductController {
 	// [PUT] /updateProduct
 	async updateProduct(req, res) {
 		const { product_id } = req.params;
-		const { id } = req.user;
-		const { warehouseQuantities, ...formData } = req.body;
+		const { ...formData } = req.body;
 
 		const mainImage = req.files?.mainImage?.[0] || null;
 		const subImages = req.files?.subImages || [];
 
-		const parsedWarehouseQuantities = warehouseQuantities
-			? JSON.parse(warehouseQuantities)
-			: [];
-
 		const message = await productService.updateProduct(
-			id,
 			product_id,
 			mainImage,
 			subImages,
-			formData,
-			parsedWarehouseQuantities
+			formData
 		);
 
 		res.json(message);

@@ -1,10 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import type { AddDiscountFormInputs } from "../validations/addDiscount.schema";
 import { formatDate } from "@/utils/formatDate";
-import {
-    renderEffectValue,
-    renderRuleValue,
-} from "@/utils/helpResultDiscountFormRender";
 
 const ruleTypeMap: Record<string, string> = {
     "1": "Giá trị hóa đơn tối thiểu",
@@ -106,7 +102,7 @@ function DiscountResultForm() {
                     <tbody>
                         <tr>
                             <td>Effect</td>
-                            <td>{renderEffectValue(allInfo.effect)}</td>
+                            <td>{allInfo.effect?.effect_type_id}</td>
                         </tr>
                     </tbody>
                 </table>

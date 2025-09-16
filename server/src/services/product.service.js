@@ -242,34 +242,19 @@ class ProductService {
 		return supplier;
 	}
 
-	async addProduct(
-		account_id,
-		mainImage,
-		subImages,
-		product_name,
-		product_description,
-		product_category_id,
-		price,
-		supplier_id,
-		product_type_id,
-		parsedWarehouseQuantities,
-		product_code
-	) {
+	async addProduct(mainImage, subImages, formData) {
 		const transaction = await sequelize.transaction();
 
 		try {
 			const [product, created] = await Product.findOrCreate({
-				where: { product_code: product_code, is_delete: false },
+				where: {
+					product_code: formData.product_code,
+					is_delete: false,
+				},
 				defaults: {
-					product_name,
-					product_description,
-					price,
 					product_status_id: 1,
-					product_category_id,
-					supplier_id,
-					product_type_id,
 					product_date_add: new Date(),
-					product_code,
+					...formData,
 				},
 				transaction,
 			});
@@ -284,10 +269,6 @@ class ProductService {
 				const subImagesURL = subImages.map(
 					(subImage) => "uploads/images/" + subImage.filename
 				);
-				const account = await Account.findOne({
-					where: { account_id },
-				});
-				const employee_id = account.employee_id;
 
 				await ProductImage.create(
 					{ product_id, image_url: mainImageURL, is_main: true },
@@ -307,55 +288,17 @@ class ProductService {
 					})
 				);
 
-				let quantity = 0;
+				const allWarehouse = await Warehouse.findAll({
+					where: { is_active: true },
+				});
 
 				await Promise.all(
-					parsedWarehouseQuantities.map(async (warehouseQuantity) => {
+					allWarehouse.map(async (warehouse) => {
 						await Inventory.create(
 							{
 								product_id,
-								warehouse_id: warehouseQuantity.warehouse_id,
-								quantity: warehouseQuantity.quantity,
+								warehouse_id: warehouse.warehouse_id,
 								last_checked_at: new Date(),
-							},
-							{ transaction }
-						);
-
-						quantity += warehouseQuantity.quantity;
-
-						const warehouseReceipt = await WarehouseReceipt.create(
-							{
-								supplier_id,
-								employee_id,
-								warehouse_id: warehouseQuantity.warehouse_id,
-							},
-							{ transaction }
-						);
-
-						const receipt_id = warehouseReceipt.receipt_id;
-
-						await WarehouseReceiptItem.create(
-							{
-								receipt_id,
-								product_id,
-								quantity,
-								unit_price: price,
-							},
-							{ transaction }
-						);
-
-						let oldQuantity = 0;
-						let newQuantity = warehouseQuantity.quantity;
-
-						await InventoryAudit.create(
-							{
-								product_id,
-								warehouse_id: warehouseQuantity.warehouse_id,
-								old_quantity: oldQuantity,
-								new_quantity: newQuantity,
-								change_amount: newQuantity - oldQuantity,
-								action: "import",
-								employee_id,
 							},
 							{ transaction }
 						);
@@ -424,22 +367,10 @@ class ProductService {
 		return { warehouse, categories, supplier, productType, productStatus };
 	}
 
-	async updateProduct(
-		account_id,
-		product_id,
-		mainImage,
-		subImages,
-		formData,
-		parsedWarehouseQuantities
-	) {
+	async updateProduct(product_id, mainImage, subImages, formData) {
 		const transaction = await sequelize.transaction();
 
 		try {
-			const account = await Account.findOne({
-				where: { account_id },
-			});
-			const employee_id = account.employee_id;
-
 			await Product.update(
 				{
 					...formData,
@@ -482,49 +413,6 @@ class ProductService {
 			// 		})
 			// 	);
 			// }
-
-			await Promise.all(
-				parsedWarehouseQuantities.map(async (warehouseQuantity) => {
-					let oldQuantity = 0;
-					let newQuantity = warehouseQuantity.quantity;
-
-					const [inventory, created] = await Inventory.findOrCreate({
-						where: {
-							product_id,
-							warehouse_id: warehouseQuantity.warehouse_id,
-						},
-						defaults: {
-							product_id,
-							warehouse_id: warehouseQuantity.warehouse_id,
-							quantity: warehouseQuantity.quantity,
-							last_checked_at: new Date(),
-						},
-						transaction,
-					});
-
-					if (!created) {
-						oldQuantity = inventory.quantity;
-						newQuantity = warehouseQuantity.quantity;
-						await inventory.update(
-							{ quantity: newQuantity },
-							{ transaction }
-						);
-					}
-
-					await InventoryAudit.create(
-						{
-							product_id,
-							warehouse_id: warehouseQuantity.warehouse_id,
-							old_quantity: oldQuantity,
-							new_quantity: newQuantity,
-							change_amount: newQuantity - oldQuantity,
-							action: "update",
-							employee_id,
-						},
-						{ transaction }
-					);
-				})
-			);
 
 			await transaction.commit();
 

@@ -1,41 +1,43 @@
 import { Button, Dropdown, InputForDashboard } from "@/components/shared";
 import InputImageUpload from "@/components/shared/InputImageUpload";
 import { useState } from "react";
-import type { WarehouseQuantity } from "../types/product.type";
 import { addProduct } from "../services/product.api";
 import { useGetProductAdvancedInfo } from "@/hooks/useGetProductBasicInfoFilter";
 import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+    addProductSchema,
+    type AddProductFormInputs,
+} from "../validations/addProduct.schema";
+import { useForm } from "react-hook-form";
 
-// TODO: cần làm lại phải thêm được nhiều sản phẩm cùng lúc
 function AddProductForm() {
     const advanceInfo = useGetProductAdvancedInfo();
     const navigate = useNavigate();
 
-    const [price, setPrice] = useState<string>("");
-    const [mainImage, setMainImage] = useState<File | null>(null);
+    // const [mainImage, setMainImage] = useState<File | null>(null);
     const [subImages, setSubImages] = useState<Array<File | null>>(
         Array(4).fill(null),
     );
-    const [warehouseQuantities, setWarehouseQuantities] = useState<
-        WarehouseQuantity[]
-    >([]);
-    const [supplierID, setSupplierID] = useState<string>("");
-    const [categoryID, setCategoryID] = useState<string>("");
-    const [productCode, setProductCode] = useState<string>("");
-    const [productTitle, setProductTitle] = useState<string>("");
-    const [productDescription, setProductDescription] = useState<string>("");
-    const [productTypeID, setProductTypeID] = useState<string>("");
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<AddProductFormInputs>({
+        resolver: yupResolver(addProductSchema),
+        defaultValues: {
+            mainImage: null,
+        },
+    });
+
+    const mainImage = watch("mainImage");
 
     const formatDataCategories =
         advanceInfo?.categories.map((category) => ({
             id: category.product_category_id,
             name: category.product_category_name,
-        })) || [];
-
-    const formatDataWarehouse =
-        advanceInfo?.warehouse.map((warehouse) => ({
-            id: warehouse.warehouse_id,
-            name: warehouse.warehouse_name,
         })) || [];
 
     const formatDataSupplier =
@@ -50,15 +52,10 @@ function AddProductForm() {
             name: productType.product_type_name,
         })) || [];
 
-    const handleAddProduct = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleAddProduct = async (data: AddProductFormInputs) => {
         const formData = new FormData();
 
-        if (mainImage) {
-            formData.append("mainImage", mainImage);
-        }
-
+        formData.append("mainImage", data.mainImage[0]);
         subImages.forEach((file) => {
             if (file) {
                 formData.append("subImages", file);
@@ -66,23 +63,18 @@ function AddProductForm() {
         });
 
         const productInfo = {
-            product_name: productTitle,
-            product_description: productDescription,
-            product_category_id: categoryID,
-            price: price,
-            supplier_id: supplierID,
-            product_type_id: productTypeID,
-            product_code: productCode,
+            product_name: data.productTitle,
+            product_description: data.productDescription,
+            product_category_id: data.categoryID,
+            price: data.price,
+            supplier_id: data.supplierID,
+            product_type_id: data.productTypeID,
+            product_code: data.productCode,
         };
 
         Object.entries(productInfo).map(([key, value]) => {
             formData.append(key, value);
         });
-
-        formData.append(
-            "warehouseQuantities",
-            JSON.stringify(warehouseQuantities),
-        );
 
         try {
             const res = await addProduct(formData);
@@ -111,40 +103,10 @@ function AddProductForm() {
         });
     };
 
-    const handleSetQuantityProduct = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        warehouse: { id: number; name: string },
-    ) => {
-        const newQuantity = Number(e.target.value);
-
-        setWarehouseQuantities((prev) => {
-            const exists = prev.find((x) => x.warehouse_id === warehouse.id);
-
-            if (exists) {
-                return prev.map((item) =>
-                    item.warehouse_id === warehouse.id
-                        ? {
-                              ...item,
-                              quantity: newQuantity,
-                          }
-                        : item,
-                );
-            } else {
-                return [
-                    ...prev,
-                    {
-                        warehouse_id: warehouse.id,
-                        quantity: newQuantity,
-                    },
-                ];
-            }
-        });
-    };
-
     return (
         <form
             className="grid grid-cols-5 gap-6"
-            onSubmit={(e) => handleAddProduct(e)}
+            onSubmit={handleSubmit(handleAddProduct)}
         >
             <div className="col-span-3 space-y-6">
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
@@ -156,8 +118,8 @@ function AddProductForm() {
                     <InputForDashboard
                         label="Product title"
                         placeholder="Type Here"
-                        value={productTitle}
-                        setValue={setProductTitle}
+                        register={register("productTitle")}
+                        error={errors.productTitle?.message}
                     />
 
                     <div>
@@ -169,51 +131,14 @@ function AddProductForm() {
                             rows={6}
                             placeholder="Type something here..."
                             className="w-full resize-none rounded-lg border border-gray-300 p-3"
-                            value={productDescription}
-                            onChange={(e) =>
-                                setProductDescription(e.target.value)
-                            }
-                        />
-                    </div>
-
-                    <InputForDashboard
-                        label="Product Code"
-                        value={productCode}
-                        setValue={setProductCode}
-                        placeholder="Type Here"
-                    />
-
-                    <div className="grid grid-cols-2 items-center gap-8">
-                        <InputForDashboard
-                            label="Price"
-                            value={price}
-                            setValue={setPrice}
-                            placeholder="0"
-                            type="number"
+                            {...register("productDescription")}
                         />
 
-                        <Dropdown
-                            text="Category"
-                            options={formatDataCategories}
-                            value={categoryID}
-                            setValue={setCategoryID}
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-2 items-center gap-8">
-                        <Dropdown
-                            text="Supplier"
-                            value={supplierID}
-                            setValue={setSupplierID}
-                            options={formatDataSupplier}
-                        />
-
-                        <Dropdown
-                            text="Product Type"
-                            value={productTypeID}
-                            setValue={setProductTypeID}
-                            options={formatDataProductType}
-                        />
+                        {errors.productDescription && (
+                            <p className="min-h-[20px] text-sm text-red-500">
+                                {errors.productDescription.message}
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -229,7 +154,6 @@ function AddProductForm() {
                         {subImages.map((subImage, index) => (
                             <InputImageUpload
                                 id={index.toString()}
-                                required={false}
                                 key={index}
                                 image={subImage}
                                 setListImage={handleSetSubImage}
@@ -247,34 +171,53 @@ function AddProductForm() {
                     </div>
 
                     <InputImageUpload
-                        image={mainImage}
-                        setImage={setMainImage}
+                        image={mainImage?.[0]}
+                        register={register("mainImage")}
+                        error={errors.mainImage?.message}
                     />
                 </div>
 
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
                     <div>
-                        <h1 className="text-xl font-semibold">Inventory</h1>
+                        <h1 className="text-xl font-semibold">Advanced Info</h1>
                         <div className="mt-4 border-b border-gray-300"></div>
                     </div>
 
-                    {formatDataWarehouse?.map((w) => (
-                        <div key={w.id} className="flex items-center gap-4">
-                            <label className="flex-1">{w.name}</label>
+                    <InputForDashboard
+                        label="Product Code"
+                        placeholder="Type Here"
+                        register={register("productCode")}
+                        error={errors.productCode?.message}
+                    />
 
-                            <input
-                                type="number"
-                                className="rounded-md bg-gray-100 p-2"
-                                placeholder="0"
-                                value={
-                                    warehouseQuantities.find(
-                                        (x) => x.warehouse_id === w.id,
-                                    )?.quantity || ""
-                                }
-                                onChange={(e) => handleSetQuantityProduct(e, w)}
-                            />
-                        </div>
-                    ))}
+                    <InputForDashboard
+                        label="Price"
+                        placeholder="0"
+                        type="number"
+                        register={register("price")}
+                        error={errors.price?.message}
+                    />
+
+                    <Dropdown
+                        text="Category"
+                        options={formatDataCategories}
+                        register={register("categoryID")}
+                        error={errors.categoryID?.message}
+                    />
+
+                    <Dropdown
+                        text="Supplier"
+                        options={formatDataSupplier}
+                        register={register("supplierID")}
+                        error={errors.supplierID?.message}
+                    />
+
+                    <Dropdown
+                        text="Product Type"
+                        options={formatDataProductType}
+                        register={register("productTypeID")}
+                        error={errors.productTypeID?.message}
+                    />
                 </div>
 
                 <div className="inline-flex">

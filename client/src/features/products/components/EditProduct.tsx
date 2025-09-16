@@ -1,6 +1,5 @@
 import { useGetProductAdvancedInfo } from "@/hooks/useGetProductBasicInfoFilter";
 import { getDetailProduct, updateProduct } from "../services/product.api";
-import type { WarehouseQuantity } from "../types/product.type";
 import { useEffect, useState } from "react";
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import InputImageUpload from "@/components/shared/InputImageUpload";
@@ -17,9 +16,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
     const [subImages, setSubImages] = useState<Array<File | null>>(
         Array(4).fill(null),
     );
-    const [warehouseQuantities, setWarehouseQuantities] = useState<
-        WarehouseQuantity[]
-    >([]);
     const [supplierID, setSupplierID] = useState<string>("");
     const [categoryID, setCategoryID] = useState<string>("");
     const [productTypeID, setProductTypeID] = useState<string>("");
@@ -33,7 +29,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
         product_category_id: categoryID,
         supplier_id: supplierID,
         product_type_id: productTypeID,
-        warehouseQuantities: warehouseQuantities,
     };
 
     const isTextChanged =
@@ -49,12 +44,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
         advanceInfo?.categories.map((category) => ({
             id: category.product_category_id,
             name: category.product_category_name,
-        })) || [];
-
-    const formatDataWarehouse =
-        advanceInfo?.warehouse.map((warehouse) => ({
-            id: warehouse.warehouse_id,
-            name: warehouse.warehouse_name,
         })) || [];
 
     const formatDataSupplier =
@@ -89,36 +78,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
         });
     };
 
-    const handleSetQuantityProduct = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        warehouse: { id: number; name: string },
-    ) => {
-        const newQuantity = Number(e.target.value);
-
-        setWarehouseQuantities((prev) => {
-            const exists = prev.find((x) => x.warehouse_id === warehouse.id);
-
-            if (exists) {
-                return prev.map((item) =>
-                    item.warehouse_id === warehouse.id
-                        ? {
-                              ...item,
-                              quantity: newQuantity,
-                          }
-                        : item,
-                );
-            } else {
-                return [
-                    ...prev,
-                    {
-                        warehouse_id: warehouse.id,
-                        quantity: newQuantity,
-                    },
-                ];
-            }
-        });
-    };
-
     const handleGetProductDetail = async (product_id: number) => {
         try {
             if (advanceInfo) {
@@ -147,7 +106,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
                 setName(productDetail.product_name);
                 setPrice(productDetail.price.toString());
                 setDescription(productDetail.product_description);
-                setWarehouseQuantities(productDetail.Inventories);
 
                 setOriginalData({
                     product_name: productDetail.product_name,
@@ -173,7 +131,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         formatDataProductType
                             .find((item) => item.name === productDetail.type)
                             ?.id.toString() || "",
-                    warehouseQuantities: productDetail.Inventories,
                 });
             }
         } catch (error) {
@@ -201,22 +158,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
             changes.subImages = validSubImages;
         }
 
-        const originalWarehouses =
-            (
-                originalData as {
-                    warehouseQuantities?: WarehouseQuantity[];
-                }
-            ).warehouseQuantities || [];
-
-        const diffWarehouses = warehouseQuantities.filter((w) => {
-            const old = (originalWarehouses as WarehouseQuantity[]).find(
-                (o) => o.warehouse_id === w.warehouse_id,
-            );
-            return !old || old.quantity !== w.quantity;
-        });
-
-        changes.warehouseQuantities = diffWarehouses;
-
         return changes;
     };
 
@@ -236,8 +177,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
                 });
             } else if (key === "mainImage" && value instanceof File) {
                 formData.append("mainImage", value);
-            } else if (key === "warehouseQuantities" && Array.isArray(value)) {
-                formData.append("warehouseQuantities", JSON.stringify(value));
             } else {
                 formData.append(key, value as string);
             }
@@ -343,40 +282,6 @@ function EditProduct({ id, popup }: EditPopupPros) {
                             setValue={setSupplierID}
                             options={formatDataSupplier}
                         />
-
-                        {/* Inventory */}
-                        <div className="mt-6">
-                            <h3 className="mb-2 font-semibold">
-                                Inventory / Stock
-                            </h3>
-                            <div className="space-y-2">
-                                {formatDataWarehouse?.map((w) => (
-                                    <div
-                                        key={w.id}
-                                        className="flex items-center gap-4"
-                                    >
-                                        <label className="flex-1">
-                                            {w.name}
-                                        </label>
-
-                                        <input
-                                            type="number"
-                                            className="rounded-md bg-gray-100 p-2"
-                                            placeholder="0"
-                                            value={
-                                                warehouseQuantities.find(
-                                                    (x) =>
-                                                        x.warehouse_id === w.id,
-                                                )?.quantity || ""
-                                            }
-                                            onChange={(e) =>
-                                                handleSetQuantityProduct(e, w)
-                                            }
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
                     </div>
 
                     {/* Images */}

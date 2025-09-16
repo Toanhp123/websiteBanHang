@@ -1,20 +1,21 @@
+import type { UseFormRegisterReturn } from "react-hook-form";
 import InputForDashboard from "./InputForDashboard";
 import imageUpload from "@/assets/images/background/imageUpload.png";
 
 type InputImageUploadPros = {
     id?: string | null;
-    required?: boolean;
     image: File | null;
-    setImage?: React.Dispatch<React.SetStateAction<File | null>>;
     setListImage?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    register?: UseFormRegisterReturn;
+    error?: string | undefined;
 };
 
 function InputImageUpload({
     id = null,
-    required = true,
     image,
-    setImage,
     setListImage,
+    register,
+    error,
 }: InputImageUploadPros) {
     return (
         <div className="shadow-light space-y-4 rounded-2xl p-2">
@@ -28,12 +29,12 @@ function InputImageUpload({
 
             <InputForDashboard
                 id={id}
-                required={required}
                 type="file"
                 acceptFile="image/*"
-                setFile={setImage}
                 file={image}
                 setListFile={setListImage}
+                register={register}
+                error={error}
             />
         </div>
     );
