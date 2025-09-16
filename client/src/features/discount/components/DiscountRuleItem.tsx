@@ -4,8 +4,8 @@ import type { AddDiscountFormInputs } from "../validations/addDiscount.schema";
 import { Button, Dropdown, InputForDashboard } from "@/components/shared";
 import { RulePromotion } from "@/constants/promotion.constants";
 
-const operators = [">=", "<=", "==", ">", "<"].map((op, idx) => ({
-    id: idx + 1,
+const operators = [">=", "<=", "==", ">", "<"].map((op) => ({
+    id: op,
     name: op,
 }));
 

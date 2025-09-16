@@ -3,16 +3,12 @@ import { setStateMenuPopup } from "../redux/addCartMenuPopup.slice";
 import { selectCart } from "@/features/cart/redux/cart.slice";
 import Button from "@/components/shared/Button";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getNumberItemInCart } from "@/features/cart/services/cart.api";
 
 function AddToCartPopup() {
     const dispatch = useAppDispatch();
     const cart = useAppSelector(selectCart);
     const lastItem = cart.length > 0 ? cart.at(-1) : null;
     const navigate = useNavigate();
-
-    const [numberItem, setNumberItem] = useState<number>(0);
 
     const handleClosePopup = () => {
         dispatch(setStateMenuPopup(false));
@@ -23,25 +19,6 @@ function AddToCartPopup() {
 
         navigate("/cartShop");
     };
-
-    const handleGetNumberItemInCart = async () => {
-        try {
-            const res = await getNumberItemInCart();
-
-            if (typeof res === "number") {
-                setNumberItem(res);
-            } else {
-                setNumberItem(cart.length);
-            }
-        } catch (error) {
-            console.error("Failed to fetch number of items in cart:", error);
-            setNumberItem(cart.length);
-        }
-    };
-
-    useEffect(() => {
-        handleGetNumberItemInCart();
-    }, []);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
@@ -94,7 +71,7 @@ function AddToCartPopup() {
                         textSize="small"
                     />
                     <Button
-                        text={`View My Cart (${numberItem})`}
+                        text={`View My Cart`}
                         bgColor="bg-main-primary"
                         onClick={handleGoToCart}
                         textColor="text-white"

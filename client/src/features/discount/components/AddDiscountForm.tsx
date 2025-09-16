@@ -9,6 +9,7 @@ import {
     discountSchema,
     type AddDiscountFormInputs,
 } from "../validations/addDiscount.schema";
+import DiscountResultForm from "./DiscountResultForm";
 
 function AddDiscountForm() {
     const tabs: ("info" | "rules" | "effect")[] = ["info", "rules", "effect"];
@@ -18,24 +19,27 @@ function AddDiscountForm() {
 
     const methods = useForm<AddDiscountFormInputs>({
         resolver: yupResolver(discountSchema),
-        mode: "onBlur",
+        mode: "onChange",
         defaultValues: {
-            rules: [{ rule_type_name: "", rule_operator: "", rule_value: "" }],
+            rules: [{ rule_type_id: "", rule_operator: "", rule_value: "" }],
         },
     });
 
-    const { handleSubmit, trigger } = methods;
+    const {
+        handleSubmit,
+        trigger,
+        formState: { isValid, isSubmitting },
+    } = methods;
 
     const onSubmit = (data: AddDiscountFormInputs) => {
         console.log("Submit discount:", data);
     };
 
-    // validate trước khi chuyển tab
     const handleTabChange = async (nextTab: "info" | "rules" | "effect") => {
         const currentIndex = tabs.indexOf(activeTab);
         const nextIndex = tabs.indexOf(nextTab);
 
-        // TODO: tí làm xong thì uncomment
+        // TODO: tí uncomment sau
         // if (nextIndex > currentIndex) {
         //     const valid = await trigger(activeTab);
         //     if (!valid) return;
@@ -104,14 +108,23 @@ function AddDiscountForm() {
                         className={activeTab === "effect" ? "block" : "hidden"}
                     >
                         <DiscountEffectForm />
+
+                        {activeTab === "effect" && isValid && (
+                            <DiscountResultForm />
+                        )}
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="mt-6 flex justify-end gap-4">
+                <div className="flex justify-end">
                     <button
                         type="submit"
-                        className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white"
+                        disabled={!isValid || isSubmitting}
+                        className={`rounded px-4 py-2 text-white ${
+                            !isValid || isSubmitting
+                                ? "cursor-not-allowed bg-gray-400"
+                                : "bg-main-primary hover:bg-main-secondary"
+                        }`}
                     >
                         Save Discount
                     </button>

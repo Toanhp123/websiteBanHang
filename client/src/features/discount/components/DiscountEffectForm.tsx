@@ -40,7 +40,7 @@ function DiscountEffectForm() {
     };
 
     useEffect(() => {
-        if (rules[0]?.rule_type_id) {
+        if (rules[0].rule_type_id) {
             handleGetPromotionEffectInfo();
         }
     }, [rules]);
