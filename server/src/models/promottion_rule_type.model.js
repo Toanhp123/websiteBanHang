@@ -18,6 +18,10 @@ const PromotionRuleType = sequelize.define(
 			type: DataTypes.TEXT,
 			allowNull: false,
 		},
+		rule_value_template: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+		},
 	},
 	{
 		tableName: "promotion_rule_type",

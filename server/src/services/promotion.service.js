@@ -1,11 +1,16 @@
+const { PromotionError } = require("../constants/errorCode.constants");
 const {
 	sequelize,
 	PromotionRuleType,
+	PromotionRule,
 	PromotionRangeRuleCompatibility,
 	PromotionRuleCompatibility,
 	RuleEffectCompatibility,
 	PromotionEffectType,
+	Promotion,
+	PromotionEffect,
 } = require("../models");
+const { throwServerError } = require("../utils/errorThrowFunc");
 const { applyPromotion } = require("../utils/handleDiscount");
 const {
 	intersectionPromotionEffectType,
@@ -82,6 +87,10 @@ class PromotionService {
 						),
 						"rule_type_description",
 					],
+					[
+						sequelize.col("PromotionRuleType.rule_value_template"),
+						"rule_value_template",
+					],
 				],
 				where: { range_apply },
 				raw: true,
@@ -100,6 +109,7 @@ class PromotionService {
 										"rule_type_id",
 										"rule_type_name",
 										"rule_type_description",
+										"rule_value_template",
 									],
 								},
 							],
@@ -142,6 +152,58 @@ class PromotionService {
 		);
 
 		return result;
+	}
+
+	async createPromotion(data) {
+		const transaction = await sequelize.transaction();
+		const info = data.info;
+		const rules = data.rules;
+		const effect = data.effect;
+
+		try {
+			const promotion = await Promotion.create(
+				{ ...info },
+				{ transaction }
+			);
+
+			const promotion_id = promotion.promotion_id;
+
+			const listRule = rules.map((rule) => {
+				return {
+					promotion_id,
+					rule_type_id: rule.rule_type_id,
+					rule_operator: rule.rule_operator,
+					rule_value: rule.rule_value ? rule.rule_value : null,
+					product_id: rule.product_id ? rule.product_id : null,
+				};
+			});
+
+			await PromotionRule.bulkCreate(listRule, { transaction });
+
+			await PromotionEffect.create(
+				{
+					promotion_id,
+					effect_type_id: effect.effect_type_id,
+					effect_value: effect.effect_value
+						? effect.effect_value
+						: null,
+					product_id: effect.product_id ? effect.product_id : null,
+				},
+				{ transaction }
+			);
+
+			transaction.commit();
+
+			return { message: "Create discount success", success: true };
+		} catch (error) {
+			transaction.rollback();
+			console.log(error);
+
+			throwServerError(
+				"Can't create discount",
+				PromotionError.CREATE_ERROR
+			);
+		}
 	}
 }
 

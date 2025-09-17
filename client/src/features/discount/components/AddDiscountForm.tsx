@@ -10,6 +10,7 @@ import {
     type AddDiscountFormInputs,
 } from "../validations/addDiscount.schema";
 import DiscountResultForm from "./DiscountResultForm";
+import { createDiscount } from "../services/discount.api";
 
 function AddDiscountForm() {
     const tabs: ("info" | "rules" | "effect")[] = ["info", "rules", "effect"];
@@ -20,9 +21,6 @@ function AddDiscountForm() {
     const methods = useForm<AddDiscountFormInputs>({
         resolver: yupResolver(discountSchema),
         mode: "onChange",
-        defaultValues: {
-            rules: [{ rule_type_id: "", rule_operator: "", rule_value: "" }],
-        },
     });
 
     const {
@@ -31,21 +29,30 @@ function AddDiscountForm() {
         formState: { isValid, isSubmitting },
     } = methods;
 
-    const onSubmit = (data: AddDiscountFormInputs) => {
-        console.log("Submit discount:", data);
-    };
-
     const handleTabChange = async (nextTab: "info" | "rules" | "effect") => {
         const currentIndex = tabs.indexOf(activeTab);
         const nextIndex = tabs.indexOf(nextTab);
 
-        // TODO: tí uncomment sau
-        // if (nextIndex > currentIndex) {
-        //     const valid = await trigger(activeTab);
-        //     if (!valid) return;
-        // }
+        if (nextIndex > currentIndex) {
+            const valid = await trigger(activeTab);
+            if (!valid) return;
+        }
 
         setActiveTab(nextTab);
+    };
+
+    const onSubmit = async (data: AddDiscountFormInputs) => {
+        console.log("Submit discount:", data);
+
+        try {
+            const res = await createDiscount(data);
+
+            if (res.success) {
+                console.log(res.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

@@ -1,7 +1,7 @@
 import type { UseFormRegisterReturn } from "react-hook-form";
 
 type DropdownPros = {
-    options: { id: number | string; name: string }[];
+    options: { id: number | string; name: string; optionData?: string }[];
     text: string;
     register?: UseFormRegisterReturn;
     error?: string;

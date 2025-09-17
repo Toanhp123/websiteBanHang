@@ -35,10 +35,12 @@ function DiscountRuleList() {
     const formatDataMainRuleType = ruleTypeList.map((ruleType) => ({
         id: ruleType.rule_type_id,
         name: ruleType.rule_type_description,
+        optionData: ruleType.rule_value_template,
     }));
     const formatDataCompatibleRuleType = compatibleRuleType.map((ruleType) => ({
         id: ruleType.rule_type_id,
         name: ruleType.rule_type_description,
+        optionData: ruleType.rule_value_template,
     }));
     const formatDataProductMinimal = productList.map((product) => ({
         id: product.product_id,
@@ -54,6 +56,8 @@ function DiscountRuleList() {
             const promotionRuleTypeList = await getAllPromotionRuleType(
                 watch("info.range_apply"),
             );
+
+            console.log(promotionRuleTypeList);
 
             setRuleTypeList(
                 Array.isArray(promotionRuleTypeList)
@@ -112,7 +116,9 @@ function DiscountRuleList() {
                 type="button"
                 onClick={() =>
                     append({
-                        rule_type_name: "",
+                        rule_type_id: "",
+                        rule_type_description: "",
+                        rule_value_template: "",
                         rule_operator: "",
                         rule_value: "",
                     })

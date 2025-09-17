@@ -79,4 +79,7 @@ module.exports = {
 	SupplierError: {
 		ADD_ITEM: "CAN'T ADD SUPPLIER",
 	},
+	PromotionError: {
+		CREATE_ERROR: "CAN'T CREATE PROMOTION",
+	},
 };

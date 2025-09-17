@@ -26,10 +26,12 @@ export type DiscountRuleItemProps = {
     mainRuleType: {
         id: number;
         name: string;
+        optionData: string;
     }[];
     compatibleRules: {
         id: number;
         name: string;
+        optionData: string;
     }[];
     productMinimalList: {
         id: number;
@@ -45,6 +47,7 @@ export type DiscountRuleType = {
     rule_type_id: number;
     rule_type_name: string;
     rule_type_description: string;
+    rule_value_template: string;
     compatible_rules: CompatibleRuleType[];
 };
 
@@ -54,4 +57,5 @@ export type DiscountEffectType = {
     effect_type_id: number;
     effect_type_name: string;
     effect_type_description: string;
+    rule_value_template: string;
 };

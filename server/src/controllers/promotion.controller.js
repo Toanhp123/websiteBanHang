@@ -45,6 +45,15 @@ class PromotionController {
 
 		res.json(effectType);
 	}
+
+	// [POST] /promotion/create
+	async createPromotion(req, res) {
+		const { ...data } = req.body;
+
+		const message = await promotionService.createPromotion(data);
+
+		res.json(message);
+	}
 }
 
 module.exports = new PromotionController();

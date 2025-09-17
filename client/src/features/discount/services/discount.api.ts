@@ -5,6 +5,7 @@ import type {
     PromotionDetail,
 } from "../types/discount.type";
 import axios from "@/utils/axiosInstance";
+import type { AddDiscountFormInputs } from "../validations/addDiscount.schema";
 
 export const getPromotion = async (
     promotion: string,
@@ -48,6 +49,14 @@ export const getAllPromotionEffectType = async (
             listRuleType: ruleType,
         },
     });
+
+    return res.data;
+};
+
+export const createDiscount = async (
+    data: AddDiscountFormInputs,
+): Promise<{ message: string; success: string }> => {
+    const res = await axios.post(`promotion/create`, { ...data });
 
     return res.data;
 };

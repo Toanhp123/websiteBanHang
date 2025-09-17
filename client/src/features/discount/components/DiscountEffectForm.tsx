@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { getAllPromotionEffectType } from "../services/discount.api";
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import { EffectPromotion } from "@/constants/promotion.constants";
+import { getProductMinimal } from "@/features/products/services/product.api";
 
 function DiscountEffectForm() {
+    const [productList, setProductList] = useState<ProductMinimal[]>([]);
     const [effectTypeList, setEffectTypeList] = useState<DiscountEffectType[]>(
         [],
     );
@@ -15,10 +17,19 @@ function DiscountEffectForm() {
         control,
         register,
         formState: { errors },
+        setValue,
     } = useFormContext<AddDiscountFormInputs>();
 
     const rules = useWatch({ control, name: "rules" });
-    const selectedEffect = useWatch({ control, name: "effect.effect_type_id" });
+    const selectedEffectID = useWatch({
+        control,
+        name: "effect.effect_type_id",
+    });
+
+    const formatDataProductMinimal = productList.map((product) => ({
+        id: product.product_id,
+        name: product.product_name,
+    }));
 
     const handleGetPromotionEffectInfo = async () => {
         try {
@@ -39,8 +50,39 @@ function DiscountEffectForm() {
         }
     };
 
+    const handleGetAllProduct = async () => {
+        try {
+            const productMinimalList = await getProductMinimal();
+
+            if (productMinimalList) {
+                setProductList(productMinimalList);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
-        if (rules[0].rule_type_id) {
+        if (!selectedEffectID) return;
+
+        const selectedEffect = effectTypeList.find(
+            (ef) => ef.effect_type_id.toString() === selectedEffectID,
+        );
+
+        setValue(
+            `effect.effect_type_description`,
+            selectedEffect?.effect_type_description,
+        );
+        setValue(`effect.effect_value`, "");
+        setValue(`effect.product_id`, "");
+
+        if (selectedEffectID === "3") {
+            handleGetAllProduct();
+        }
+    }, [selectedEffectID]);
+
+    useEffect(() => {
+        if (rules?.[0]?.rule_type_id) {
             handleGetPromotionEffectInfo();
         }
     }, [rules]);
@@ -62,7 +104,7 @@ function DiscountEffectForm() {
                 />
 
                 {/* input dynamic theo effect */}
-                {selectedEffect === EffectPromotion.DISCOUNT_PERCENT && (
+                {selectedEffectID === EffectPromotion.DISCOUNT_PERCENT && (
                     <InputForDashboard
                         label="Percent (%)"
                         register={register("effect.effect_value")}
@@ -70,7 +112,7 @@ function DiscountEffectForm() {
                     />
                 )}
 
-                {selectedEffect === EffectPromotion.DISCOUNT_AMOUNT && (
+                {selectedEffectID === EffectPromotion.DISCOUNT_AMOUNT && (
                     <InputForDashboard
                         label="Amount"
                         register={register("effect.effect_value")}
@@ -78,19 +120,13 @@ function DiscountEffectForm() {
                     />
                 )}
 
-                {selectedEffect === EffectPromotion.BUY_X_GIFT_Y && (
-                    <div className="grid grid-cols-2 gap-4">
-                        <InputForDashboard
-                            label="Buy X"
-                            register={register("effect.product_id")}
-                            error={errors.effect?.product_id?.message}
-                        />
-                        <InputForDashboard
-                            label="Gift Y"
-                            register={register("effect.product_id")}
-                            error={errors.effect?.product_id?.message}
-                        />
-                    </div>
+                {selectedEffectID === EffectPromotion.BUY_X_GIFT_Y && (
+                    <Dropdown
+                        text="Gift"
+                        options={formatDataProductMinimal}
+                        register={register("effect.product_id")}
+                        error={errors.effect?.product_id?.message}
+                    />
                 )}
             </div>
         </div>

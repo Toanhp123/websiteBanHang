@@ -9,6 +9,7 @@ const {
 	WarehouseError,
 	EmployeeError,
 	SupplierError,
+	PromotionError,
 } = require("../constants/errorCode.constants");
 
 const AppError = require("../utils/errorCustom.util");
@@ -73,6 +74,8 @@ const errorHandler = (err, req, res, next) => {
 		EmployeeError.ADD_ERROR,
 
 		SupplierError.ADD_ITEM,
+
+		PromotionError.CREATE_ERROR,
 	];
 
 	const statusCode = isAppError ? err.statusCode : 500;

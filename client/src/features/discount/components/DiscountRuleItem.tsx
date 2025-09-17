@@ -3,6 +3,7 @@ import type { DiscountRuleItemProps } from "../types/discount.type";
 import type { AddDiscountFormInputs } from "../validations/addDiscount.schema";
 import { Button, Dropdown, InputForDashboard } from "@/components/shared";
 import { RulePromotion } from "@/constants/promotion.constants";
+import { useEffect } from "react";
 
 const operators = [">=", "<=", "==", ">", "<"].map((op) => ({
     id: op,
@@ -21,9 +22,29 @@ function DiscountRuleItem({
         register,
         watch,
         formState: { errors },
+        setValue,
     } = useFormContext<AddDiscountFormInputs>();
 
-    const selectedRuleType = watch(`rules.${index}.rule_type_id`);
+    const selectedRuleTypeId = watch(`rules.${index}.rule_type_id`);
+
+    useEffect(() => {
+        if (!selectedRuleTypeId) return;
+
+        const selectedRuleType = (
+            index === 0 ? mainRuleType : compatibleRules
+        ).find((r) => r.id.toString() === selectedRuleTypeId);
+
+        if (!selectedRuleType) return;
+
+        setValue(`rules.${index}.rule_type_description`, selectedRuleType.name);
+        setValue(
+            `rules.${index}.rule_value_template`,
+            selectedRuleType.optionData || "",
+        );
+        setValue(`rules.${index}.rule_value`, "");
+        setValue(`rules.${index}.product_id`, "");
+        setValue(`rules.${index}.product_category_id`, "");
+    }, [selectedRuleTypeId]);
 
     return (
         <div className="mb-3 flex items-center gap-4 rounded border p-3">
@@ -48,7 +69,7 @@ function DiscountRuleItem({
             </div>
 
             {/* dynamic input */}
-            {selectedRuleType === RulePromotion.MIN_INVOICE_AMOUNT && (
+            {selectedRuleTypeId === RulePromotion.MIN_INVOICE_AMOUNT && (
                 <div className="max-w-[150px]">
                     <InputForDashboard
                         label="Amount"
@@ -58,7 +79,7 @@ function DiscountRuleItem({
                 </div>
             )}
 
-            {selectedRuleType === RulePromotion.MIN_PRODUCT_QTY && (
+            {selectedRuleTypeId === RulePromotion.MIN_PRODUCT_QTY && (
                 <div className="max-w-[150px]">
                     <InputForDashboard
                         label="Quantity"
@@ -68,7 +89,7 @@ function DiscountRuleItem({
                 </div>
             )}
 
-            {selectedRuleType === RulePromotion.PRODUCT_CATEGORY && (
+            {selectedRuleTypeId === RulePromotion.PRODUCT_CATEGORY && (
                 <div className="flex-1">
                     <Dropdown
                         text="Category"
@@ -80,7 +101,7 @@ function DiscountRuleItem({
                 </div>
             )}
 
-            {selectedRuleType === RulePromotion.PRODUCT_ID && (
+            {selectedRuleTypeId === RulePromotion.PRODUCT_ID && (
                 <div className="flex-1">
                     <Dropdown
                         options={productMinimalList}

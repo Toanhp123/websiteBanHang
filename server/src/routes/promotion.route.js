@@ -1,4 +1,7 @@
-const { checkAccessToken } = require("../middlewares/auth.middleware");
+const {
+	checkAccessToken,
+	checkRole,
+} = require("../middlewares/auth.middleware");
 
 const express = require("express");
 const catchAsync = require("../utils/catchAsync");
@@ -25,6 +28,14 @@ router.get(
 	"/:promotion_id",
 	checkAccessToken,
 	catchAsync(promotionController.getDetailPromotion)
+);
+
+// [POST] /promotion/create
+router.post(
+	"/create",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(promotionController.createPromotion)
 );
 
 // [POST] /promotion/check

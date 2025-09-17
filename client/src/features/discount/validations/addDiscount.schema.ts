@@ -37,12 +37,15 @@ export const discountSchema = yup.object().shape({
                 rule_value: yup.string().nullable(),
                 product_category_id: yup.string().nullable(),
                 product_id: yup.string().nullable(),
+                rule_type_description: yup.string().optional(),
+                rule_value_template: yup.string().optional(),
             }),
         )
         .min(1, "At least one rule is required")
         .required("Discount rule is required"),
     effect: yup.object().shape({
         effect_type_id: yup.string().required("Effect type is required"),
+        effect_type_description: yup.string().optional(),
         effect_value: yup.string().nullable(),
         product_id: yup.string().nullable(),
     }),
