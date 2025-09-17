@@ -26,6 +26,12 @@ ProductCategory.associate = (models) => {
 	ProductCategory.hasMany(models.Product, {
 		foreignKey: "product_category_id",
 	});
+	ProductCategory.hasMany(models.PromotionCategory, {
+		foreignKey: "product_category_id",
+	});
+	ProductCategory.hasMany(models.PromotionRule, {
+		foreignKey: "product_category_id",
+	});
 };
 
 module.exports = ProductCategory;

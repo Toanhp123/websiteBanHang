@@ -29,6 +29,10 @@ const PromotionRule = sequelize.define(
 			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
+		product_category_id: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
 	},
 	{
 		tableName: "promotion_rule",
@@ -45,6 +49,9 @@ PromotionRule.associate = (models) => {
 	});
 	PromotionRule.belongsTo(models.PromotionRuleType, {
 		foreignKey: "rule_type_id",
+	});
+	PromotionRule.belongsTo(models.ProductCategory, {
+		foreignKey: "product_category_id",
 	});
 };
 

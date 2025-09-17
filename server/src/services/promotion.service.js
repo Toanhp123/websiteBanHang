@@ -1,4 +1,5 @@
 const { PromotionError } = require("../constants/errorCode.constants");
+const { RulePromotion } = require("../constants/promotion.constants");
 const {
 	sequelize,
 	PromotionRuleType,
@@ -8,7 +9,10 @@ const {
 	RuleEffectCompatibility,
 	PromotionEffectType,
 	Promotion,
+	PromotionProduct,
 	PromotionEffect,
+	PromotionCategory,
+	CustomerPromotion,
 } = require("../models");
 const { throwServerError } = require("../utils/errorThrowFunc");
 const { applyPromotion } = require("../utils/handleDiscount");
@@ -175,10 +179,15 @@ class PromotionService {
 					rule_operator: rule.rule_operator,
 					rule_value: rule.rule_value ? rule.rule_value : null,
 					product_id: rule.product_id ? rule.product_id : null,
+					product_category_id: rule.product_category_id
+						? rule.product_category_id
+						: null,
 				};
 			});
 
-			await PromotionRule.bulkCreate(listRule, { transaction });
+			await PromotionRule.bulkCreate(listRule, {
+				transaction,
+			});
 
 			await PromotionEffect.create(
 				{
@@ -191,6 +200,38 @@ class PromotionService {
 				},
 				{ transaction }
 			);
+
+			if (info.range_apply === "product") {
+				if (rules[0].rule_type_id === RulePromotion.PRODUCT_ID) {
+					await PromotionProduct.create(
+						{
+							promotion_id,
+							product_id: rules[0].product_id,
+						},
+						{ transaction }
+					);
+				}
+
+				if (rules[0].rule_type_id === RulePromotion.PRODUCT_CATEGORY) {
+					await PromotionCategory.create(
+						{
+							promotion_id,
+							product_category_id: rules[0].product_category_id,
+						},
+						{ transaction }
+					);
+				}
+			}
+
+			if (info.range_apply === "invoice") {
+				await CustomerPromotion.create(
+					{
+						promotion_id,
+						all_customers: true,
+					},
+					{ transaction }
+				);
+			}
 
 			transaction.commit();
 
