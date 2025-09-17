@@ -2,11 +2,13 @@ import axios from "@/utils/axiosInstance";
 import type {
     ExportBasicInfoResponse,
     ExportDetail,
+    Inventory,
     InventoryAuditBasicInfoResponse,
     ReceiptBasicInfoResponse,
     ReceiptDetail,
     Warehouse,
 } from "../types/warehouse.type";
+import type { WarehouseImportFormInputs } from "../validations/warehouseImport.schema";
 
 export const getReceiptBasicInfo = async (
     limit: number,
@@ -94,6 +96,33 @@ export const addWarehouse = async ({
     ...WarehouseInfo
 }): Promise<{ message: string; success: boolean }> => {
     const res = await axios.post(`warehouse/addWarehouse`, { WarehouseInfo });
+
+    return res.data;
+};
+
+export const getInventoryInWarehouse = async (
+    warehouse_id: number,
+): Promise<Inventory[]> => {
+    const res = await axios.get(`warehouse/inventory/${warehouse_id}`);
+
+    return res.data;
+};
+
+export const getInventoryInWarehouseBySupplier = async (
+    warehouse_id: number,
+    supplier_id: string,
+): Promise<Inventory[]> => {
+    const res = await axios.get(
+        `warehouse/inventory/${warehouse_id}?supplier_id=${supplier_id}`,
+    );
+
+    return res.data;
+};
+
+export const createWarehouseImport = async (
+    data: WarehouseImportFormInputs,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.post(`warehouse/import`, { data });
 
     return res.data;
 };

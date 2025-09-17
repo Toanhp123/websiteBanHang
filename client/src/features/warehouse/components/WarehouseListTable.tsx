@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import type { EditPopupPros, Warehouse } from "../types/warehouse.type";
 import { deleteWarehouse, getAllWarehouse } from "../services/warehouse.api";
+import { useNavigate } from "react-router-dom";
 
 function WarehouseListTable({ id, popup }: EditPopupPros) {
+    const navigate = useNavigate();
     const [warehouseList, setWarehouseList] = useState<Warehouse[]>([]);
+    const [editMenu, setEditMenu] = useState<number | null>(null);
     const [reload, setReload] = useState(false);
 
     const handleGetAllWarehouse = async () => {
@@ -14,6 +17,10 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const handleOpenEditMenu = (warehouse_id: number) => {
+        setEditMenu((prev) => (prev === warehouse_id ? null : warehouse_id));
     };
 
     const handleDeleteWarehouse = async (warehouse_id: number) => {
@@ -33,7 +40,14 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
     }, [id, reload]);
 
     return (
-        <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
+        <div
+            className="space-y-8 rounded-2xl bg-white px-8 py-6"
+            onClick={() => {
+                if (editMenu) {
+                    setEditMenu(null);
+                }
+            }}
+        >
             <div>
                 <p className="font-semibold">
                     We found {warehouseList.length} result for you
@@ -74,29 +88,57 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
                                     warehouse.employee_last_name}
                             </td>
                             <td className="px-4 py-2 text-center">
-                                <div className="flex w-full items-center justify-center gap-4">
+                                <div className="relative">
                                     <button
-                                        className="font-semibold text-green-600 hover:text-green-500"
                                         onClick={() =>
-                                            popup(
-                                                "warehouse",
-                                                warehouse.warehouse_id.toString(),
-                                            )
-                                        }
-                                    >
-                                        Edit
-                                    </button>
-
-                                    <button
-                                        className="font-semibold text-red-600 hover:text-red-500"
-                                        onClick={() =>
-                                            handleDeleteWarehouse(
+                                            handleOpenEditMenu(
                                                 warehouse.warehouse_id,
                                             )
                                         }
+                                        className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
                                     >
-                                        Delete
+                                        <i className="fa-solid fa-ellipsis"></i>
                                     </button>
+
+                                    {editMenu === warehouse.warehouse_id && (
+                                        <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
+                                            <div className="flex h-full w-full flex-col px-4 py-2">
+                                                <button
+                                                    className="text-main-primary hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
+                                                    onClick={() =>
+                                                        popup(
+                                                            "warehouse",
+                                                            warehouse.warehouse_id.toString(),
+                                                        )
+                                                    }
+                                                >
+                                                    Edit
+                                                </button>
+
+                                                <button
+                                                    className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                                    onClick={() =>
+                                                        handleDeleteWarehouse(
+                                                            warehouse.warehouse_id,
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+
+                                                <button
+                                                    className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/dashboard/inventory/${warehouse.warehouse_id}`,
+                                                        )
+                                                    }
+                                                >
+                                                    Detail
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </td>
                         </tr>

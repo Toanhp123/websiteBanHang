@@ -41,6 +41,14 @@ router.get(
 	catchAsync(warehouseController.getInventoryAuditBasicInfo)
 );
 
+// [GET] /warehouse/inventory/:warehouse_id?supplier_id=:supplier_id
+router.get(
+	"/inventory/:warehouse_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.getInventory)
+);
+
 // [GET] /warehouse/export/:export_id
 router.get(
 	"/export/:export_id",
@@ -63,6 +71,14 @@ router.get(
 	checkAccessToken,
 	checkRole(["Admin", "Employee"]),
 	catchAsync(warehouseController.getAllWarehouse)
+);
+
+// [POST] /warehouse/import
+router.post(
+	"/import",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(warehouseController.createWarehouseImport)
 );
 
 // [PUT] /warehouse/:warehouse_id

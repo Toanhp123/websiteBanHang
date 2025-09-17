@@ -54,8 +54,8 @@ function Sidebar() {
             func: () => handleNavigate("supplierList"),
         },
         {
-            text: "Add Warehouse",
-            func: () => handleNavigate("addWarehouse"),
+            text: "Warehouse Management",
+            func: () => handleNavigate("warehouseManagement"),
         },
     ];
 

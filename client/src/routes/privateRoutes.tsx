@@ -8,7 +8,7 @@ import {
 import { RequireAuth } from "@/components/shared";
 import {
     AddDiscountPage,
-    AddWarehousePage,
+    WarehouseManagementPage,
     CustomerListPage,
     DashboardAddProductPage,
     DashboardHomePage,
@@ -16,6 +16,7 @@ import {
     DashboardProductListPage,
     EmployeeAddPage,
     EmployeeListPage,
+    InventoryListPage,
     SupplierListPage,
     WarehouseListPage,
     WarehouseTransactionsPage,
@@ -66,8 +67,13 @@ const privateRoutes = (
             />
 
             <Route
-                path="/dashboard/addWarehouse"
-                element={<AddWarehousePage />}
+                path="/dashboard/warehouseManagement"
+                element={<WarehouseManagementPage />}
+            />
+
+            <Route
+                path="/dashboard/inventory/:warehouse_id"
+                element={<InventoryListPage />}
             />
 
             <Route

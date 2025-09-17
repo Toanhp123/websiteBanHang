@@ -123,6 +123,29 @@ class WarehouseController {
 
 		res.json(message);
 	}
+
+	// [GET] warehouse/inventory/:warehouse_id
+	async getInventory(req, res) {
+		const { warehouse_id } = req.params;
+		const { supplier_id } = req.query;
+
+		const inventory = await warehouseService.getInventory(
+			warehouse_id,
+			supplier_id
+		);
+
+		res.json(inventory);
+	}
+
+	// [POST] warehouse/import
+	async createWarehouseImport(req, res) {
+		const { data } = req.body;
+		const { id } = req.user;
+
+		const message = await warehouseService.createWarehouseImport(id, data);
+
+		res.json(message);
+	}
 }
 
 module.exports = new WarehouseController();

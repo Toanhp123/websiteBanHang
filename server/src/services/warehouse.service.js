@@ -13,6 +13,8 @@ const {
 	Inventory,
 	Account,
 	Product,
+	ProductStatus,
+	WarehouseReceiptItem,
 } = require("../models");
 const { throwServerError } = require("../utils/errorThrowFunc");
 
@@ -314,7 +316,7 @@ class WarehouseService {
 		const transaction = await sequelize.transaction();
 
 		try {
-			await Warehouse.create(
+			const warehouse = await Warehouse.create(
 				{
 					warehouse_name: warehouseName,
 					location,
@@ -323,6 +325,17 @@ class WarehouseService {
 				},
 				{ transaction }
 			);
+
+			const products = await Product.findAll();
+
+			const inventories = products.map((p) => ({
+				product_id: p.product_id,
+				warehouse_id: warehouse.warehouse_id,
+				quantity: 0,
+				last_checked_at: new Date(),
+			}));
+
+			await Inventory.bulkCreate(inventories, { transaction });
 
 			transaction.commit();
 
@@ -334,6 +347,126 @@ class WarehouseService {
 
 			throwServerError(
 				"Can't add warehouse",
+				WarehouseError.CREATE_ERROR
+			);
+		}
+	}
+
+	async getInventory(warehouse_id, supplier_id) {
+		const where = { warehouse_id };
+
+		if (supplier_id) {
+			where["$Product.Supplier.supplier_id$"] = supplier_id;
+		}
+
+		return await Inventory.findAll({
+			include: [
+				{
+					model: Product,
+					attributes: [],
+					include: [
+						{ model: ProductStatus, attributes: [] },
+						{
+							model: Supplier,
+							attributes: [],
+						},
+					],
+				},
+			],
+			attributes: [
+				"quantity",
+				"last_checked_at",
+				[sequelize.col("Product.product_id"), "product_id"],
+				[sequelize.col("Product.product_name"), "product_name"],
+				[sequelize.col("Product.product_code"), "product_code"],
+				[
+					sequelize.col("Product.ProductStatus.product_status_name"),
+					"product_status_name",
+				],
+				[
+					sequelize.col("Product.Supplier.supplier_name"),
+					"supplier_name",
+				],
+				[sequelize.col("Product.Supplier.supplier_id"), "supplier_id"],
+			],
+			where,
+		});
+	}
+
+	async createWarehouseImport(account_id, data) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const account = await Account.findOne({ where: { account_id } });
+			const employee_id = account.employee_id;
+
+			const warehouseImport = await WarehouseReceipt.create(
+				{
+					supplier_id: data.supplier_id,
+					warehouse_id: data.warehouse_id,
+					employee_id,
+				},
+				{ transaction }
+			);
+
+			const receipt_id = warehouseImport.receipt_id;
+
+			for (const product of data.products) {
+				const product_price = await Product.findOne({
+					attributes: ["price"],
+					where: { product_id: product.product_id },
+					raw: true,
+				});
+
+				await WarehouseReceiptItem.create(
+					{
+						receipt_id,
+						quantity: product.quantity,
+						product_id: product.product_id,
+						unit_price: product_price.price,
+					},
+					{ transaction }
+				);
+
+				const inventory = await Inventory.findOne({
+					where: {
+						warehouse_id: data.warehouse_id,
+						product_id: product.product_id,
+					},
+				});
+
+				const oldQty = inventory.quantity;
+				const newQty = oldQty + product.quantity;
+
+				await inventory.update({ quantity: newQty }, { transaction });
+
+				await InventoryAudit.create(
+					{
+						warehouse_id: data.warehouse_id,
+						product_id: product.product_id,
+						employee_id,
+						old_quantity: oldQty,
+						new_quantity: newQty,
+						change_amount: product.quantity,
+						action: "IMPORT",
+					},
+					{ transaction }
+				);
+			}
+
+			transaction.commit();
+
+			return {
+				message: "create warehouse import success",
+				success: true,
+			};
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't create warehouse import",
 				WarehouseError.CREATE_ERROR
 			);
 		}

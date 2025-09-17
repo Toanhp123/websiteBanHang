@@ -76,3 +76,14 @@ export type Warehouse = {
     employee_last_name: string;
     employee_id: number;
 };
+
+export type Inventory = {
+    supplier_name: string;
+    supplier_id: string;
+    product_id: number;
+    product_name: string;
+    product_code: number;
+    quantity: number;
+    product_status_name: string;
+    last_checked_at: string;
+};
