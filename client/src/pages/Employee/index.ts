@@ -11,6 +11,7 @@ import { default as SupplierListPage } from "./SupplierListPage";
 import { default as CustomerListPage } from "./CustomerListPage";
 import { default as AddDiscountPage } from "./AddDiscountPage";
 import { default as InventoryListPage } from "./InventoryListPage";
+import { default as ListDiscountPage } from "./ListDiscountPage";
 
 export {
     DashboardHomePage,
@@ -26,4 +27,5 @@ export {
     CustomerListPage,
     AddDiscountPage,
     InventoryListPage,
+    ListDiscountPage,
 };
