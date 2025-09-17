@@ -1,17 +1,23 @@
 import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 import { useEffect, useState } from "react";
 import type { Employee } from "../types/accounts.type";
-import { deleteEmployee, getAllEmployee } from "../services/account.api";
+import {
+    deleteEmployee,
+    getAllEmployee,
+    recoverAccount,
+} from "../services/account.api";
 import { getRole } from "@/stores/authStore";
+import { Switch } from "@headlessui/react";
 
 function EmployeeListTable({ id, popup }: EditPopupPros) {
     const [editMenu, setEditMenu] = useState<number | null>(null);
     const [employee, setEmployee] = useState<Employee[]>([]);
     const [reload, setReload] = useState(false);
+    const [showDeleted, setShowDeleted] = useState(false);
 
     const handleGetAllEmployee = async () => {
         try {
-            const res = await getAllEmployee();
+            const res = await getAllEmployee(showDeleted);
 
             if (res) {
                 setEmployee(res);
@@ -39,9 +45,23 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
         }
     };
 
+    const handleRecoverAcc = async (employee_id: number) => {
+        try {
+            const res = await recoverAccount(employee_id);
+
+            if (res.success) {
+                console.log(res.message);
+
+                setShowDeleted(false);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         handleGetAllEmployee();
-    }, [id, reload]);
+    }, [id, reload, showDeleted]);
 
     return (
         <div
@@ -53,9 +73,30 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
             }}
         >
             <div>
-                <p className="font-semibold">
-                    We found {employee.length} employee for you
-                </p>
+                <div className="flex items-center justify-between">
+                    <p className="font-semibold">
+                        We found {employee.length} employee for you
+                    </p>
+                    <div className="flex items-center gap-2">
+                        <span className="font-semibold">Show deleted</span>
+
+                        <Switch
+                            checked={showDeleted}
+                            onChange={setShowDeleted}
+                            className={`${
+                                showDeleted ? "bg-green-500" : "bg-gray-300"
+                            } relative inline-flex h-6 w-11 items-center rounded-full`}
+                        >
+                            <span
+                                className={`${
+                                    showDeleted
+                                        ? "translate-x-6"
+                                        : "translate-x-1"
+                                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                            />
+                        </Switch>
+                    </div>
+                </div>
 
                 <div className="mt-4 border-b border-gray-300"></div>
             </div>
@@ -94,60 +135,76 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
                                 </td>
                                 {getRole() === "Admin" && (
                                     <td className="p-2 text-right">
-                                        <div className="relative">
+                                        {!showDeleted && (
+                                            <div className="relative">
+                                                <button
+                                                    onClick={() =>
+                                                        handleOpenEditMenu(
+                                                            item.employee_id,
+                                                        )
+                                                    }
+                                                    className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
+                                                >
+                                                    <i className="fa-solid fa-ellipsis"></i>
+                                                </button>
+
+                                                {editMenu ===
+                                                    item.employee_id && (
+                                                    <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
+                                                        <div className="flex h-full w-full flex-col px-4 py-2">
+                                                            <button
+                                                                className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
+                                                                onClick={() =>
+                                                                    popup(
+                                                                        "employee",
+                                                                        item.employee_id.toString(),
+                                                                    )
+                                                                }
+                                                            >
+                                                                Edit Employee
+                                                            </button>
+
+                                                            <button
+                                                                className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                                                onClick={() =>
+                                                                    handleDeleteEmployee(
+                                                                        item.employee_id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                Delete Employee
+                                                            </button>
+
+                                                            <button
+                                                                className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
+                                                                onClick={() =>
+                                                                    popup(
+                                                                        "employee",
+                                                                        item.employee_id.toString() +
+                                                                            "Detail",
+                                                                    )
+                                                                }
+                                                            >
+                                                                Detail Employee
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {showDeleted && (
                                             <button
+                                                className="font-semibold text-green-600 hover:text-green-500"
                                                 onClick={() =>
-                                                    handleOpenEditMenu(
+                                                    handleRecoverAcc(
                                                         item.employee_id,
                                                     )
                                                 }
-                                                className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
                                             >
-                                                <i className="fa-solid fa-ellipsis"></i>
+                                                Recover Acc
                                             </button>
-
-                                            {editMenu === item.employee_id && (
-                                                <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
-                                                    <div className="flex h-full w-full flex-col px-4 py-2">
-                                                        <button
-                                                            className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
-                                                            onClick={() =>
-                                                                popup(
-                                                                    "employee",
-                                                                    item.employee_id.toString(),
-                                                                )
-                                                            }
-                                                        >
-                                                            Edit Employee
-                                                        </button>
-
-                                                        <button
-                                                            className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                                                            onClick={() =>
-                                                                handleDeleteEmployee(
-                                                                    item.employee_id,
-                                                                )
-                                                            }
-                                                        >
-                                                            Delete Employee
-                                                        </button>
-
-                                                        <button
-                                                            className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
-                                                            onClick={() =>
-                                                                popup(
-                                                                    "employee",
-                                                                    item.employee_id.toString() +
-                                                                        "Detail",
-                                                                )
-                                                            }
-                                                        >
-                                                            Detail Employee
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
+                                        )}
                                     </td>
                                 )}
                             </tr>

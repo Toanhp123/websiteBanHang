@@ -94,7 +94,9 @@ class AccountController {
 
 	// [GET] /account/employee
 	async getAllEmployee(req, res) {
-		const allEmployee = await accountService.getAllEmployee();
+		const { show_deleted } = req.query;
+
+		const allEmployee = await accountService.getAllEmployee(show_deleted);
 
 		res.json(allEmployee);
 	}
@@ -182,6 +184,15 @@ class AccountController {
 			customer_id,
 			status
 		);
+
+		res.json(message);
+	}
+
+	// [PATCH] /account/employee/recover/:employee_id
+	async recoverEmployee(req, res) {
+		const { employee_id } = req.params;
+
+		const message = await accountService.recoverEmployee(employee_id);
 
 		res.json(message);
 	}

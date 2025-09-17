@@ -279,7 +279,7 @@ class WarehouseService {
 				transaction,
 			});
 
-			const account = await Account.findOne({ account_id });
+			const account = await Account.findOne({ where: { account_id } });
 
 			const employee_id = account.employee_id;
 
@@ -289,8 +289,8 @@ class WarehouseService {
 					product_id: inv.product_id,
 					employee_id: employee_id,
 					old_quantity: inv.quantity,
-					new_quantity: 0,
-					change_amount: -inv.quantity,
+					new_quantity: inv.quantity,
+					change_amount: 0,
 					action: "deactivate",
 				};
 			});

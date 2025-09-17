@@ -14,8 +14,12 @@ export const changePassword = async ({
     return res.data;
 };
 
-export const getAllEmployee = async (): Promise<Employee[]> => {
-    const res = await axios.get("/account/employee");
+export const getAllEmployee = async (
+    show_deleted: boolean,
+): Promise<Employee[]> => {
+    const res = await axios.get("/account/employee", {
+        params: { show_deleted },
+    });
 
     return res.data;
 };
@@ -86,6 +90,14 @@ export const updateAccountStatus = async (
     const res = await axios.patch(`/account/customer/status/${customer_id}`, {
         status,
     });
+
+    return res.data;
+};
+
+export const recoverAccount = async (
+    employee_id: number,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.patch(`/account/employee/recover/${employee_id}`);
 
     return res.data;
 };

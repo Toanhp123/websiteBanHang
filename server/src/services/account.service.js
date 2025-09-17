@@ -383,7 +383,16 @@ class AccountService {
 		}
 	}
 
-	async getAllEmployee() {
+	async getAllEmployee(show_deleted) {
+		let filter;
+		if (show_deleted === "true" || show_deleted === true) {
+			filter = { is_active: false };
+		} else if (show_deleted === "false" || show_deleted === false) {
+			filter = { is_active: true };
+		} else {
+			filter = {};
+		}
+
 		const employee = await Employee.findAll({
 			include: [
 				{
@@ -416,7 +425,7 @@ class AccountService {
 				[sequelize.col("Account.AccountRole.role_name"), "role_name"],
 				[sequelize.col("Account.email"), "email"],
 			],
-			where: { is_active: true },
+			where: filter,
 		});
 
 		return employee;
@@ -687,6 +696,35 @@ class AccountService {
 			throwServerError(
 				"Can't update account status",
 				AccountStatus.ERROR_UPDATE_STATUS
+			);
+		}
+	}
+
+	async recoverEmployee(employee_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Account.update(
+				{ account_status: "approved" },
+				{ where: { employee_id }, transaction }
+			);
+
+			await Employee.update(
+				{ is_active: true },
+				{ where: { employee_id }, transaction }
+			);
+
+			await transaction.commit();
+
+			return { message: "recover employee success", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't delete employee",
+				EmployeeError.UPDATE_ERROR
 			);
 		}
 	}

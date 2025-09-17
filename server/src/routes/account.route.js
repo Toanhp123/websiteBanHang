@@ -93,6 +93,14 @@ router.get(
 	catchAsync(accountController.getDetailEmployee)
 );
 
+// [PATCH] /account/employee/recover/:employee_id
+router.patch(
+	"/employee/recover/:employee_id",
+	checkAccessToken,
+	checkRole(["Admin"]),
+	catchAsync(accountController.recoverEmployee)
+);
+
 // [PATCH] /account/employee/:employee_id
 router.patch(
 	"/employee/:employee_id",
