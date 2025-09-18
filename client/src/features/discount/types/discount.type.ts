@@ -59,3 +59,30 @@ export type DiscountEffectType = {
     effect_type_description: string;
     rule_value_template: string;
 };
+
+export type PromotionEffect = {
+    effect_type_id: number;
+    effect_value: string | number;
+    product_id: number | null;
+};
+
+export type PromotionProduct = {
+    product_id: number;
+};
+
+export type PromotionCategory = {
+    product_category_id: number | null;
+};
+
+export type PromotionForProduct = {
+    promotion_id: number;
+    promotion_name: string;
+    promotion_status: string;
+    range_apply: "product" | "category";
+    distribution_type: string;
+    valid_from: string;
+    valid_to: string;
+    PromotionProducts?: PromotionProduct;
+    PromotionCategory?: PromotionCategory;
+    PromotionEffects: PromotionEffect;
+};

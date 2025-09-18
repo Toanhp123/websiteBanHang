@@ -60,3 +60,9 @@ export const createDiscount = async (
 
     return res.data;
 };
+
+export const getDiscountForProduct = async () => {
+    const res = await axios.get(`promotion/product`);
+
+    return res.data;
+};

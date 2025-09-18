@@ -1,4 +1,5 @@
 import type { Categories } from "@/features/categories/types/categories.type";
+import type { PromotionForProduct } from "@/features/discount/types/discount.type";
 import type {
     FilterState,
     SortOptions,
@@ -21,6 +22,8 @@ export interface Product {
     images: ProductImage[];
     Inventories: Inventory[];
     is_delete: boolean;
+    finalPrice?: number;
+    promotion?: PromotionForProduct;
 }
 
 export interface ProductDetail extends Product {
@@ -42,6 +45,7 @@ export type ItemProductPros = {
     category: string;
     totalStock: number;
     Inventories: Inventory[];
+    discountPrice?: number;
 };
 
 export type ItemStock = {
@@ -56,6 +60,8 @@ export type GetProductByConditionParams = {
     filterOption?: FilterState;
     option?: SortOptions;
     search?: string;
+    page: number;
+    itemsPerPage: number;
 };
 
 export type Warehouse = {

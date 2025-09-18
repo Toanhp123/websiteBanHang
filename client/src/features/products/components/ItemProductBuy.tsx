@@ -31,7 +31,11 @@ function ItemProductBuy() {
                 addToCart({
                     id_product: productDetail.product_id,
                     product: productDetail.product_name,
-                    price: productDetail.price,
+                    price:
+                        productDetail.finalPrice !== undefined &&
+                        productDetail.finalPrice !== null
+                            ? productDetail.finalPrice
+                            : productDetail.price,
                     img: mainImage,
                     quantity: quantity,
                     Inventories: productDetail.Inventories,
@@ -125,13 +129,20 @@ function ItemProductBuy() {
                     />
                 </div>
 
-                <div className="flex gap-2">
-                    <p className="text-2xl text-gray-500 line-through md:text-3xl">
-                        50.000₫
-                    </p>
-                    <p className="text-2xl md:text-3xl">
-                        {Number(productDetail.price)}₫
-                    </p>
+                <div className="flex items-center gap-2">
+                    {productDetail.finalPrice !== undefined &&
+                        productDetail.finalPrice !== null && (
+                            <span className="text-2xl text-gray-400 line-through">
+                                {Number(productDetail.price).toLocaleString()}₫
+                            </span>
+                        )}
+                    <span className="text-main-primary text-2xl font-semibold">
+                        {productDetail.finalPrice !== undefined &&
+                        productDetail.finalPrice !== null
+                            ? Number(productDetail.finalPrice).toLocaleString()
+                            : Number(productDetail.price).toLocaleString()}
+                        ₫
+                    </span>
                 </div>
 
                 <p className="text-disable">

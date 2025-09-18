@@ -15,7 +15,12 @@ export const getProductByCondition = async ({
     filterOption,
     option,
     search,
-}: GetProductByConditionParams): Promise<Product[]> => {
+    page,
+    itemsPerPage,
+}: GetProductByConditionParams): Promise<{
+    data: Product[];
+    total: number;
+}> => {
     const params: Record<string, string | number | boolean | null> = {};
 
     if (filterOption?.category) params.category = filterOption.category;
@@ -27,7 +32,10 @@ export const getProductByCondition = async ({
 
     if (search) params.search = search;
 
-    const res = await axios.get<Product[]>("product", {
+    params.page = page;
+    params.itemsPerPage = itemsPerPage;
+
+    const res = await axios.get("product", {
         params,
     });
 

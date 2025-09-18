@@ -20,15 +20,20 @@ const ProductFilter = (query) => {
 	const having = {};
 	const order = [];
 
+	const offset = (Number(query.page) - 1) * Number(query.itemsPerPage);
+	const limit = Number(query.itemsPerPage);
+
 	if (query.search) {
+		const searchTerm = query.search.replace(/[%_]/g, "\\$&");
 		where[Op.or] = [
-			{ product_name: { [Op.like]: `%${query.search}%` } },
-			{ product_description: { [Op.like]: `%${query.search}%` } },
+			{ product_name: { [Op.like]: `%${searchTerm}%` } },
+			{ product_description: { [Op.like]: `%${searchTerm}%` } },
 		];
 	}
 
 	if (query.category) having.category = query.category;
 	if (query.productType) having.type = query.productType;
+
 	if (query.availability === "Hết hàng") {
 		having.totalStock = 0;
 	} else if (query.availability === "Còn hàng") {
@@ -58,7 +63,7 @@ const ProductFilter = (query) => {
 		order.push(["product_date_add", "DESC"]); // default
 	}
 
-	return { where, having, order };
+	return { where, having, order, offset, limit };
 };
 
 module.exports = {

@@ -9,12 +9,11 @@ import { useSearchParams } from "react-router-dom";
 function ListProduct() {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search") || "";
-    const { product, loading } = useProduct(search);
     const [page, setPage] = useState<number>(1);
-
-    const startIndex: number = (page - 1) * ITEMS_PER_PAGE;
-    const endIndex: number = startIndex + ITEMS_PER_PAGE;
-    const visibleItems = product.slice(startIndex, endIndex);
+    const { product, loading, totalItems } = useProduct({
+        search: search,
+        page: page,
+    });
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -25,7 +24,7 @@ function ListProduct() {
     return (
         <div className="space-y-12">
             <ul className="grid grid-cols-3 gap-6 2xl:grid-cols-4">
-                {visibleItems.map((item) => (
+                {product.map((item) => (
                     <li key={item.product_id}>
                         <ItemProduct
                             product_id={item.product_id}
@@ -35,6 +34,7 @@ function ListProduct() {
                             price={item.price}
                             category={item.category}
                             Inventories={item.Inventories}
+                            discountPrice={item.finalPrice}
                         />
                     </li>
                 ))}
@@ -43,7 +43,7 @@ function ListProduct() {
             <Pagination
                 currentPage={page}
                 setPage={setPage}
-                totalPages={Math.ceil(product.length / ITEMS_PER_PAGE)}
+                totalPages={Math.ceil(totalItems / ITEMS_PER_PAGE)}
             />
         </div>
     );

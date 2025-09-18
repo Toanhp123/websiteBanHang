@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { PromotionError } = require("../constants/errorCode.constants");
 const { RulePromotion } = require("../constants/promotion.constants");
 const {
@@ -245,6 +246,69 @@ class PromotionService {
 				PromotionError.CREATE_ERROR
 			);
 		}
+	}
+
+	async getPromotionForProducts(productIds, categoryIds) {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		let promotions = await Promotion.findAll({
+			include: [
+				{
+					model: PromotionProduct,
+					attributes: ["product_id"],
+					required: false,
+					where: { product_id: productIds },
+				},
+				{
+					model: PromotionCategory,
+					attributes: ["product_category_id"],
+					as: "PromotionCategory",
+					required: false,
+					where: { product_category_id: categoryIds },
+				},
+				{
+					model: PromotionEffect,
+					attributes: [
+						"effect_type_id",
+						"effect_value",
+						"product_id",
+					],
+					required: true,
+				},
+			],
+			where: {
+				range_apply: "product",
+				promotion_status: "active",
+				valid_from: { [Op.lte]: today },
+				valid_to: { [Op.gte]: today },
+				[Op.or]: [
+					{ "$PromotionProducts.product_id$": { [Op.ne]: null } },
+					{
+						"$PromotionCategory.product_category_id$": {
+							[Op.ne]: null,
+						},
+					},
+				],
+			},
+			raw: true,
+			nest: true,
+		});
+
+		promotions = promotions.sort((a, b) => {
+			// 1 = product, 2 = category
+			const aType = a.PromotionProducts?.product_id ? 1 : 2;
+			const bType = b.PromotionProducts?.product_id ? 1 : 2;
+
+			if (aType !== bType) return aType - bType;
+			return (
+				// mới trước
+				new Date(b.created_at).getTime() -
+				new Date(a.created_at).getTime()
+			);
+		});
+
+		return promotions;
 	}
 }
 

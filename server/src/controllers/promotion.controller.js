@@ -54,6 +54,9 @@ class PromotionController {
 
 		res.json(message);
 	}
+
+	// [GET] /promotion/product
+	async getDiscountForProduct(req, res) {}
 }
 
 module.exports = new PromotionController();

@@ -23,6 +23,13 @@ router.get(
 	catchAsync(promotionController.getAllPromotionEffectType)
 );
 
+// [GET] /promotion/product
+router.get(
+	"/product",
+	checkAccessToken,
+	catchAsync(promotionController.getDiscountForProduct)
+);
+
 // [GET] /promotion/validate/:username
 router.get(
 	"/:promotion_id",

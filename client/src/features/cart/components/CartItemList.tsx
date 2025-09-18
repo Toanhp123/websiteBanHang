@@ -48,52 +48,61 @@ function CartItemList() {
 
                 <tbody>
                     {cart.length !== 0 &&
-                        cart.map((item) => (
-                            <tr key={item.id_product}>
-                                <td className="border-b border-gray-300">
-                                    <div className="ml-6 flex w-4 items-center justify-center">
-                                        <Button
-                                            onClick={() =>
-                                                handleDeleteItemCart(
-                                                    item.id_product,
-                                                )
-                                            }
-                                            icon="fa-solid fa-xmark"
-                                            bgColor=""
-                                            textColor="text-black"
-                                            border=""
-                                        />
-                                    </div>
-                                </td>
-                                <td className="border-b border-gray-300 px-4 py-2">
-                                    <div className="my-3 flex items-center gap-4">
-                                        <div className="flex h-18 w-18 items-center justify-center rounded-xl border border-gray-300 p-1">
-                                            <img
-                                                src={`http://localhost:3000/${item.img}`}
-                                                alt="image"
+                        cart.map((item) => {
+                            const price =
+                                item.discountPrice !== null &&
+                                item.discountPrice !== undefined
+                                    ? item.discountPrice
+                                    : item.price;
+                            return (
+                                <tr key={item.id_product}>
+                                    <td className="border-b border-gray-300">
+                                        <div className="ml-6 flex w-4 items-center justify-center">
+                                            <Button
+                                                onClick={() =>
+                                                    handleDeleteItemCart(
+                                                        item.id_product,
+                                                    )
+                                                }
+                                                icon="fa-solid fa-xmark"
+                                                bgColor=""
+                                                textColor="text-black"
+                                                border=""
                                             />
                                         </div>
+                                    </td>
+                                    <td className="border-b border-gray-300 px-4 py-2">
+                                        <div className="my-3 flex items-center gap-4">
+                                            <div className="flex h-18 w-18 items-center justify-center rounded-xl border border-gray-300 p-1">
+                                                <img
+                                                    src={`http://localhost:3000/${item.img}`}
+                                                    alt="image"
+                                                />
+                                            </div>
 
-                                        <h1>{item.product}</h1>
-                                    </div>
-                                </td>
-                                <td className="border-b border-gray-300 px-4 py-2 text-left">
-                                    {item.price}
-                                </td>
-                                <td className="border-b border-gray-300 px-4 py-2 text-center">
-                                    <SelectQuantity
-                                        max={item.totalStock}
-                                        product_id={item.id_product}
-                                        quantity={quantities[item.id_product]}
-                                        setQuantityInList={setQuantities}
-                                        saveChangeCartToDatabase={true}
-                                    />
-                                </td>
-                                <td className="border-b border-gray-300 px-6 py-2 text-right font-semibold">
-                                    {item.price * item.quantity}₫
-                                </td>
-                            </tr>
-                        ))}
+                                            <h1>{item.product}</h1>
+                                        </div>
+                                    </td>
+                                    <td className="border-b border-gray-300 px-4 py-2 text-left">
+                                        {price}
+                                    </td>
+                                    <td className="border-b border-gray-300 px-4 py-2 text-center">
+                                        <SelectQuantity
+                                            max={item.totalStock}
+                                            product_id={item.id_product}
+                                            quantity={
+                                                quantities[item.id_product]
+                                            }
+                                            setQuantityInList={setQuantities}
+                                            saveChangeCartToDatabase={true}
+                                        />
+                                    </td>
+                                    <td className="border-b border-gray-300 px-6 py-2 text-right font-semibold">
+                                        {price * item.quantity}₫
+                                    </td>
+                                </tr>
+                            );
+                        })}
 
                     {cart.length === 0 && (
                         <tr>

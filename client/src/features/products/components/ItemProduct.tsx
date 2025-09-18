@@ -15,6 +15,7 @@ function ItemProduct({
     category,
     images,
     Inventories,
+    discountPrice,
 }: ItemProductPros) {
     const [like, setLike] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -35,7 +36,11 @@ function ItemProduct({
                     addToCart({
                         id_product: product_id,
                         product: product_name,
-                        price,
+                        price:
+                            discountPrice !== undefined &&
+                            discountPrice !== null
+                                ? discountPrice
+                                : price,
                         img: mainImage,
                         quantity: 1,
                         Inventories,
@@ -52,9 +57,11 @@ function ItemProduct({
     return (
         <div className="relative flex flex-col justify-center rounded-2xl border border-gray-200 bg-white p-4">
             {/* Nhãn giảm giá */}
-            <div className="absolute top-4 left-4 rounded-l-[8px] rounded-r-2xl bg-green-700 px-4 py-1 text-white">
-                Giảm 50%
-            </div>
+            {discountPrice !== undefined && discountPrice !== null && (
+                <div className="bg-main-primary absolute top-3 left-3 rounded-l-[8px] rounded-r-2xl px-3 py-1 text-sm font-semibold text-white">
+                    -{Math.round(((price - discountPrice) / price) * 100)}%
+                </div>
+            )}
 
             {/* Nút yêu thích */}
             <div
@@ -89,14 +96,26 @@ function ItemProduct({
                 <h1 className="text-[18px] font-bold">{product_name}</h1>
 
                 {/* Giá và nút thêm vào giỏ */}
-                <div className="grid grid-cols-2 text-[18px]">
-                    <p className="font-semibold text-gray-500 line-through">
-                        50.000₫
-                    </p>
-
-                    <div></div>
-
-                    <p className="font-semibold">{Number(price)}₫</p>
+                <div className="mt-2 flex items-center justify-between">
+                    <div className="flex flex-col">
+                        {discountPrice !== undefined &&
+                        discountPrice !== null ? (
+                            <span className="text-sm text-gray-400 line-through">
+                                {Number(price).toLocaleString()}₫
+                            </span>
+                        ) : (
+                            <span className="invisible text-sm">
+                                placeholder
+                            </span>
+                        )}
+                        <span className="text-main-primary text-lg font-semibold">
+                            {discountPrice !== undefined &&
+                            discountPrice !== null
+                                ? Number(discountPrice).toLocaleString()
+                                : Number(price).toLocaleString()}
+                            ₫
+                        </span>
+                    </div>
 
                     <Button
                         text="Thêm"

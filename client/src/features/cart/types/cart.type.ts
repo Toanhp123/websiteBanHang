@@ -1,3 +1,4 @@
+import type { PromotionForProduct } from "@/features/discount/types/discount.type";
 import type { Inventory } from "@/features/products/types/product.type";
 
 export type ListCartState = {
@@ -12,6 +13,8 @@ export type Cart = {
     img: string;
     Inventories: Inventory[];
     totalStock: number;
+    discountPrice?: number;
+    promotion?: PromotionForProduct;
 };
 
 export type CartUpdate = Pick<Cart, "id_product" | "quantity">;

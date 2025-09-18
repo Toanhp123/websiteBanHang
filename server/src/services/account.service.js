@@ -25,6 +25,8 @@ const {
 	createPasswordHash,
 } = require("../utils/validateUser.util");
 const { getProductStock } = require("./product.service");
+const promotionService = require("./promotion.service");
+const { EffectPromotion } = require("../constants/promotion.constants");
 
 class AccountService {
 	/**
@@ -178,6 +180,7 @@ class AccountService {
     			cp.quantity,
     			p.product_id AS id_product,
     			p.product_name AS product,
+				p.product_category_id,
     			pi.image_url AS img,
     			p.price,
     			JSON_ARRAYAGG(
@@ -216,12 +219,64 @@ class AccountService {
 				})
 			);
 
-			const cartItemFormat = cartItemsWithStock.map((p) => ({
-				...p,
-				price: parseFloat(p.price),
-			}));
+			// --- LẤY PROMOTION ---
+			const productIds = cartItemsWithStock.map((p) => p.id_product);
+			const categoryIds = cartItemsWithStock.map(
+				(p) => p.product_category_id
+			);
 
-			return cartItemFormat;
+			const promotions = await promotionService.getPromotionForProducts(
+				productIds,
+				categoryIds
+			);
+
+			// Áp dụng khuyến mãi
+			const cartWithPromotions = cartItemsWithStock.map((item) => {
+				let finalPrice = item.price;
+				let appliedPromotion = null;
+
+				for (const promo of promotions) {
+					const appliesToProduct =
+						promo.PromotionProducts?.product_id === item.id_product;
+					const appliesToCategory =
+						promo.PromotionCategory?.product_category_id ===
+						item.product_category_id;
+
+					if (
+						(appliesToProduct || appliesToCategory) &&
+						!appliedPromotion
+					) {
+						if (
+							promo.PromotionEffects.effect_type_id ==
+							EffectPromotion.DISCOUNT_PERCENT
+						) {
+							finalPrice =
+								finalPrice *
+								(1 - promo.PromotionEffects.effect_value / 100);
+						} else if (
+							promo.PromotionEffects.effect_type_id ==
+							EffectPromotion.DISCOUNT_AMOUNT
+						) {
+							finalPrice = Math.max(
+								0,
+								finalPrice - promo.PromotionEffects.effect_value
+							);
+						}
+						appliedPromotion = promo;
+					}
+
+					// Ưu tiên product > category
+					if (appliedPromotion && appliesToProduct) break;
+				}
+
+				return {
+					...item,
+					promotion: appliedPromotion,
+					discountPrice: appliedPromotion ? finalPrice : null, // nếu có promotion thì thêm discountPrice
+				};
+			});
+
+			return cartWithPromotions;
 		} else {
 			return [];
 		}

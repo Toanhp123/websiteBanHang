@@ -6,8 +6,8 @@ module.exports = {
 		PRODUCT_ID: "4",
 	},
 	EffectPromotion: {
-		DISCOUNT_PERCENT: "DISCOUNT_PERCENT",
-		DISCOUNT_AMOUNT: "DISCOUNT_AMOUNT",
-		BUY_X_GIFT_Y: "BUY_X_GIFT_Y",
+		DISCOUNT_PERCENT: "1",
+		DISCOUNT_AMOUNT: "2",
+		BUY_X_GIFT_Y: "3",
 	},
 };
