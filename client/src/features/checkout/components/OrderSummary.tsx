@@ -24,22 +24,6 @@ function OrderSummary() {
         final_total: 0,
     });
 
-    useEffect(() => {
-        setOrderSummary({
-            items: Object.entries(cart).reduce((sum, [_, item]) => {
-                return sum + (item.quantity || 0);
-            }, 0),
-
-            subTotal: Object.entries(cart).reduce((sum, [_, item]) => {
-                return sum + (item.price * item.quantity || 0);
-            }, 0),
-
-            discount: discount,
-
-            final_total: final_total,
-        });
-    }, [cart, promotionDetail, final_total, discount]);
-
     const handleCreateBill = async (): Promise<void> => {
         setLoading(true);
 
@@ -61,6 +45,28 @@ function OrderSummary() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        setOrderSummary({
+            items: Object.entries(cart).reduce((sum, [_, item]) => {
+                return sum + (item.quantity || 0);
+            }, 0),
+
+            subTotal: Object.entries(cart).reduce((sum, [_, item]) => {
+                const price =
+                    item.discountPrice !== null &&
+                    item.discountPrice !== undefined
+                        ? item.discountPrice
+                        : item.price;
+
+                return sum + (price * item.quantity || 0);
+            }, 0),
+
+            discount: discount,
+
+            final_total: final_total,
+        });
+    }, [cart, promotionDetail, final_total, discount]);
 
     if (loading) return <Loading />;
 

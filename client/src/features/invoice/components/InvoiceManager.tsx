@@ -43,6 +43,10 @@ function InvoiceManager() {
         );
     };
 
+    const handleGetDetailInvoice = () => {
+        console.log(1);
+    };
+
     const handleLoadMoreOrders = () => {
         setPage((prev) => prev + 1);
     };
@@ -170,10 +174,7 @@ function InvoiceManager() {
                                                     <button
                                                         className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
                                                         onClick={() =>
-                                                            handleUpdateStatusOrder(
-                                                                "cancelled",
-                                                                order.invoice_id,
-                                                            )
+                                                            handleGetDetailInvoice()
                                                         }
                                                     >
                                                         Detail Order

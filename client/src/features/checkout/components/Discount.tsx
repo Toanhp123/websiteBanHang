@@ -1,6 +1,6 @@
 import { Button, Input } from "@/components/shared";
 import { FormCheckoutSection } from "@/layouts/Customer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { updatePromotion } from "../redux/promotion.slice";
 import { useItemCartOnLoad } from "@/hooks/useItemCartOnLoad";
@@ -59,15 +59,6 @@ function Discount() {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        const sub_total = cart.reduce(
-            (acc, item) => acc + item.price * item.quantity,
-            0,
-        );
-
-        dispatch(setFinalTotal(sub_total));
-    }, [cart, dispatch]);
 
     return (
         <FormCheckoutSection>

@@ -54,6 +54,7 @@ function CartItemList() {
                                 item.discountPrice !== undefined
                                     ? item.discountPrice
                                     : item.price;
+
                             return (
                                 <tr key={item.id_product}>
                                     <td className="border-b border-gray-300">

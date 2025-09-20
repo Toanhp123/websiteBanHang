@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/stores/store";
-import type { PromotionDetail } from "../types/checkout.type";
+import type { PromotionDetail } from "@/features/discount/types/discount.type";
 
 const initialState: PromotionDetail = {
     promotion_id: null,

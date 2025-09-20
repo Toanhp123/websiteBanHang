@@ -10,10 +10,14 @@ function CartBill() {
     const orderSummary = {
         items: cart.reduce((sum, item) => sum + (item.quantity || 0), 0),
 
-        subTotal: cart.reduce(
-            (sum, item) => sum + (item.price * item.quantity || 0),
-            0,
-        ),
+        subTotal: cart.reduce((sum, item) => {
+            const price =
+                item.discountPrice !== null && item.discountPrice !== undefined
+                    ? item.discountPrice
+                    : item.price;
+
+            return sum + price * (item.quantity || 0);
+        }, 0),
     };
 
     const handleClick = (): void => {

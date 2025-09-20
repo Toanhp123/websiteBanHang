@@ -3,6 +3,7 @@ import ItemProduct from "./ItemProduct";
 import { useEffect, useState } from "react";
 import { getProductByCondition } from "../services/product.api";
 import type { Product, SlideListProductPros } from "../types/product.type";
+import { ITEMS_PER_PAGE } from "@/constants/mics.constants";
 
 function SlideListProduct({ options }: SlideListProductPros) {
     const [product, setProduct] = useState<Product[]>([]);
@@ -10,9 +11,19 @@ function SlideListProduct({ options }: SlideListProductPros) {
     useEffect(() => {
         const handleGetProduct = async () => {
             if (options === "Mới nhất") {
-                setProduct(await getProductByCondition({ option: "Mới nhất" }));
+                const res = await getProductByCondition({
+                    option: "Mới nhất",
+                    page: 1,
+                    itemsPerPage: ITEMS_PER_PAGE,
+                });
+                setProduct(res.data);
             } else if (options === "Bán chạy") {
-                setProduct(await getProductByCondition({ option: "Bán chạy" }));
+                const res = await getProductByCondition({
+                    option: "Bán chạy",
+                    page: 1,
+                    itemsPerPage: ITEMS_PER_PAGE,
+                });
+                setProduct(res.data);
             }
         };
 

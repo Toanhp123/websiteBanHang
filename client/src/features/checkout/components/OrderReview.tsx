@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { FormCheckoutSection } from "@/layouts/Customer";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { setFinalTotal } from "../redux/price.slice";
 
 function OrderReview() {
     const dispatch = useAppDispatch();
@@ -31,8 +32,20 @@ function OrderReview() {
             );
 
             setQuantities(initialQuantities);
+
+            const sub_total = cart.reduce((sum, item) => {
+                const price =
+                    item.discountPrice !== null &&
+                    item.discountPrice !== undefined
+                        ? item.discountPrice
+                        : item.price;
+
+                return sum + price * (item.quantity || 0);
+            }, 0);
+
+            dispatch(setFinalTotal(sub_total));
         }
-    }, [cart]);
+    }, [cart, dispatch]);
 
     return (
         <FormCheckoutSection>
@@ -59,55 +72,65 @@ function OrderReview() {
             </div>
 
             <div className={clsx(expand ? "" : "max-h-0 overflow-hidden")}>
-                {cart.map((item) => (
-                    <div key={item.id_product}>
-                        <div className="flex justify-between gap-4">
-                            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-gray-300">
-                                <img
-                                    src={`http://localhost:3000/${item.img}`}
-                                    alt="image"
-                                />
-                            </div>
+                {cart.map((item) => {
+                    const price =
+                        item.discountPrice !== null &&
+                        item.discountPrice !== undefined
+                            ? item.discountPrice
+                            : item.price;
 
-                            <div className="flex-1 space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <p>{item.product}</p>
-
-                                    <div>
-                                        <Button
-                                            onClick={() =>
-                                                handleDeleteItemCart(
-                                                    item.id_product,
-                                                )
-                                            }
-                                            textSize="small"
-                                            icon="fa-solid fa-xmark"
-                                            bgColor=""
-                                            textColor="text-black"
-                                            border=""
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between gap-6 pr-4">
-                                    <SelectQuantity
-                                        max={item.totalStock}
-                                        product_id={item.id_product}
-                                        quantity={quantities[item.id_product]}
-                                        setQuantityInList={setQuantities}
-                                        saveChangeCartToDatabase={true}
+                    return (
+                        <div key={item.id_product}>
+                            <div className="flex justify-between gap-4">
+                                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-gray-300">
+                                    <img
+                                        src={`http://localhost:3000/${item.img}`}
+                                        alt="image"
                                     />
+                                </div>
 
-                                    <div>
-                                        <p>{item.price}₫</p>
+                                <div className="flex-1 space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <p>{item.product}</p>
+
+                                        <div>
+                                            <Button
+                                                onClick={() =>
+                                                    handleDeleteItemCart(
+                                                        item.id_product,
+                                                    )
+                                                }
+                                                textSize="small"
+                                                icon="fa-solid fa-xmark"
+                                                bgColor=""
+                                                textColor="text-black"
+                                                border=""
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between gap-6 pr-4">
+                                        <SelectQuantity
+                                            max={item.totalStock}
+                                            product_id={item.id_product}
+                                            quantity={
+                                                quantities[item.id_product]
+                                            }
+                                            setQuantityInList={setQuantities}
+                                            saveChangeCartToDatabase={true}
+                                        />
+
+                                        <div>
+                                            <p>{price}₫</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="my-4 border-b border-gray-300"></div>
-                    </div>
-                ))}
+                            <div className="my-4 border-b border-gray-300"></div>
+                        </div>
+                    );
+                })}
             </div>
         </FormCheckoutSection>
     );

@@ -69,6 +69,10 @@ class InvoiceService {
 			const invoice_id = invoice.dataValues.invoice_id;
 
 			for (let item of cart) {
+				promotion_id = item.promotion
+					? item.promotion.promotion_id
+					: null;
+
 				await InvoiceDetail.create(
 					{
 						invoice_id,
@@ -77,6 +81,7 @@ class InvoiceService {
 						unit_price: item.price,
 						unit_final_amount: item.price * item.quantity,
 						is_gift: "no",
+						promotion_id,
 					},
 					{ transaction }
 				);
@@ -170,11 +175,13 @@ class InvoiceService {
 
 			WHERE 
 				i.customer_id = :customer_id
-				AND i.status != :status
+
+			ORDER BY
+				i.invoice_date DESC
 		`;
 
 		const invoiceDetail = await sequelize.query(query, {
-			replacements: { is_main: 1, customer_id, status: "cancelled" },
+			replacements: { is_main: 1, customer_id },
 			type: sequelize.QueryTypes.SELECT,
 		});
 
