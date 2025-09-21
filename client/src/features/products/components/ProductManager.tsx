@@ -11,19 +11,21 @@ import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 
 function ProductManager({ id, popup }: EditPopupPros) {
     const [listProduct, setListProduct] = useState<Product[]>([]);
+    const [listProductLength, setListProductLength] = useState<number>(0);
     const [editMenu, setEditMenu] = useState<number | null>(null);
     const option = useAppSelector(selectOptionSortProduct);
     const [page, setPage] = useState<number>(1);
 
-    const startIndex: number = (page - 1) * ITEMS_PER_PAGE_COL;
-    const endIndex: number = startIndex + ITEMS_PER_PAGE_COL;
-    const visibleItems = listProduct.slice(startIndex, endIndex);
-
-    const handleGetAllProduct = async (option: SortOptions) => {
+    const handleGetAllProduct = async (option: SortOptions, page: number) => {
         try {
-            const res = await getProductByCondition({ option });
+            const res = await getProductByCondition({
+                option,
+                itemsPerPage: ITEMS_PER_PAGE_COL,
+                page,
+            });
 
-            setListProduct(res);
+            setListProduct(res.data);
+            setListProductLength(res.total);
         } catch (error) {
             console.log(error);
         }
@@ -44,8 +46,8 @@ function ProductManager({ id, popup }: EditPopupPros) {
     };
 
     useEffect(() => {
-        handleGetAllProduct(option);
-    }, [option, id]);
+        handleGetAllProduct(option, page);
+    }, [option, id, page]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -63,8 +65,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
             <div>
                 <div className="flex items-center justify-between">
                     <p className="font-semibold">
-                        Show {visibleItems.length} of {listProduct.length}{" "}
-                        Product
+                        Show {listProduct.length} of {listProductLength} Product
                     </p>
                     <DropdownSortProduct />
                 </div>
@@ -86,7 +87,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
                 </thead>
 
                 <tbody>
-                    {visibleItems.map((product) => (
+                    {listProduct.map((product) => (
                         <tr
                             key={product.product_id}
                             className="even:bg-gray-100"
@@ -186,7 +187,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
             <Pagination
                 currentPage={page}
                 setPage={setPage}
-                totalPages={Math.ceil(listProduct.length / ITEMS_PER_PAGE_COL)}
+                totalPages={Math.ceil(listProductLength / ITEMS_PER_PAGE_COL)}
             />
         </div>
     );
