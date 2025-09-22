@@ -19,7 +19,6 @@ const {
 } = require("../utils/errorThrowFunc");
 
 class InvoiceService {
-	// TODO: cần phải xem xét về vấn đề khuyến mại product
 	async createInvoice(
 		account_id,
 		cart,
@@ -31,10 +30,14 @@ class InvoiceService {
 		const transaction = await sequelize.transaction();
 		const account = await Account.findOne({ where: { account_id } });
 		const customer_id = account.customer_id;
-		const total_amount = cart.reduce(
-			(acc, item) => acc + item.price * item.quantity,
-			0
-		);
+		const total_amount = cart.reduce((acc, item) => {
+			const price =
+				item.discountPrice !== null && item.discountPrice !== undefined
+					? item.discountPrice
+					: item.price;
+
+			return acc + price * item.quantity;
+		}, 0);
 
 		try {
 			const [item] = await InvoiceAddress.findOrCreate({
@@ -69,9 +72,11 @@ class InvoiceService {
 			const invoice_id = invoice.dataValues.invoice_id;
 
 			for (let item of cart) {
-				promotion_id = item.promotion
+				const promotion_product_id = item.promotion
 					? item.promotion.promotion_id
 					: null;
+
+				console.log(item.promotion.PromotionEffects.effect_value);
 
 				await InvoiceDetail.create(
 					{
@@ -81,7 +86,8 @@ class InvoiceService {
 						unit_price: item.price,
 						unit_final_amount: item.price * item.quantity,
 						is_gift: "no",
-						promotion_id,
+						discount: item.promotion.PromotionEffects.effect_value,
+						promotion_id: promotion_product_id,
 					},
 					{ transaction }
 				);
@@ -114,6 +120,7 @@ class InvoiceService {
 					id.invoice_id,
 					id.quantity,
 					id.unit_final_amount,
+					id.discount as discount_product,
 
 				-- Invoice
 					i.discount_amount,
@@ -154,6 +161,7 @@ class InvoiceService {
 					id.invoice_id,
 					id.quantity,
 					id.unit_final_amount,
+					id.discount as discount_product,
 
 				-- Invoice
 					i.discount_amount,
@@ -323,6 +331,7 @@ class InvoiceService {
 				"total_final_amount",
 				"status",
 				"invoice_date",
+				"discount_amount",
 				[sequelize.col("Customer.Account.email"), "email"],
 			],
 			limit,

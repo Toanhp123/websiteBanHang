@@ -24,6 +24,7 @@ export type InvoiceDetail = {
     total_final_amount: string;
     product_name: string;
     image_url: string;
+    discount_product: string;
 };
 
 export interface AllInvoiceDetail {
@@ -55,6 +56,7 @@ export type OrdersItem = {
     total_final_amount: number;
     status: "pending" | "paid" | "cancelled" | "refunded";
     invoice_date: string;
+    discount_amount: number;
 };
 
 export type OrderStatus = "pending" | "paid" | "cancelled" | "refunded";

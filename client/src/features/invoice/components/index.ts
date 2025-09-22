@@ -4,6 +4,7 @@ import { default as ItemInvoice } from "./ItemInvoice";
 import { default as UpdateAddressShipping } from "./UpdateAddressShipping";
 import { default as ListAddressShipping } from "./ListAddressShipping";
 import { default as InvoiceManager } from "./InvoiceManager";
+import { default as InvoiceDetailPopup } from "./InvoiceDetailPopup";
 
 export {
     InvoiceCompleteOrder,
@@ -12,4 +13,5 @@ export {
     UpdateAddressShipping,
     ListAddressShipping,
     InvoiceManager,
+    InvoiceDetailPopup,
 };

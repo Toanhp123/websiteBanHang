@@ -3,8 +3,9 @@ import { getOrderList, updateOrderStatus } from "../services/invoice.api";
 import { isOrderStatus, type OrdersItem } from "../types/invoice.type";
 import { formatDate } from "@/utils/formatDate";
 import { Button, TagItem } from "@/components/shared";
+import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
 
-function InvoiceManager() {
+function InvoiceManager({ popup }: EditPopupPros) {
     const [orderList, setOrderList] = useState<OrdersItem[]>([]);
     const [editMenu, setEditMenu] = useState<number | null>(null);
     const [page, setPage] = useState(1);
@@ -42,11 +43,6 @@ function InvoiceManager() {
             status === "paid" || status === "cancelled" || status === "refunded"
         );
     };
-
-    const handleGetDetailInvoice = () => {
-        console.log(1);
-    };
-
     const handleLoadMoreOrders = () => {
         setPage((prev) => prev + 1);
     };
@@ -96,6 +92,7 @@ function InvoiceManager() {
                         <tr>
                             <th className="px-4 py-2">ID</th>
                             <th className="px-4 py-2">Email</th>
+                            <th className="px-4 py-2">Discount</th>
                             <th className="px-4 py-2">Total</th>
                             <th className="px-4 py-2">Status</th>
                             <th className="px-4 py-2">Date</th>
@@ -113,6 +110,13 @@ function InvoiceManager() {
                                     {order.invoice_id}
                                 </td>
                                 <td className="px-4 py-4">{order.email}</td>
+                                <td className="px-4 py-4 text-red-500">
+                                    -
+                                    {Number(
+                                        order.discount_amount,
+                                    ).toLocaleString()}
+                                    ₫
+                                </td>
                                 <td className="px-4 py-4 text-left">
                                     {order.total_final_amount}
                                 </td>
@@ -173,9 +177,12 @@ function InvoiceManager() {
 
                                                     <button
                                                         className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
-                                                        onClick={() =>
-                                                            handleGetDetailInvoice()
-                                                        }
+                                                        onClick={() => {
+                                                            popup(
+                                                                "order",
+                                                                order.invoice_id.toString(),
+                                                            );
+                                                        }}
                                                     >
                                                         Detail Order
                                                     </button>
