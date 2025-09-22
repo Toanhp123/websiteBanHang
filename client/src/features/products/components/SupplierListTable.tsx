@@ -19,7 +19,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
         }
     };
 
-    const handleDeleteWarehouse = (supplier_id: string) => {
+    const handleDeleteSupplier = (supplier_id: string) => {
         console.log(supplier_id);
     };
 
@@ -44,7 +44,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
 
     useEffect(() => {
         handleGetAllSupplier();
-    }, []);
+    }, [id]);
 
     return (
         <div className="space-y-8">
@@ -116,7 +116,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
                                             className="font-semibold text-green-600 hover:text-green-500"
                                             onClick={() =>
                                                 popup(
-                                                    "warehouse",
+                                                    "supplier",
                                                     supplier.supplier_id,
                                                 )
                                             }
@@ -127,7 +127,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
                                         <button
                                             className="font-semibold text-red-600 hover:text-red-500"
                                             onClick={() =>
-                                                handleDeleteWarehouse(
+                                                handleDeleteSupplier(
                                                     supplier.supplier_id,
                                                 )
                                             }

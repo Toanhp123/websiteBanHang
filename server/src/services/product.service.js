@@ -571,6 +571,36 @@ class ProductService {
 			attributes: ["product_id", "product_name"],
 		});
 	}
+
+	async getSupplierByID(supplier_id) {
+		const supplier = await Supplier.findOne({ where: { supplier_id } });
+
+		return supplier;
+	}
+
+	async updateSupplier(supplier_id, changes) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Supplier.update(
+				{ supplier_name: changes.supplier_name },
+				{ where: { supplier_id }, transaction }
+			);
+
+			transaction.commit();
+
+			return {
+				message: "Update Supplier success",
+				success: true,
+			};
+		} catch (error) {
+			transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't update supplier", SupplierError.ADD_ITEM);
+		}
+	}
 }
 
 module.exports = new ProductService();

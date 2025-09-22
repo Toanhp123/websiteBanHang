@@ -129,6 +129,28 @@ class ProductController {
 
 		res.json(product);
 	}
+
+	// [GET] product/supplier/:supplier_id
+	async getSupplierByID(req, res) {
+		const { supplier_id } = req.params;
+
+		const supplier = await productService.getSupplierByID(supplier_id);
+
+		res.json(supplier);
+	}
+
+	// [PUT] product/supplier/:supplier_id
+	async updateSupplier(req, res) {
+		const { supplier_id } = req.params;
+		const { changes } = req.body;
+
+		const message = await productService.updateSupplier(
+			supplier_id,
+			changes
+		);
+
+		res.json(message);
+	}
 }
 
 module.exports = new ProductController();

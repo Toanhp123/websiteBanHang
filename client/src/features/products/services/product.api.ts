@@ -128,3 +128,22 @@ export const getProductMinimal = async (): Promise<ProductMinimal[]> => {
 
     return res.data;
 };
+
+export const getSupplierByID = async (
+    supplier_id: string,
+): Promise<Supplier> => {
+    const res = await axios.get(`product/supplier/${supplier_id}`);
+
+    return res.data;
+};
+
+export const editSupplier = async (
+    supplier_id: string,
+    changes: Record<string, unknown>,
+) => {
+    const res = await axios.put(`product/supplier/${supplier_id}`, {
+        changes,
+    });
+
+    return res.data;
+};

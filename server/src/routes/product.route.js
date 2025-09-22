@@ -27,6 +27,13 @@ route.get(
 );
 
 route.get(
+	"/supplier/:supplier_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(productController.getSupplierByID)
+);
+
+route.get(
 	"/advancedInfo",
 	checkAccessToken,
 	checkRole(["Admin", "Employee"]),
@@ -53,6 +60,13 @@ route.put(
 		{ name: "subImages", maxCount: 4 },
 	]),
 	catchAsync(productController.updateProduct)
+);
+
+route.put(
+	"/supplier/:supplier_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(productController.updateSupplier)
 );
 
 route.post(

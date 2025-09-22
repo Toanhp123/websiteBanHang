@@ -1,10 +1,13 @@
-import { SupplierListTable } from "@/features/products/components";
+import {
+    EditSupplierPopup,
+    SupplierListTable,
+} from "@/features/products/components";
 import { MainLayout } from "@/layouts/Employee";
 import { useState } from "react";
 
 function SupplierListPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
-        warehouse: "",
+        supplier: "",
     });
 
     const toggleMenu = (menu: string, value: string) => {
@@ -19,12 +22,12 @@ function SupplierListPage() {
             <div className="space-y-8">
                 <h1 className="text-2xl font-semibold">Supplier List</h1>
 
-                <SupplierListTable id={popup.warehouse} popup={toggleMenu} />
+                <SupplierListTable id={popup.supplier} popup={toggleMenu} />
             </div>
 
-            {/* {popup.warehouse !== "" && (
-                <EditWarehouse id={popup.warehouse} popup={toggleMenu} />
-            )} */}
+            {popup.supplier !== "" && (
+                <EditSupplierPopup id={popup.supplier} popup={toggleMenu} />
+            )}
         </MainLayout>
     );
 }
