@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 
 const sequelize = require("../configs/database.config");
 
@@ -34,6 +34,10 @@ const Promotion = sequelize.define(
 		promotion_status: {
 			type: DataTypes.ENUM("active", "expired", "deleted"),
 			defaultValue: "active",
+		},
+		created_at: {
+			type: DataTypes.DATE,
+			defaultValue: Sequelize.NOW,
 		},
 	},
 	{

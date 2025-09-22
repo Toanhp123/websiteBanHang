@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 
 const sequelize = require("../configs/database.config");
 
@@ -16,7 +16,7 @@ const WarehouseExport = sequelize.define(
 		},
 		export_date: {
 			type: DataTypes.DATE,
-			defaultValue: new Date(),
+			defaultValue: Sequelize.NEW,
 		},
 		reason: {
 			type: DataTypes.TEXT,

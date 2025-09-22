@@ -1,5 +1,8 @@
 const { Op } = require("sequelize");
-const { PromotionError } = require("../constants/errorCode.constants");
+const {
+	PromotionError,
+	AccountStatus,
+} = require("../constants/errorCode.constants");
 const { RulePromotion } = require("../constants/promotion.constants");
 const {
 	sequelize,
@@ -14,6 +17,7 @@ const {
 	PromotionEffect,
 	PromotionCategory,
 	CustomerPromotion,
+	Account,
 } = require("../models");
 const { throwServerError } = require("../utils/errorThrowFunc");
 const { applyPromotion } = require("../utils/handleDiscount");
@@ -23,46 +27,52 @@ const {
 
 class PromotionService {
 	async getDetailPromotion(promotion_id) {
-		const query = `	
-			SELECT 
-			-- Promotion
-    			p.promotion_id,
-    			p.promotion_name,
-    			p.valid_from,
-    			p.valid_to,
-    			p.distribution_type,
-    			p.range_apply,
-		
-    		-- Effect
-    			pet.effect_type_name,
-   				pe.product_id AS effect_product_id,
-				pe.effect_value,
-		
-    		-- Rule
-    			prt.rule_type_name,
-    			pr.rule_operator,
-				pr.rule_value,
-    			pr.product_id AS rule_product_id
-		
-			FROM promotion p
-				LEFT JOIN promotion_effect pe 
-    				ON p.promotion_id = pe.promotion_id
-				LEFT JOIN promotion_effect_type pet 
-    				ON pe.effect_type_id = pet.effect_type_id
-				LEFT JOIN promotion_rule pr 
-    				ON p.promotion_id = pr.promotion_id
-				LEFT JOIN promotion_rule_type prt 
-    				ON pr.rule_type_id = prt.rule_type_id
-			WHERE
-				p.promotion_id = :promotion_id
-		`;
-
-		const promotion = await sequelize.query(query, {
-			replacements: { promotion_id: promotion_id },
-			type: sequelize.QueryTypes.SELECT,
+		const promotion = await Promotion.findOne({
+			where: { promotion_id },
+			include: [
+				{
+					model: PromotionEffect,
+					include: [{ model: PromotionEffectType }],
+				},
+				{
+					model: PromotionRule,
+					include: [{ model: PromotionRuleType }],
+				},
+			],
 		});
 
-		return promotion[0];
+		const plain = promotion.get({ plain: true });
+
+		return {
+			promotion_id: plain.promotion_id,
+			promotion_name: plain.promotion_name,
+			promotion_status: plain.promotion_status,
+			valid_from: plain.valid_from,
+			valid_to: plain.valid_to,
+			distribution_type: plain.distribution_type,
+			range_apply: plain.range_apply,
+			created_at: plain.created_at,
+
+			effects: plain.PromotionEffects.map((e) => ({
+				effect_id: e.effect_id,
+				effect_value: e.effect_value,
+				product_id: e.product_id,
+				effect_type: e.PromotionEffectType?.effect_type_name,
+				effect_description:
+					e.PromotionEffectType?.effect_type_description,
+			}))[0],
+
+			rules: plain.PromotionRules.map((r) => ({
+				rule_id: r.rule_id,
+				rule_value: r.rule_value,
+				rule_operator: r.rule_operator,
+				product_id: r.product_id,
+				product_category_id: r.product_category_id,
+				rule_type: r.PromotionRuleType?.rule_type_name,
+				rule_description: r.PromotionRuleType?.rule_type_description,
+				template: r.PromotionRuleType?.rule_value_template,
+			})),
+		};
 	}
 
 	async checkPromotionCanApply(promotion, cart) {
@@ -309,6 +319,133 @@ class PromotionService {
 		});
 
 		return promotions;
+	}
+
+	async getAllPromotion(limit, offset) {
+		const promotion = await Promotion.findAll({
+			limit,
+			offset,
+		});
+
+		const total = await Promotion.count();
+
+		return { data: promotion, total };
+	}
+
+	async changePromotionStatus(promotion_id, promotion_status) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const promotion = await Promotion.findOne({
+				where: { promotion_id },
+			});
+
+			const now = new Date();
+
+			if (
+				promotion.valid_to &&
+				new Date(promotion.valid_to) < now &&
+				promotion_status.toLowerCase() !== "deleted"
+			) {
+				console.log(promotion_status.toLowerCase());
+
+				promotion_status = "expired";
+			} else {
+				promotion_status = promotion_status.toLowerCase();
+			}
+
+			await Promotion.update(
+				{ promotion_status },
+				{ where: { promotion_id }, transaction }
+			);
+
+			await transaction.commit();
+
+			return { message: "Change status success", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't change promotion status",
+				PromotionError.CREATE_ERROR
+			);
+		}
+	}
+
+	async getAllPromotionThisCustomer(account_id) {
+		const account = await Account.findOne({ where: { account_id } });
+		const customer_id = account.customer_id;
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const allPromotion = await Promotion.findAll({
+			where: {
+				promotion_status: "active",
+				valid_from: { [Op.lte]: today },
+				valid_to: { [Op.gte]: today },
+			},
+			include: [
+				{
+					model: CustomerPromotion,
+					required: true,
+					where: {
+						[Op.or]: [
+							{ all_customers: 1 },
+							{ customer_id: customer_id },
+						],
+					},
+				},
+				{
+					model: PromotionEffect,
+					include: [{ model: PromotionEffectType }],
+				},
+				{
+					model: PromotionRule,
+					include: [{ model: PromotionRuleType }],
+				},
+			],
+			order: [["created_at", "DESC"]],
+		});
+
+		console.log(allPromotion);
+
+		return allPromotion.map((promotion) => {
+			const plain = promotion.get({ plain: true });
+
+			return {
+				promotion_id: plain.promotion_id,
+				promotion_name: plain.promotion_name,
+				promotion_status: plain.promotion_status,
+				valid_from: plain.valid_from,
+				valid_to: plain.valid_to,
+				distribution_type: plain.distribution_type,
+				range_apply: plain.range_apply,
+				created_at: plain.created_at,
+
+				effects: plain.PromotionEffects.map((e) => ({
+					effect_id: e.effect_id,
+					effect_value: e.effect_value,
+					product_id: e.product_id,
+					effect_type: e.PromotionEffectType?.effect_type_name,
+					effect_description:
+						e.PromotionEffectType?.effect_type_description,
+				}))[0],
+
+				rules: plain.PromotionRules.map((r) => ({
+					rule_id: r.rule_id,
+					rule_value: r.rule_value,
+					rule_operator: r.rule_operator,
+					product_id: r.product_id,
+					product_category_id: r.product_category_id,
+					rule_type: r.PromotionRuleType?.rule_type_name,
+					rule_description:
+						r.PromotionRuleType?.rule_type_description,
+					template: r.PromotionRuleType?.rule_value_template,
+				})),
+			};
+		});
 	}
 }
 

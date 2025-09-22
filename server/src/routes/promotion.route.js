@@ -23,6 +23,13 @@ router.get(
 	catchAsync(promotionController.getAllPromotionEffectType)
 );
 
+// [GET] /promotion/thisCustomer
+router.get(
+	"/thisCustomer",
+	checkAccessToken,
+	catchAsync(promotionController.getAllPromotionThisCustomer)
+);
+
 // [GET] /promotion/product
 router.get(
 	"/product",
@@ -30,11 +37,18 @@ router.get(
 	catchAsync(promotionController.getDiscountForProduct)
 );
 
-// [GET] /promotion/validate/:username
+// [GET] /promotion/:promotion_id
 router.get(
 	"/:promotion_id",
 	checkAccessToken,
 	catchAsync(promotionController.getDetailPromotion)
+);
+
+// [GET] /promotion
+router.get(
+	"/",
+	checkAccessToken,
+	catchAsync(promotionController.getAllPromotion)
 );
 
 // [POST] /promotion/create
@@ -50,6 +64,13 @@ router.post(
 	"/check",
 	checkAccessToken,
 	catchAsync(promotionController.checkPromotionCanApply)
+);
+
+// [PATCH] /promotion/:promotion_id
+router.patch(
+	"/:promotion_id",
+	checkAccessToken,
+	catchAsync(promotionController.changePromotionStatus)
 );
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 
 const sequelize = require("../configs/database.config");
 
@@ -20,7 +20,7 @@ const WarehouseReceipt = sequelize.define(
 		},
 		receipt_date: {
 			type: DataTypes.DATE,
-			defaultValue: new Date(),
+			defaultValue: Sequelize.NEW,
 		},
 		warehouse_id: {
 			type: DataTypes.INTEGER,

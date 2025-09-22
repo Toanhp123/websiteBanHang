@@ -57,6 +57,41 @@ class PromotionController {
 
 	// [GET] /promotion/product
 	async getDiscountForProduct(req, res) {}
+
+	// [GET] /promotion
+	async getAllPromotion(req, res) {
+		const { page, itemPerPage } = req.query;
+		const limit = Number(itemPerPage);
+		const offset = (page - 1) * itemPerPage;
+
+		const promotion = await promotionService.getAllPromotion(limit, offset);
+
+		res.json(promotion);
+	}
+
+	// [PATCH] /promotion/:promotion_id
+	async changePromotionStatus(req, res) {
+		const { promotion_id } = req.params;
+		const { promotion_status } = req.body;
+
+		const message = await promotionService.changePromotionStatus(
+			promotion_id,
+			promotion_status
+		);
+
+		res.json(message);
+	}
+
+	// [GET] /promotion/thisCustomer
+	async getAllPromotionThisCustomer(req, res) {
+		const { id } = req.user;
+
+		const allPromotion = await promotionService.getAllPromotionThisCustomer(
+			id
+		);
+
+		res.json(allPromotion);
+	}
 }
 
 module.exports = new PromotionController();

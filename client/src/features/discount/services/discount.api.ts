@@ -3,6 +3,7 @@ import type {
     DiscountEffectType,
     DiscountRuleType,
     PromotionDetail,
+    PromotionInfo,
 } from "../types/discount.type";
 import axios from "@/utils/axiosInstance";
 import type { AddDiscountFormInputs } from "../validations/addDiscount.schema";
@@ -63,6 +64,34 @@ export const createDiscount = async (
 
 export const getDiscountForProduct = async () => {
     const res = await axios.get(`promotion/product`);
+
+    return res.data;
+};
+
+export const getPromotionInfo = async (
+    page: number,
+    itemPerPage: number,
+): Promise<{ data: PromotionInfo[]; total: number }> => {
+    const res = await axios.get(`promotion`, { params: { page, itemPerPage } });
+
+    return res.data;
+};
+
+export const changePromotionStatus = async (
+    promotion_id: number,
+    promotion_status: string,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.patch(`promotion/${promotion_id}`, {
+        promotion_status,
+    });
+
+    return res.data;
+};
+
+export const getAllPromotionThisCustomer = async (): Promise<
+    PromotionDetail[]
+> => {
+    const res = await axios.get(`promotion/thisCustomer`);
 
     return res.data;
 };

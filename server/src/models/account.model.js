@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 
 const sequelize = require("../configs/database.config");
 
@@ -49,7 +49,7 @@ const Account = sequelize.define(
 		},
 		create_at: {
 			type: DataTypes.DATE,
-			defaultValue: new Date(),
+			defaultValue: Sequelize.NOW,
 		},
 	},
 	{

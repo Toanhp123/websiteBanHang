@@ -3,6 +3,7 @@ import {
     UpdatePersonalInfo,
 } from "@/features/accounts/components";
 import { Logout } from "@/features/auth/components";
+import { DiscountListForCustomer } from "@/features/discount/components";
 import {
     ListInvoice,
     UpdateAddressShipping,
@@ -25,7 +26,7 @@ function AccountOptions() {
         },
         { title: "Đơn hàng của tôi", feature: <ListInvoice /> },
         { title: "Quản lý địa chỉ", feature: <UpdateAddressShipping /> },
-        { title: "Phương thức thanh toán", feature: <UpdatePersonalInfo /> },
+        { title: "Ưu đãi ", feature: <DiscountListForCustomer /> },
         { title: "Đổi mật khẩu", feature: <UpdatePassword /> },
         { title: "Đăng xuất", feature: <Logout /> },
     ];

@@ -1,23 +1,38 @@
 export type PromotionIsValid = true | false | "nothing";
 
-export interface PromotionDetail {
-    promotion_id: number | null;
+export interface PromotionInfo {
+    promotion_id: number;
     promotion_name: string;
     valid_from: string;
     valid_to: string;
     distribution_type: "share" | "exclusive";
     range_apply: "invoice" | "product";
+    promotion_status: "active" | "expired" | "deleted";
+    created_at: string;
+}
 
-    // Effect
-    effect_type_name: string;
-    effect_product_id: number | null;
+export interface PromotionDetail extends PromotionInfo {
+    effects: PromotionEffectDetail;
+    rules: PromotionRuleDetail[];
+}
+
+export interface PromotionEffectDetail {
+    effect_id: number;
     effect_value: string;
+    product_id: number | null;
+    effect_type?: string;
+    effect_description?: string;
+}
 
-    // Rule
-    rule_type_name: string;
-    rule_operator: ">=" | "<=" | "==" | ">" | "<";
+export interface PromotionRuleDetail {
+    rule_id: number;
     rule_value: string;
-    rule_product_id: number | null;
+    rule_operator: string;
+    product_id: number | null;
+    product_category_id: number | null;
+    rule_type?: string;
+    rule_description?: string;
+    template?: string;
 }
 
 export type DiscountRuleItemProps = {

@@ -5,6 +5,8 @@ import { default as DiscountEffectForm } from "./DiscountEffectForm";
 import { default as DiscountRuleItem } from "./DiscountRuleItem";
 import { default as DiscountResultForm } from "./DiscountResultForm";
 import { default as DiscountListTable } from "./DiscountListTable";
+import { default as DiscountDetailForm } from "./DiscountDetailForm";
+import { default as DiscountListForCustomer } from "./DiscountListForCustomer";
 
 export {
     AddDiscountForm,
@@ -14,4 +16,6 @@ export {
     DiscountRuleItem,
     DiscountResultForm,
     DiscountListTable,
+    DiscountDetailForm,
+    DiscountListForCustomer,
 };
