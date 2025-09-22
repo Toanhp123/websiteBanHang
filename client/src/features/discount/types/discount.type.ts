@@ -22,11 +22,13 @@ export interface PromotionEffectDetail {
     product_id: number | null;
     effect_type?: string;
     effect_description?: string;
+    effect_type_id: number;
 }
 
 export interface PromotionRuleDetail {
     rule_id: number;
     rule_value: string;
+    rule_type_id: number;
     rule_operator: string;
     product_id: number | null;
     product_category_id: number | null;

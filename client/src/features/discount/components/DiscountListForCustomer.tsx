@@ -19,6 +19,7 @@ function DiscountListForCustomer() {
             try {
                 setLoading(true);
                 const res = await getAllPromotionThisCustomer();
+
                 setDiscounts(res);
             } catch (error) {
                 console.error(error);
@@ -129,8 +130,8 @@ function DiscountListForCustomer() {
                                 <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
                                     {discount.rules.map((r) => (
                                         <li key={r.rule_id}>
-                                            {r.rule_description ||
-                                                `${r.rule_type} ${r.rule_operator} ${r.rule_value}`}
+                                            {r.rule_description +
+                                                `: ${r.rule_operator} ${r.rule_value}`}
                                         </li>
                                     ))}
                                 </ul>

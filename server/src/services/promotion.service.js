@@ -58,6 +58,7 @@ class PromotionService {
 				effect_value: e.effect_value,
 				product_id: e.product_id,
 				effect_type: e.PromotionEffectType?.effect_type_name,
+				effect_type_id: e.PromotionEffectType?.effect_type_id,
 				effect_description:
 					e.PromotionEffectType?.effect_type_description,
 			}))[0],
@@ -66,6 +67,7 @@ class PromotionService {
 				rule_id: r.rule_id,
 				rule_value: r.rule_value,
 				rule_operator: r.rule_operator,
+				rule_type_id: r.rule_type_id,
 				product_id: r.product_id,
 				product_category_id: r.product_category_id,
 				rule_type: r.PromotionRuleType?.rule_type_name,
@@ -409,8 +411,6 @@ class PromotionService {
 			order: [["created_at", "DESC"]],
 		});
 
-		console.log(allPromotion);
-
 		return allPromotion.map((promotion) => {
 			const plain = promotion.get({ plain: true });
 
@@ -429,6 +429,7 @@ class PromotionService {
 					effect_value: e.effect_value,
 					product_id: e.product_id,
 					effect_type: e.PromotionEffectType?.effect_type_name,
+					effect_type_id: e.PromotionEffectType?.effect_type_id,
 					effect_description:
 						e.PromotionEffectType?.effect_type_description,
 				}))[0],
@@ -438,6 +439,7 @@ class PromotionService {
 					rule_value: r.rule_value,
 					rule_operator: r.rule_operator,
 					product_id: r.product_id,
+					rule_type_id: r.rule_type_id,
 					product_category_id: r.product_category_id,
 					rule_type: r.PromotionRuleType?.rule_type_name,
 					rule_description:
