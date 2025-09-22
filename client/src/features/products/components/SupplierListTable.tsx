@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { addSupplier, getSupplier } from "../services/product.api";
+import {
+    addSupplier,
+    deleteSupplier,
+    getSupplier,
+} from "../services/product.api";
 import type { Supplier } from "../types/product.type";
 import { InputForDashboard } from "@/components/shared";
 import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
@@ -8,6 +12,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
     const [supplier, setSupplier] = useState<Supplier[]>([]);
     const [supplierID, setSupplierID] = useState<string>("");
     const [supplierName, setSupplierName] = useState<string>("");
+    const [reload, setReload] = useState<boolean>(false);
 
     const handleGetAllSupplier = async () => {
         try {
@@ -19,8 +24,16 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
         }
     };
 
-    const handleDeleteSupplier = (supplier_id: string) => {
-        console.log(supplier_id);
+    const handleDeleteSupplier = async (supplier_id: string) => {
+        try {
+            const res = await deleteSupplier(supplier_id);
+
+            if (res.success) {
+                setReload((prev) => !prev);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleAddSupplier = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +57,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
 
     useEffect(() => {
         handleGetAllSupplier();
-    }, [id]);
+    }, [id, reload]);
 
     return (
         <div className="space-y-8">

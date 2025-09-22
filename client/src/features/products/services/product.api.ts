@@ -140,10 +140,18 @@ export const getSupplierByID = async (
 export const editSupplier = async (
     supplier_id: string,
     changes: Record<string, unknown>,
-) => {
+): Promise<{ message: string; success: boolean }> => {
     const res = await axios.put(`product/supplier/${supplier_id}`, {
         changes,
     });
+
+    return res.data;
+};
+
+export const deleteSupplier = async (
+    supplier_id: string,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.delete(`product/supplier/${supplier_id}`);
 
     return res.data;
 };

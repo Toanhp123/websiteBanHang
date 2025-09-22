@@ -151,6 +151,15 @@ class ProductController {
 
 		res.json(message);
 	}
+
+	// [DELETE] product/supplier
+	async deleteSupplier(req, res) {
+		const { supplier_id } = req.params;
+
+		const message = await productService.deleteSupplier(supplier_id);
+
+		res.json(message);
+	}
 }
 
 module.exports = new ProductController();

@@ -351,7 +351,9 @@ class ProductService {
 	}
 
 	async getSupplier() {
-		const supplier = await Supplier.findAll();
+		const supplier = await Supplier.findAll({
+			where: { is_deleted: false },
+		});
 
 		return supplier;
 	}
@@ -599,6 +601,30 @@ class ProductService {
 			console.log(error);
 
 			throwServerError("Can't update supplier", SupplierError.ADD_ITEM);
+		}
+	}
+
+	async deleteSupplier(supplier_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Supplier.update(
+				{ is_deleted: true },
+				{ where: { supplier_id }, transaction }
+			);
+
+			await transaction.commit();
+
+			return {
+				message: "Delete supplier success",
+				success: true,
+			};
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't delete supplier", SupplierError.ADD_ITEM);
 		}
 	}
 }

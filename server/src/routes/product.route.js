@@ -77,6 +77,13 @@ route.post(
 );
 
 route.delete(
+	"/supplier/:supplier_id",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(productController.deleteSupplier)
+);
+
+route.delete(
 	"/:product_id",
 	checkAccessToken,
 	checkRole(["Admin", "Employee"]),
