@@ -1,4 +1,7 @@
-import { ProductManager } from "@/features/products/components";
+import {
+    DetailProductPopup,
+    ProductManager,
+} from "@/features/products/components";
 import EditProduct from "@/features/products/components/EditProduct";
 import { MainLayout } from "@/layouts/Employee";
 import { useState } from "react";
@@ -15,6 +18,7 @@ function DashboardProductListPage() {
         }));
     };
 
+    // TODO: các nơi có detail popup đều bị lỗi id
     return (
         <MainLayout>
             <div className="space-y-8">
@@ -23,7 +27,11 @@ function DashboardProductListPage() {
                 <ProductManager id={popup.product} popup={toggleMenu} />
             </div>
 
-            {popup.product !== "" && (
+            {popup.product.includes("Detail") && (
+                <DetailProductPopup id={popup.employee} popup={toggleMenu} />
+            )}
+
+            {popup.product !== "" && !popup.product.includes("Detail") && (
                 <EditProduct id={popup.product} popup={toggleMenu} />
             )}
         </MainLayout>

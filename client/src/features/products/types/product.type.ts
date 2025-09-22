@@ -19,10 +19,10 @@ export interface Product {
     category: string;
     type: string;
     product_date_add: string;
+    finalPrice?: number;
+    is_delete: boolean;
     images: ProductImage[];
     Inventories: Inventory[];
-    is_delete: boolean;
-    finalPrice?: number;
     promotion?: PromotionForProduct;
 }
 

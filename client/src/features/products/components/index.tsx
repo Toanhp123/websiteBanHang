@@ -8,6 +8,7 @@ import { default as AddProductForm } from "./AddProductForm";
 import { default as AddToCartPopup } from "./AddToCartPopup";
 import { default as SupplierListTable } from "./SupplierListTable";
 import { default as EditSupplierPopup } from "./EditSupplierPopup";
+import { default as DetailProductPopup } from "./DetailProductPopup";
 
 export {
     SlideListProduct,
@@ -20,4 +21,5 @@ export {
     AddToCartPopup,
     SupplierListTable,
     EditSupplierPopup,
+    DetailProductPopup,
 };

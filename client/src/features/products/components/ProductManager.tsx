@@ -162,15 +162,13 @@ function ProductManager({ id, popup }: EditPopupPros) {
 
                                                 <button
                                                     className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
-                                                    // disabled={disableButtonBaseOptionStatus(
-                                                    //     order.status,
-                                                    // )}
-                                                    // onClick={() =>
-                                                    //     handleUpdateStatusOrder(
-                                                    //         "paid",
-                                                    //         order.invoice_id,
-                                                    //     )
-                                                    // }
+                                                    onClick={() =>
+                                                        popup(
+                                                            "product",
+                                                            product.product_id.toString() +
+                                                                " Detail",
+                                                        )
+                                                    }
                                                 >
                                                     Detail Product
                                                 </button>
