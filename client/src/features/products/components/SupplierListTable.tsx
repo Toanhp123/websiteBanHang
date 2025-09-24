@@ -128,10 +128,11 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
                                         <button
                                             className="font-semibold text-green-600 hover:text-green-500"
                                             onClick={() =>
-                                                popup(
-                                                    "supplier",
-                                                    supplier.supplier_id,
-                                                )
+                                                popup({
+                                                    supplier:
+                                                        supplier.supplier_id,
+                                                    mode: "edit",
+                                                })
                                             }
                                         >
                                             Edit

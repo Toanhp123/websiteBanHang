@@ -33,7 +33,12 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("product", "")}
+                        onClick={() =>
+                            popup({
+                                product: "",
+                                mode: "",
+                            })
+                        }
                     >
                         <i className="fa-solid fa-xmark text-2xl"></i>
                     </button>
@@ -153,7 +158,12 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                 <div className="mt-6 flex justify-end space-x-3 border-t pt-4">
                     <button
                         type="button"
-                        onClick={() => popup("product", "")}
+                        onClick={() =>
+                            popup({
+                                product: "",
+                                mode: "",
+                            })
+                        }
                         className="rounded-lg border border-gray-300 px-4 py-2 text-gray-600 hover:bg-gray-100"
                     >
                         Close

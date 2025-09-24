@@ -35,7 +35,12 @@ function InvoiceDetailPopup({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("order", "")}
+                        onClick={() =>
+                            popup({
+                                order: "",
+                                mode: "",
+                            })
+                        }
                     >
                         <i className="fa-solid fa-xmark text-lg"></i>
                     </button>

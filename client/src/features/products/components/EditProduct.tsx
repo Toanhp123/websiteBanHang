@@ -187,7 +187,11 @@ function EditProduct({ id, popup }: EditPopupPros) {
 
             if (res.success) {
                 console.log(res.message);
-                popup("product", "");
+
+                popup({
+                    product: "",
+                    mode: "",
+                });
             }
         } catch (error) {
             console.error("Failed to save:", error);
@@ -212,7 +216,12 @@ function EditProduct({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("product", "")}
+                        onClick={() =>
+                            popup({
+                                product: "",
+                                mode: "",
+                            })
+                        }
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -324,7 +333,12 @@ function EditProduct({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                        onClick={() => popup("product", "")}
+                        onClick={() =>
+                            popup({
+                                product: "",
+                                mode: "",
+                            })
+                        }
                     >
                         Cancel
                     </button>

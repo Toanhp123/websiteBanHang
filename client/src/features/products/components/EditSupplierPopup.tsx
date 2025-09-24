@@ -72,7 +72,10 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
                 if (res.success) {
                     console.log(res.message);
 
-                    popup("supplier", "");
+                    popup({
+                        supplier: "",
+                        mode: "",
+                    });
                 }
             }
         } catch (error) {
@@ -94,11 +97,16 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
             >
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Export Detail</h2>
+                    <h2 className="text-xl font-semibold">Edit Supplier</h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("supplier", "")}
+                        onClick={() =>
+                            popup({
+                                supplier: "",
+                                mode: "",
+                            })
+                        }
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -107,7 +115,7 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
                 <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-8">
                         <InputForDashboard
-                            label="Warehouse Name"
+                            label="Supplier Name"
                             placeholder="Type Here"
                             register={register("supplier_name")}
                             error={errors.supplier_name?.message}
@@ -120,7 +128,12 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                        onClick={() => popup("warehouse", "")}
+                        onClick={() =>
+                            popup({
+                                supplier: "",
+                                mode: "",
+                            })
+                        }
                     >
                         Cancel
                     </button>

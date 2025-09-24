@@ -74,10 +74,10 @@ function ExportTable({ popup }: EditPopupPros) {
                                 <button
                                     className="font-semibold text-green-600 hover:text-green-500"
                                     onClick={() =>
-                                        popup(
-                                            "export",
-                                            items.export_id.toString(),
-                                        )
+                                        popup({
+                                            export: items.export_id.toString(),
+                                            mode: "detail",
+                                        })
                                     }
                                 >
                                     Detail

@@ -9,13 +9,17 @@ import { useState } from "react";
 function DashboardProductListPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         product: "",
+        mode: "",
     });
 
-    const toggleMenu = (menu: string, value: string) => {
-        setPopup((prev) => ({
-            ...prev,
-            [menu]: value,
-        }));
+    const toggleMenu = (values: Partial<Record<string, string>>) => {
+        setPopup(
+            (prev) =>
+                ({
+                    ...prev,
+                    ...values,
+                }) as Record<string, string>,
+        );
     };
 
     // TODO: các nơi có detail popup đều bị lỗi id
@@ -27,11 +31,11 @@ function DashboardProductListPage() {
                 <ProductManager id={popup.product} popup={toggleMenu} />
             </div>
 
-            {popup.product.includes("Detail") && (
-                <DetailProductPopup id={popup.employee} popup={toggleMenu} />
+            {popup.mode === "detail" && (
+                <DetailProductPopup id={popup.product} popup={toggleMenu} />
             )}
 
-            {popup.product !== "" && !popup.product.includes("Detail") && (
+            {popup.mode === "edit" && (
                 <EditProduct id={popup.product} popup={toggleMenu} />
             )}
         </MainLayout>

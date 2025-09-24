@@ -8,13 +8,17 @@ import { useState } from "react";
 function SupplierListPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         supplier: "",
+        mode: "",
     });
 
-    const toggleMenu = (menu: string, value: string) => {
-        setPopup((prev) => ({
-            ...prev,
-            [menu]: value,
-        }));
+    const toggleMenu = (values: Partial<Record<string, string>>) => {
+        setPopup(
+            (prev) =>
+                ({
+                    ...prev,
+                    ...values,
+                }) as Record<string, string>,
+        );
     };
 
     return (
@@ -25,7 +29,7 @@ function SupplierListPage() {
                 <SupplierListTable id={popup.supplier} popup={toggleMenu} />
             </div>
 
-            {popup.supplier !== "" && (
+            {popup.mode === "edit" && (
                 <EditSupplierPopup id={popup.supplier} popup={toggleMenu} />
             )}
         </MainLayout>

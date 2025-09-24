@@ -14,13 +14,17 @@ function WarehouseTransactionsPage() {
         import: "",
         export: "",
         inventory: "",
+        mode: "",
     });
 
-    const toggleMenu = (menu: string, value: string) => {
-        setPopup((prev) => ({
-            ...prev,
-            [menu]: value,
-        }));
+    const toggleMenu = (values: Partial<Record<string, string>>) => {
+        setPopup(
+            (prev) =>
+                ({
+                    ...prev,
+                    ...values,
+                }) as Record<string, string>,
+        );
     };
 
     return (
@@ -46,7 +50,7 @@ function WarehouseTransactionsPage() {
                     <TabsContent value="import">
                         <ReceiptTable popup={toggleMenu} />
 
-                        {popup.import !== "" && (
+                        {popup.import !== "" && popup.mode === "detail" && (
                             <ReceiptDetailPopup
                                 id={popup.import}
                                 popup={toggleMenu}
@@ -57,7 +61,7 @@ function WarehouseTransactionsPage() {
                     <TabsContent value="export">
                         <ExportTable popup={toggleMenu} />
 
-                        {popup.export !== "" && (
+                        {popup.export !== "" && popup.mode === "detail" && (
                             <ExportDetailPopup
                                 id={popup.export}
                                 popup={toggleMenu}

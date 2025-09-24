@@ -82,10 +82,10 @@ function ReceiptTable({ popup }: EditPopupPros) {
                                 <button
                                     className="font-semibold text-green-600 hover:text-green-500"
                                     onClick={() =>
-                                        popup(
-                                            "import",
-                                            receipt.receipt_id.toString(),
-                                        )
+                                        popup({
+                                            import: receipt.receipt_id.toString(),
+                                            mode: "detail",
+                                        })
                                     }
                                 >
                                     Detail

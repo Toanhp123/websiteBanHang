@@ -90,7 +90,10 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
             if (res.success) {
                 console.log(res.message);
 
-                popup("warehouse", "");
+                popup({
+                    warehouse: "",
+                    mode: "",
+                });
             }
         } catch (error) {
             console.log(error);
@@ -115,7 +118,12 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("warehouse", "")}
+                        onClick={() =>
+                            popup({
+                                warehouse: "",
+                                mode: "",
+                            })
+                        }
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -162,7 +170,12 @@ function EditWarehouse({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                        onClick={() => popup("warehouse", "")}
+                        onClick={() =>
+                            popup({
+                                warehouse: "",
+                                mode: "",
+                            })
+                        }
                     >
                         Cancel
                     </button>

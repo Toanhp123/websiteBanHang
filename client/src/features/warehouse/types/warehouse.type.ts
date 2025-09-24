@@ -14,7 +14,7 @@ export type ReceiptBasicInfoResponse = {
 
 export type EditPopupPros = {
     id?: string;
-    popup: (menu: string, value: string) => void;
+    popup: (values: Partial<Record<string, string>>) => void;
 };
 
 export type ReceiptDetail = {

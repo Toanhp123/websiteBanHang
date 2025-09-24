@@ -106,10 +106,11 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
                                                 <button
                                                     className="text-main-primary hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
                                                     onClick={() =>
-                                                        popup(
-                                                            "warehouse",
-                                                            warehouse.warehouse_id.toString(),
-                                                        )
+                                                        popup({
+                                                            warehouse:
+                                                                warehouse.warehouse_id.toString(),
+                                                            mode: "edit",
+                                                        })
                                                     }
                                                 >
                                                     Edit

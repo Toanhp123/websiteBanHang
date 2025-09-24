@@ -140,10 +140,11 @@ function ProductManager({ id, popup }: EditPopupPros) {
                                                 <button
                                                     className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
                                                     onClick={() =>
-                                                        popup(
-                                                            "product",
-                                                            product.product_id.toString(),
-                                                        )
+                                                        popup({
+                                                            product:
+                                                                product.product_id.toString(),
+                                                            mode: "edit",
+                                                        })
                                                     }
                                                 >
                                                     Edit Product
@@ -163,11 +164,11 @@ function ProductManager({ id, popup }: EditPopupPros) {
                                                 <button
                                                     className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
                                                     onClick={() =>
-                                                        popup(
-                                                            "product",
-                                                            product.product_id.toString() +
-                                                                " Detail",
-                                                        )
+                                                        popup({
+                                                            product:
+                                                                product.product_id.toString(),
+                                                            mode: "detail",
+                                                        })
                                                     }
                                                 >
                                                     Detail Product

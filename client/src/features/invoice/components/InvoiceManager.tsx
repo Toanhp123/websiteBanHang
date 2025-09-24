@@ -177,12 +177,12 @@ function InvoiceManager({ popup }: EditPopupPros) {
 
                                                     <button
                                                         className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
-                                                        onClick={() => {
-                                                            popup(
-                                                                "order",
-                                                                order.invoice_id.toString(),
-                                                            );
-                                                        }}
+                                                        onClick={() =>
+                                                            popup({
+                                                                order: order.invoice_id.toString(),
+                                                                mode: "detail",
+                                                            })
+                                                        }
                                                     >
                                                         Detail Order
                                                     </button>

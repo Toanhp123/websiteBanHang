@@ -8,13 +8,17 @@ import { useState } from "react";
 function DashboardOrdersPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         order: "",
+        mode: "",
     });
 
-    const toggleMenu = (menu: string, value: string) => {
-        setPopup((prev) => ({
-            ...prev,
-            [menu]: value,
-        }));
+    const toggleMenu = (values: Partial<Record<string, string>>) => {
+        setPopup(
+            (prev) =>
+                ({
+                    ...prev,
+                    ...values,
+                }) as Record<string, string>,
+        );
     };
 
     return (
@@ -24,7 +28,7 @@ function DashboardOrdersPage() {
 
                 <InvoiceManager popup={toggleMenu} />
 
-                {popup.order !== "" && (
+                {popup.mode === "detail" && (
                     <InvoiceDetailPopup id={popup.order} popup={toggleMenu} />
                 )}
             </div>
