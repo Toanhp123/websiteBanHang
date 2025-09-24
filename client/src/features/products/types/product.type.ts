@@ -8,6 +8,9 @@ import type {
 export type Inventory = {
     warehouse_id: number;
     quantity: number;
+    is_active: boolean;
+    last_checked_at: string;
+    product_id: number;
 };
 
 export interface Product {

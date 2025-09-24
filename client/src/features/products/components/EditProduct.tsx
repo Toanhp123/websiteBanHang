@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import InputImageUpload from "@/components/shared/InputImageUpload";
 import type { EditPopupPros } from "@/features/warehouse/types/warehouse.type";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+    editProductSchema,
+    type EditProductFormInputs,
+} from "../validations/editProduct.schema";
 
 function EditProduct({ id, popup }: EditPopupPros) {
     const advanceInfo = useGetProductAdvancedInfo();
@@ -30,6 +36,25 @@ function EditProduct({ id, popup }: EditPopupPros) {
         supplier_id: supplierID,
         product_type_id: productTypeID,
     };
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<EditProductFormInputs>({
+        resolver: yupResolver(editProductSchema),
+        defaultValues: {
+            name: "",
+            description: "",
+            price: 0,
+            categoryID: "",
+            productTypeID: "",
+            productStatusID: "",
+            supplierID: "",
+        },
+    });
 
     const isTextChanged =
         originalData &&

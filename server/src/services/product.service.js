@@ -238,6 +238,7 @@ class ProductService {
 				"product_name",
 				"product_description",
 				"product_category_id",
+				"product_date_add",
 				"price",
 				[
 					sequelize.literal(

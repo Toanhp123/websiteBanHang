@@ -22,7 +22,6 @@ function DashboardProductListPage() {
         );
     };
 
-    // TODO: các nơi có detail popup đều bị lỗi id
     return (
         <MainLayout>
             <div className="space-y-8">
