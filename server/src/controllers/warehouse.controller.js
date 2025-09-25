@@ -7,9 +7,12 @@ class WarehouseController {
 		const limit = parseInt(req.query.limit) || 5;
 		const offset = (page - 1) * limit;
 
+		const source_type = req.query.option;
+
 		const warehouseReceiptList = await warehouseService.getReceiptBasicInfo(
 			limit,
-			offset
+			offset,
+			source_type
 		);
 
 		res.json(warehouseReceiptList);

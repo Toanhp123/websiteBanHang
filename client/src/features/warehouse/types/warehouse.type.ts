@@ -1,10 +1,12 @@
 export type ReceiptBasicInfo = {
     receipt_id: number;
     supplier_name: string;
+    customer_id: number;
     warehouse_name: string;
     employee_first_name: string;
     employee_last_name: string;
     receipt_date: string;
+    invoice_id: number;
 };
 
 export type ReceiptBasicInfoResponse = {

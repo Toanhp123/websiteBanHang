@@ -1,7 +1,10 @@
 import type { AllInvoiceDetail } from "../types/invoice.type";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { TagItem } from "@/components/shared";
-import { deleteOneItemInvoice } from "../redux/allInvoiceDetail.thunk";
+import {
+    deleteOneItemInvoice,
+    refundedInvoiceAsync,
+} from "../redux/allInvoiceDetail.thunk";
 import { formatDate } from "@/utils/formatDate";
 
 function ItemInvoice(invoice: AllInvoiceDetail) {
@@ -10,6 +13,12 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
     const handleDeleteInvoice = async (invoice_id: number | null) => {
         if (invoice_id) {
             dispatch(deleteOneItemInvoice(invoice_id));
+        }
+    };
+
+    const handleRefundedInvoice = async (invoice_id: number | null) => {
+        if (invoice_id) {
+            dispatch(refundedInvoiceAsync(invoice_id));
         }
     };
 
@@ -83,9 +92,20 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                         </div>
                     )}
                     {invoice.status === "paid" && (
-                        <p className="font-semibold">
-                            Đơn hàng của bạn đã được chấp nhận
-                        </p>
+                        <div className="flex flex-1 justify-between">
+                            <p className="font-semibold">
+                                Đơn hàng của bạn đã được chấp nhận
+                            </p>
+
+                            <p
+                                className="text-main-primary cursor-pointer font-semibold"
+                                onClick={() =>
+                                    handleRefundedInvoice(invoice.invoice_id)
+                                }
+                            >
+                                Hoàn trả
+                            </p>
+                        </div>
                     )}
                     {invoice.status === "refunded" && (
                         <p className="font-semibold">

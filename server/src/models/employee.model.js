@@ -56,6 +56,7 @@ Employee.associate = (models) => {
 	Employee.hasMany(models.Warehouse, { foreignKey: "employee_id" });
 	Employee.hasMany(models.StockCheck, { foreignKey: "employee_id" });
 	Employee.hasMany(models.DamagedGood, { foreignKey: "employee_id" });
+	Employee.hasMany(models.InvoiceAudit, { foreignKey: "employee_id" });
 	Employee.hasMany(models.WorkSchedule, { foreignKey: "employee_id" });
 	Employee.hasMany(models.InventoryAudit, { foreignKey: "employee_id" });
 	Employee.hasMany(models.WarehouseExport, { foreignKey: "employee_id" });

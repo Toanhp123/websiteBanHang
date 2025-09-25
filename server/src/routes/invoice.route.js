@@ -55,12 +55,19 @@ router.post(
 // [POST] /invoice
 router.post("/", checkAccessToken, catchAsync(invoiceController.createInvoice));
 
-// [POST] /invoice/order/:invoice_id
+// [PATCH] /invoice/order/:invoice_id
 router.patch(
 	"/orders/:invoice_id",
 	checkAccessToken,
 	checkRole(["Admin", "Employee"]),
 	catchAsync(invoiceController.updateOrderStatus)
+);
+
+// [PATCH] /invoice/:invoice_id
+router.patch(
+	"/:invoice_id",
+	checkAccessToken,
+	catchAsync(invoiceController.refundedInvoice)
 );
 
 // [DELETE] /invoice/:invoice_id

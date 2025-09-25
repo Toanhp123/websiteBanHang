@@ -12,7 +12,11 @@ const WarehouseReceipt = sequelize.define(
 		},
 		supplier_id: {
 			type: DataTypes.STRING(10),
-			allowNull: false,
+			allowNull: true,
+		},
+		customer_id: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
 		},
 		employee_id: {
 			type: DataTypes.INTEGER,
@@ -20,11 +24,19 @@ const WarehouseReceipt = sequelize.define(
 		},
 		receipt_date: {
 			type: DataTypes.DATE,
-			defaultValue: Sequelize.NEW,
+			defaultValue: DataTypes.NOW,
 		},
 		warehouse_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
+		},
+		source_type: {
+			type: DataTypes.ENUM("SUPPLIER", "CUSTOMER"),
+			defaultValue: "SUPPLIER",
+		},
+		invoice_id: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
 		},
 	},
 	{
@@ -46,6 +58,12 @@ WarehouseReceipt.associate = (models) => {
 	});
 	WarehouseReceipt.belongsTo(models.Warehouse, {
 		foreignKey: "warehouse_id",
+	});
+	WarehouseReceipt.belongsTo(models.Customer, {
+		foreignKey: "customer_id",
+	});
+	WarehouseReceipt.belongsTo(models.Invoice, {
+		foreignKey: "invoice_id",
 	});
 };
 

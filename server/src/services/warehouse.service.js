@@ -15,17 +15,21 @@ const {
 	Product,
 	ProductStatus,
 	WarehouseReceiptItem,
+	Customer,
+	Invoice,
+	WarehouseExportItem,
 } = require("../models");
 const { throwServerError } = require("../utils/errorThrowFunc");
 
 class WarehouseService {
-	async getReceiptBasicInfo(limit, offset) {
+	async getReceiptBasicInfo(limit, offset, source_type) {
 		const warehouseReceiptList = await WarehouseReceipt.findAll({
 			include: [
 				{
 					model: Supplier,
 					attributes: [],
 				},
+				{ model: Customer, attributes: [] },
 				{
 					model: Employee,
 					attributes: [],
@@ -38,7 +42,9 @@ class WarehouseService {
 			attributes: [
 				"receipt_id",
 				"receipt_date",
+				"invoice_id",
 				[sequelize.col("Supplier.supplier_name"), "supplier_name"],
+				[sequelize.col("Customer.customer_id"), "customer_id"],
 				[sequelize.col("Warehouse.warehouse_name"), "warehouse_name"],
 				[
 					sequelize.col("Employee.employee_first_name"),
@@ -52,6 +58,7 @@ class WarehouseService {
 			limit,
 			offset,
 			order: [["receipt_date", "DESC"]],
+			where: { source_type },
 		});
 
 		const total = await WarehouseReceipt.count();
@@ -448,7 +455,7 @@ class WarehouseService {
 						old_quantity: oldQty,
 						new_quantity: newQty,
 						change_amount: product.quantity,
-						action: "IMPORT",
+						action: "Import",
 					},
 					{ transaction }
 				);
@@ -467,6 +474,114 @@ class WarehouseService {
 
 			throwServerError(
 				"Can't create warehouse import",
+				WarehouseError.CREATE_ERROR
+			);
+		}
+	}
+
+	// TODO: cần hoàn thiện hàm refunded này
+	async createRefundImport(account_id, invoice_id, transaction) {
+		const t = transaction ? transaction : await sequelize.transaction();
+
+		try {
+			const account = await Account.findOne({ where: { account_id } });
+			const employee_id = account.employee_id;
+
+			const invoice = await Invoice.findOne({ where: { invoice_id } });
+			const customer_id = invoice.customer_id;
+
+			const exportItems = await WarehouseExportItem.findAll({
+				include: [{ model: WarehouseExport, where: { invoice_id } }],
+				transaction: t, // thêm transaction vào
+			});
+
+			const itemsByWarehouse = {};
+
+			for (const expItem of exportItems) {
+				const wId = expItem.warehouse_id;
+
+				if (!itemsByWarehouse[wId]) {
+					itemsByWarehouse[wId] = [];
+				}
+
+				itemsByWarehouse[wId].push(expItem);
+			}
+
+			for (const [warehouse_id, items] of Object.entries(
+				itemsByWarehouse
+			)) {
+				const warehouseImport = await WarehouseReceipt.create(
+					{
+						warehouse_id: Number(warehouse_id),
+						employee_id,
+						source_type: "CUSTOMER",
+						customer_id,
+						invoice_id,
+					},
+					{ transaction: t } // dùng transaction chuẩn
+				);
+
+				const receipt_id = warehouseImport.receipt_id;
+
+				for (const item of items) {
+					const product_price = await Product.findOne({
+						attributes: ["price"],
+						where: { product_id: item.product_id },
+						raw: true,
+						transaction: t,
+					});
+
+					await WarehouseReceiptItem.create(
+						{
+							receipt_id,
+							product_id: item.product_id,
+							quantity: item.quantity,
+							unit_price: product_price.price,
+						},
+						{ transaction: t }
+					);
+
+					const inventory = await Inventory.findOne({
+						where: {
+							warehouse_id: item.warehouse_id,
+							product_id: item.product_id,
+						},
+						transaction: t,
+					});
+
+					const oldQty = inventory.quantity;
+					const newQty = oldQty + item.quantity;
+
+					await inventory.update(
+						{ quantity: newQty },
+						{ transaction: t }
+					);
+
+					await InventoryAudit.create(
+						{
+							warehouse_id: item.warehouse_id,
+							product_id: item.product_id,
+							employee_id,
+							old_quantity: oldQty,
+							new_quantity: newQty,
+							change_amount: item.quantity,
+							action: `Refund Import (invoice #${invoice_id})`,
+						},
+						{ transaction: t }
+					);
+				}
+			}
+
+			if (!transaction) {
+				await t.commit();
+			}
+		} catch (error) {
+			if (!transaction) {
+				await t.rollback();
+			}
+			console.error(error);
+			throwServerError(
+				"Can't create refund import",
 				WarehouseError.CREATE_ERROR
 			);
 		}

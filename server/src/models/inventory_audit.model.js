@@ -36,7 +36,7 @@ const InventoryAudit = sequelize.define(
 		},
 		audit_date: {
 			type: DataTypes.DATE,
-			defaultValue: Sequelize.NEW,
+			defaultValue: DataTypes.NOW,
 		},
 		employee_id: {
 			type: DataTypes.INTEGER,

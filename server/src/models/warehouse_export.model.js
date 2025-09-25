@@ -16,7 +16,7 @@ const WarehouseExport = sequelize.define(
 		},
 		export_date: {
 			type: DataTypes.DATE,
-			defaultValue: Sequelize.NEW,
+			defaultValue: DataTypes.NOW,
 		},
 		reason: {
 			type: DataTypes.TEXT,
@@ -40,6 +40,9 @@ WarehouseExport.associate = (models) => {
 
 	WarehouseExport.belongsTo(models.Employee, {
 		foreignKey: "employee_id",
+	});
+	WarehouseExport.belongsTo(models.Invoice, {
+		foreignKey: "invoice_id",
 	});
 };
 

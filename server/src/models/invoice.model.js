@@ -40,7 +40,14 @@ const Invoice = sequelize.define(
 			allowNull: false,
 		},
 		status: {
-			type: DataTypes.ENUM("pending", "paid", "cancelled", "refunded"),
+			type: DataTypes.ENUM(
+				"pending",
+				"paid",
+				"cancelled",
+				"refund_requested",
+				"refunded",
+				"refund_rejected"
+			),
 			allowNull: false,
 			defaultValue: "pending",
 		},
@@ -57,6 +64,12 @@ const Invoice = sequelize.define(
 
 Invoice.associate = (models) => {
 	Invoice.hasMany(models.InvoiceDetail, {
+		foreignKey: "invoice_id",
+	});
+	Invoice.hasMany(models.InvoiceAudit, {
+		foreignKey: "invoice_id",
+	});
+	Invoice.hasMany(models.WarehouseReceipt, {
 		foreignKey: "invoice_id",
 	});
 

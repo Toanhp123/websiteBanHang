@@ -8,6 +8,8 @@ import { default as EditWarehouse } from "./EditWarehouse";
 import { default as AddWarehouseForm } from "./AddWarehouseForm";
 import { default as InventoryListTable } from "./InventoryListTable";
 import { default as WarehouseImportForm } from "./WarehouseImportForm";
+import { default as ReceiptRefundedTable } from "./ReceiptRefundedTable";
+import { default as ReceiptRefundedDetailPopup } from "./ReceiptRefundedDetailPopup";
 
 export {
     ReceiptTable,
@@ -20,4 +22,6 @@ export {
     AddWarehouseForm,
     InventoryListTable,
     WarehouseImportForm,
+    ReceiptRefundedTable,
+    ReceiptRefundedDetailPopup,
 };

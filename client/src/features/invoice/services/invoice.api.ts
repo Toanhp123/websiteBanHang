@@ -33,6 +33,10 @@ export const deleteInvoice = async (invoice_id: number): Promise<void> => {
     await axios.delete(`invoice/${invoice_id}`);
 };
 
+export const refundedInvoice = async (invoice_id: number) => {
+    await axios.patch(`invoice/${invoice_id}`);
+};
+
 export const getAllAddressShipping = async (): Promise<InvoiceAddress[]> => {
     const res = await axios.get<InvoiceAddress[]>("/invoice/address");
 
@@ -64,8 +68,11 @@ export const getOrderList = async (
     return res.data;
 };
 
-export const updateOrderStatus = async (status: string, invoice_id: number) => {
-    console.log(status, invoice_id);
+export const updateOrderStatus = async (
+    status: string,
+    invoice_id: number,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.patch(`/invoice/orders/${invoice_id}`, { status });
 
-    await axios.patch(`/invoice/orders/${invoice_id}`, { status });
+    return res.data;
 };

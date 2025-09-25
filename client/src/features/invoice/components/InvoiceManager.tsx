@@ -23,7 +23,9 @@ function InvoiceManager({ popup }: EditPopupPros) {
 
         if (isOrderStatus(status)) {
             try {
-                await updateOrderStatus(status, invoice_id);
+                const res = await updateOrderStatus(status, invoice_id);
+
+                console.log(res.message);
 
                 setOrderList((prev) =>
                     prev.map((order) =>
@@ -39,10 +41,15 @@ function InvoiceManager({ popup }: EditPopupPros) {
     };
 
     const disableButtonBaseOptionStatus = (status: string): boolean => {
-        return (
-            status === "paid" || status === "cancelled" || status === "refunded"
-        );
+        return [
+            "paid",
+            "cancelled",
+            "refunded",
+            "refund_requested",
+            "refund_rejected",
+        ].includes(status);
     };
+
     const handleLoadMoreOrders = () => {
         setPage((prev) => prev + 1);
     };
@@ -145,35 +152,66 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                         {editMenu === order.invoice_id && (
                                             <div className="shadow-light absolute top-8 right-0 z-50 h-35 w-50 rounded-2xl bg-white">
                                                 <div className="flex h-full w-full flex-col px-4 py-2">
-                                                    <button
-                                                        className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
-                                                        disabled={disableButtonBaseOptionStatus(
-                                                            order.status,
-                                                        )}
-                                                        onClick={() =>
-                                                            handleUpdateStatusOrder(
-                                                                "paid",
-                                                                order.invoice_id,
-                                                            )
-                                                        }
-                                                    >
-                                                        Accept Order
-                                                    </button>
+                                                    {order.status !==
+                                                    "refund_requested" ? (
+                                                        <>
+                                                            <button
+                                                                className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
+                                                                disabled={disableButtonBaseOptionStatus(
+                                                                    order.status,
+                                                                )}
+                                                                onClick={() =>
+                                                                    handleUpdateStatusOrder(
+                                                                        "paid",
+                                                                        order.invoice_id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                Accept Order
+                                                            </button>
 
-                                                    <button
-                                                        className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                                                        disabled={disableButtonBaseOptionStatus(
-                                                            order.status,
-                                                        )}
-                                                        onClick={() =>
-                                                            handleUpdateStatusOrder(
-                                                                "cancelled",
-                                                                order.invoice_id,
-                                                            )
-                                                        }
-                                                    >
-                                                        Cancelled Order
-                                                    </button>
+                                                            <button
+                                                                className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                                                disabled={disableButtonBaseOptionStatus(
+                                                                    order.status,
+                                                                )}
+                                                                onClick={() =>
+                                                                    handleUpdateStatusOrder(
+                                                                        "refunded",
+                                                                        order.invoice_id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                Cancelled Order
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <button
+                                                                className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-green-600 hover:cursor-pointer hover:bg-gray-300 hover:text-green-500"
+                                                                onClick={() =>
+                                                                    handleUpdateStatusOrder(
+                                                                        "refunded",
+                                                                        order.invoice_id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                Approve Refund
+                                                            </button>
+
+                                                            <button
+                                                                className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                                                onClick={() =>
+                                                                    handleUpdateStatusOrder(
+                                                                        "refund_rejected",
+                                                                        order.invoice_id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                Reject Refund
+                                                            </button>
+                                                        </>
+                                                    )}
 
                                                     <button
                                                         className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"

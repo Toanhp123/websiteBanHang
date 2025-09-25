@@ -31,7 +31,13 @@ export interface AllInvoiceDetail {
     invoice_id: number;
     discount_amount: string;
     total_final_amount: string;
-    status: "pending" | "paid" | "cancelled" | "refunded";
+    status:
+        | "pending"
+        | "paid"
+        | "cancelled"
+        | "refunded"
+        | "refund_requested"
+        | "refund_rejected";
     invoice_date: string;
     products: InvoiceDetail[];
 }
@@ -54,19 +60,33 @@ export type OrdersItem = {
     invoice_id: number;
     email: string;
     total_final_amount: number;
-    status: "pending" | "paid" | "cancelled" | "refunded";
+    status:
+        | "pending"
+        | "paid"
+        | "cancelled"
+        | "refunded"
+        | "refund_requested"
+        | "refund_rejected";
     invoice_date: string;
     discount_amount: number;
 };
 
-export type OrderStatus = "pending" | "paid" | "cancelled" | "refunded";
+export type OrderStatus =
+    | "pending"
+    | "paid"
+    | "cancelled"
+    | "refunded"
+    | "refund_requested"
+    | "refund_rejected";
 
 export const isOrderStatus = (status: unknown): status is OrderStatus => {
     return (
         status === "pending" ||
         status === "paid" ||
         status === "cancelled" ||
-        status === "refunded"
+        status === "refund_requested" ||
+        status === "refunded" ||
+        status === "refund_rejected"
     );
 };
 

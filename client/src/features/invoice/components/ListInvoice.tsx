@@ -24,7 +24,7 @@ function ListInvoice() {
     }, [dispatch]);
 
     return (
-        <div className="space-y-6">
+        <div className="max-h-200 space-y-6 overflow-auto pr-4">
             {listInvoice.map((invoice) => (
                 <div key={invoice.invoice_id}>
                     <ItemInvoice {...invoice} />

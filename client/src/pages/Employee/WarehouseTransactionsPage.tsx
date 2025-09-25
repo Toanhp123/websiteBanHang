@@ -5,6 +5,8 @@ import {
     ExportTable,
     InventoryAuditTable,
     ReceiptDetailPopup,
+    ReceiptRefundedDetailPopup,
+    ReceiptRefundedTable,
     ReceiptTable,
 } from "@/features/warehouse/components";
 import { useState } from "react";
@@ -12,6 +14,7 @@ import { useState } from "react";
 function WarehouseTransactionsPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         import: "",
+        importRefunded: "",
         export: "",
         inventory: "",
         mode: "",
@@ -35,9 +38,12 @@ function WarehouseTransactionsPage() {
                 </h1>
 
                 <Tabs defaultValue="import" className="w-full">
-                    <TabsList className="grid w-full grid-cols-3">
+                    <TabsList className="grid w-full grid-cols-4">
                         <TabsTrigger value="import">
                             Import Receipts
+                        </TabsTrigger>
+                        <TabsTrigger value="importRefunded">
+                            Import Refunded Receipts
                         </TabsTrigger>
                         <TabsTrigger value="export">
                             Export Receipts
@@ -56,6 +62,18 @@ function WarehouseTransactionsPage() {
                                 popup={toggleMenu}
                             />
                         )}
+                    </TabsContent>
+
+                    <TabsContent value="importRefunded">
+                        <ReceiptRefundedTable popup={toggleMenu} />
+
+                        {popup.importRefunded !== "" &&
+                            popup.mode === "detail" && (
+                                <ReceiptRefundedDetailPopup
+                                    id={popup.import}
+                                    popup={toggleMenu}
+                                />
+                            )}
                     </TabsContent>
 
                     <TabsContent value="export">

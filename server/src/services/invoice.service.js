@@ -12,11 +12,13 @@ const {
 	WarehouseExport,
 	WarehouseExportItem,
 	InventoryAudit,
+	InvoiceAudit,
 } = require("../models");
 const {
 	throwServerError,
 	throwNotFoundError,
 } = require("../utils/errorThrowFunc");
+const warehouseService = require("./warehouse.service");
 
 class InvoiceService {
 	async createInvoice(
@@ -75,8 +77,6 @@ class InvoiceService {
 				const promotion_product_id = item.promotion
 					? item.promotion.promotion_id
 					: null;
-
-				console.log(item.promotion.PromotionEffects.effect_value);
 
 				await InvoiceDetail.create(
 					{
@@ -345,14 +345,15 @@ class InvoiceService {
 		return { orderList, hasMore };
 	}
 
-	async updateOrderStatus(status, invoice_id, account_id) {
+	async updateOrderStatus(status, reason, invoice_id, account_id) {
 		const transaction = await sequelize.transaction();
 
 		const account = await Account.findOne({ where: { account_id } });
 		const employee_id = account.employee_id;
 
 		try {
-			// Lấy invoice và chi tiết sản phẩm của nó
+			let res = null;
+
 			const invoice = await Invoice.findOne({
 				where: { invoice_id },
 				include: [{ model: InvoiceDetail }],
@@ -363,10 +364,24 @@ class InvoiceService {
 				throwNotFoundError("Can't find invoice", BillError.ERROR_ID);
 			}
 
+			const oldStatus = invoice.status;
+
 			await Invoice.update(
-				{ status },
+				{ status, employee_id },
 				{ where: { invoice_id }, transaction }
 			);
+
+			await InvoiceAudit.create(
+				{
+					invoice_id,
+					old_status: oldStatus,
+					new_status: status,
+					changed_by: employee_id,
+					reason,
+				},
+				{ transaction }
+			);
+
 			if (status === "paid") {
 				for (let item of invoice.InvoiceDetails) {
 					let qtyToDeduct = item.quantity;
@@ -428,7 +443,6 @@ class InvoiceService {
 								product_id: inv.product_id,
 								warehouse_id: inv.warehouse_id,
 								quantity: deduct,
-								unit_price: inv,
 							},
 							{ transaction }
 						);
@@ -436,9 +450,31 @@ class InvoiceService {
 						qtyToDeduct -= deduct;
 					}
 				}
+
+				res = {
+					message: `Invoice #${invoice_id} paid`,
+					success: true,
+				};
+			}
+
+			if (status === "refunded") {
+				await warehouseService.createRefundImport(
+					account_id,
+					invoice_id,
+					transaction
+				);
+
+				res = {
+					message: `Refund import created for invoice #${invoice_id}`,
+					success: true,
+				};
 			}
 
 			await transaction.commit();
+
+			if (res) {
+				return res;
+			}
 		} catch (error) {
 			await transaction.rollback();
 
@@ -448,6 +484,25 @@ class InvoiceService {
 				"Can't update status invoice",
 				BillError.ERROR_UPDATE_STATUS
 			);
+		}
+	}
+
+	async refundedInvoice(invoice_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			await Invoice.update(
+				{ status: "refund_requested" },
+				{ where: { invoice_id }, transaction }
+			);
+
+			await transaction.commit();
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't delete invoice", BillError.ERROR_DELETE);
 		}
 	}
 }

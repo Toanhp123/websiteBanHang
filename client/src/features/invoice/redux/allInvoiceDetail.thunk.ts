@@ -1,10 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { deleteInvoice } from "../services/invoice.api";
+import { deleteInvoice, refundedInvoice } from "../services/invoice.api";
 
 export const deleteOneItemInvoice = createAsyncThunk(
-    "cart/deleteOneItemInvoice",
+    "invoice/deleteOneItemInvoice",
     async (invoice_id: number) => {
         await deleteInvoice(invoice_id);
+
+        return invoice_id;
+    },
+);
+
+export const refundedInvoiceAsync = createAsyncThunk(
+    "invoice/refundedInvoiceAsync",
+    async (invoice_id: number) => {
+        await refundedInvoice(invoice_id);
 
         return invoice_id;
     },

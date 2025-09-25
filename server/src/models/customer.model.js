@@ -42,6 +42,7 @@ Customer.associate = (models) => {
 	Customer.hasOne(models.Account, { foreignKey: "customer_id" });
 	Customer.hasMany(models.Invoice, { foreignKey: "customer_id" });
 	Customer.hasMany(models.CustomerPromotion, { foreignKey: "customer_id" });
+	Customer.hasMany(models.WarehouseReceipt, { foreignKey: "customer_id" });
 
 	Customer.belongsTo(models.CustomerType, { foreignKey: "customer_type_id" });
 };

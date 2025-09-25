@@ -4,7 +4,10 @@ import type {
     AllInvoiceDetail,
     AllInvoiceDetailState,
 } from "../types/invoice.type";
-import { deleteOneItemInvoice } from "./allInvoiceDetail.thunk";
+import {
+    deleteOneItemInvoice,
+    refundedInvoiceAsync,
+} from "./allInvoiceDetail.thunk";
 
 const initialState: AllInvoiceDetailState = {
     items: [],
@@ -23,9 +26,23 @@ const allInvoiceDetailSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(deleteOneItemInvoice.fulfilled, (state, action) => {
-            state.items = state.items.filter(
-                (item) => item.invoice_id !== action.payload,
+            const invoice = state.items.find(
+                (invoice) => invoice.invoice_id === action.payload,
             );
+
+            if (invoice) {
+                invoice.status = "cancelled";
+            }
+        });
+
+        builder.addCase(refundedInvoiceAsync.fulfilled, (state, action) => {
+            const invoice = state.items.find(
+                (invoice) => invoice.invoice_id === action.payload,
+            );
+
+            if (invoice) {
+                invoice.status = "refund_requested";
+            }
         });
     },
 });

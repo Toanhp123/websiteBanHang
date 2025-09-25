@@ -13,9 +13,10 @@ import type { WarehouseImportFormInputs } from "../validations/warehouseImport.s
 export const getReceiptBasicInfo = async (
     limit: number,
     page: number,
+    option: "supplier" | "customer",
 ): Promise<ReceiptBasicInfoResponse> => {
     const res = await axios.get(`warehouse/receipt`, {
-        params: { limit, page },
+        params: { limit, page, option },
     });
 
     return res.data;

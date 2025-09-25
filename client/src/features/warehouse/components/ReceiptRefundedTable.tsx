@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getReceiptBasicInfo } from "../services/warehouse.api";
 import type { EditPopupPros, ReceiptBasicInfo } from "../types/warehouse.type";
+import { getReceiptBasicInfo } from "../services/warehouse.api";
 import { formatDate } from "@/utils/formatDate";
 import { Button } from "@/components/shared";
 
-function ReceiptTable({ popup }: EditPopupPros) {
+function ReceiptRefundedTable({ popup }: EditPopupPros) {
     const [receiptBasic, setReceiptBasic] = useState<ReceiptBasicInfo[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -16,7 +16,7 @@ function ReceiptTable({ popup }: EditPopupPros) {
     useEffect(() => {
         const handleGetReceiptBasicInfo = async () => {
             try {
-                const res = await getReceiptBasicInfo(5, page, "supplier");
+                const res = await getReceiptBasicInfo(5, page, "customer");
 
                 setReceiptBasic((prev) => {
                     const merged = [...prev, ...res.warehouseReceiptList];
@@ -49,7 +49,8 @@ function ReceiptTable({ popup }: EditPopupPros) {
                 <thead className="bg-gray-100">
                     <tr>
                         <th className="px-4 py-2">Receipt ID</th>
-                        <th className="px-4 py-2">Supplier</th>
+                        <th className="px-4 py-2">Customer ID</th>
+                        <th className="px-4 py-2">Invoice ID</th>
                         <th className="px-4 py-2">Warehouse</th>
                         <th className="px-4 py-2">Employee</th>
                         <th className="px-4 py-2">Receipt Date</th>
@@ -64,9 +65,8 @@ function ReceiptTable({ popup }: EditPopupPros) {
                             className="even:bg-gray-100"
                         >
                             <td className="px-4 py-2">{receipt.receipt_id}</td>
-                            <td className="px-4 py-2">
-                                {receipt.supplier_name}
-                            </td>
+                            <td className="px-4 py-2">{receipt.customer_id}</td>
+                            <td className="px-4 py-2">{receipt.invoice_id}</td>
                             <td className="px-4 py-2">
                                 {receipt.warehouse_name}
                             </td>
@@ -113,4 +113,4 @@ function ReceiptTable({ popup }: EditPopupPros) {
     );
 }
 
-export default ReceiptTable;
+export default ReceiptRefundedTable;
