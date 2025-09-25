@@ -112,6 +112,16 @@ function ItemInvoice(invoice: AllInvoiceDetail) {
                             Đơn hàng của bạn đã được hoàn tiền
                         </p>
                     )}
+                    {invoice.status === "refund_requested" && (
+                        <p className="font-semibold">
+                            Yêu cầu hoàn trả đang được xem xét
+                        </p>
+                    )}
+                    {invoice.status === "refund_rejected" && (
+                        <p className="font-semibold">
+                            Yêu cầu hoàn trả bị từ chối
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

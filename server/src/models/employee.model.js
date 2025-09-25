@@ -56,12 +56,16 @@ Employee.associate = (models) => {
 	Employee.hasMany(models.Warehouse, { foreignKey: "employee_id" });
 	Employee.hasMany(models.StockCheck, { foreignKey: "employee_id" });
 	Employee.hasMany(models.DamagedGood, { foreignKey: "employee_id" });
-	Employee.hasMany(models.InvoiceAudit, { foreignKey: "employee_id" });
 	Employee.hasMany(models.WorkSchedule, { foreignKey: "employee_id" });
 	Employee.hasMany(models.InventoryAudit, { foreignKey: "employee_id" });
 	Employee.hasMany(models.WarehouseExport, { foreignKey: "employee_id" });
 	Employee.hasMany(models.StockAdjustment, { foreignKey: "employee_id" });
 	Employee.hasMany(models.WarehouseReceipt, { foreignKey: "employee_id" });
+	Employee.hasMany(models.InvoiceAudit, {
+		foreignKey: "changed_by",
+		constraints: false,
+		scope: { changed_by_type: "EMPLOYEE" },
+	});
 
 	Employee.belongsTo(models.EmployeePosition, {
 		foreignKey: "employee_position_id",

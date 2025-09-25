@@ -229,13 +229,30 @@ class InvoiceService {
 		return invoice;
 	}
 
-	async deleteInvoice(invoice_id) {
+	async deleteInvoice(invoice_id, account_id) {
 		const transaction = await sequelize.transaction();
 
 		try {
+			const account = await Account.findOne({ where: { account_id } });
+			const customer_id = account.customer_id;
+
+			const invoice = await Invoice.findOne({ where: { invoice_id } });
+			const old_status = invoice.status;
+
 			await Invoice.update(
 				{ status: "cancelled" },
 				{ where: { invoice_id }, transaction }
+			);
+
+			await InvoiceAudit.create(
+				{
+					invoice_id,
+					old_status,
+					new_status: "cancelled",
+					changed_by: customer_id,
+					changed_by_type: "CUSTOMER",
+				},
+				{ transaction }
 			);
 
 			await transaction.commit();
@@ -472,9 +489,7 @@ class InvoiceService {
 
 			await transaction.commit();
 
-			if (res) {
-				return res;
-			}
+			return res;
 		} catch (error) {
 			await transaction.rollback();
 
@@ -487,13 +502,31 @@ class InvoiceService {
 		}
 	}
 
-	async refundedInvoice(invoice_id) {
+	async refundedInvoice(invoice_id, account_id, reason) {
 		const transaction = await sequelize.transaction();
 
 		try {
+			const invoice = await Invoice.findOne({ where: { invoice_id } });
+			const old_status = invoice.status;
+
+			const account = await Account.findOne({ where: { account_id } });
+			const customer_id = account.customer_id;
+
 			await Invoice.update(
 				{ status: "refund_requested" },
 				{ where: { invoice_id }, transaction }
+			);
+
+			await InvoiceAudit.create(
+				{
+					invoice_id,
+					old_status,
+					new_status: "refund_requested",
+					changed_by: customer_id,
+					changed_by_type: "CUSTOMER",
+					reason,
+				},
+				{ transaction }
 			);
 
 			await transaction.commit();

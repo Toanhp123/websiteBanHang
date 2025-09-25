@@ -49,8 +49,9 @@ class InvoiceController {
 	// [DELETE] /invoice/:invoice_id
 	async deleteInvoice(req, res) {
 		const { invoice_id } = req.params;
+		const { id } = req.user;
 
-		await InvoiceService.deleteInvoice(invoice_id);
+		await InvoiceService.deleteInvoice(invoice_id, id);
 
 		res.json({ message: "delete ok" });
 	}
@@ -110,9 +111,14 @@ class InvoiceController {
 
 	// [PATCH] /invoice/:invoice_id
 	async refundedInvoice(req, res) {
-		const { invoice_id } = req.params;
+		const { invoice_id, reason } = req.params;
+		const { id } = req.user;
 
-		const message = await InvoiceService.refundedInvoice(invoice_id);
+		const message = await InvoiceService.refundedInvoice(
+			invoice_id,
+			id,
+			reason
+		);
 
 		res.json(message);
 	}

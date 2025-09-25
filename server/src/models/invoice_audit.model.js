@@ -43,6 +43,10 @@ const InvoiceAudit = sequelize.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		changed_by_type: {
+			type: DataTypes.ENUM("EMPLOYEE", "CUSTOMER"),
+			defaultValue: "EMPLOYEE",
+		},
 		reason: {
 			type: DataTypes.TEXT,
 			allowNull: true,
@@ -56,7 +60,17 @@ const InvoiceAudit = sequelize.define(
 
 InvoiceAudit.associate = (models) => {
 	InvoiceAudit.belongsTo(models.Invoice, { foreignKey: "invoice_id" });
-	InvoiceAudit.belongsTo(models.Employee, { foreignKey: "changed_by" });
+	InvoiceAudit.belongsTo(models.Employee, {
+		foreignKey: "changed_by",
+		constraints: false,
+		scope: { changed_by_type: "EMPLOYEE" },
+	});
+
+	InvoiceAudit.belongsTo(models.Customer, {
+		foreignKey: "changed_by",
+		constraints: false,
+		scope: { changed_by_type: "CUSTOMER" },
+	});
 };
 
 module.exports = InvoiceAudit;
