@@ -3,7 +3,9 @@ import type {
     Customer,
     Employee,
     EmployeeDetail,
+    EmployeeScheduleResponse,
     PositionEmployee,
+    Shifts,
 } from "../types/accounts.type";
 
 export const changePassword = async ({
@@ -98,6 +100,27 @@ export const recoverAccount = async (
     employee_id: number,
 ): Promise<{ message: string; success: boolean }> => {
     const res = await axios.patch(`/account/employee/recover/${employee_id}`);
+
+    return res.data;
+};
+
+export const getScheduleAllEmployee =
+    async (): Promise<EmployeeScheduleResponse> => {
+        const res = await axios.get(`/account/employee/schedule`);
+
+        return res.data;
+    };
+
+export const getAllShifts = async (): Promise<Shifts[]> => {
+    const res = await axios.get(`/account/employee/shifts`);
+
+    return res.data;
+};
+
+export const registerSchedule = async (
+    schedule: Record<number, number | null>,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.post(`/account/employee/schedule`, { schedule });
 
     return res.data;
 };

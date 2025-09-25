@@ -12,6 +12,8 @@ import { default as CustomerListPage } from "./CustomerListPage";
 import { default as AddDiscountPage } from "./AddDiscountPage";
 import { default as InventoryListPage } from "./InventoryListPage";
 import { default as ListDiscountPage } from "./ListDiscountPage";
+import { default as EmployeeSchedulePage } from "./EmployeeSchedulePage";
+import { default as AddEmployeeSchedulePage } from "./AddEmployeeSchedulePage";
 
 export {
     DashboardHomePage,
@@ -28,4 +30,6 @@ export {
     AddDiscountPage,
     InventoryListPage,
     ListDiscountPage,
+    EmployeeSchedulePage,
+    AddEmployeeSchedulePage,
 };

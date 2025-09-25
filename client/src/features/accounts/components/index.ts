@@ -3,6 +3,8 @@ import { default as UpdatePassword } from "./UpdatePassword";
 import { default as AddEmployeeForm } from "./AddEmployeeForm";
 import { default as EmployeeDetailPopup } from "./EmployeeDetailPopup";
 import { default as CustomerListTable } from "./CustomerListTable";
+import { default as EmployeeScheduleTable } from "./EmployeeScheduleTable";
+import { default as AddEmployeeScheduleForm } from "./AddEmployeeScheduleForm";
 
 export {
     UpdatePersonalInfo,
@@ -10,4 +12,6 @@ export {
     AddEmployeeForm,
     EmployeeDetailPopup,
     CustomerListTable,
+    EmployeeScheduleTable,
+    AddEmployeeScheduleForm,
 };

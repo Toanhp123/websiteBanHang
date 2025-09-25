@@ -34,3 +34,28 @@ export type Customer = {
     email: string;
     account_status: "pending" | "approved" | "rejected";
 };
+
+export type Shifts = {
+    shift_id: number;
+    shift_name: string;
+    start_time: string;
+    end_time: string;
+};
+
+export interface EmployeeMinimal {
+    employee_id: number;
+    employee_name: string;
+}
+
+export interface Schedule {
+    work_schedule_id: number;
+    work_day: number;
+    shift_id: number;
+    employee_id: number;
+}
+
+export interface EmployeeScheduleResponse {
+    employees: EmployeeMinimal[];
+    schedules: Schedule[];
+    shifts: Shifts[];
+}

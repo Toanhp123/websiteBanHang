@@ -85,6 +85,22 @@ router.get(
 	catchAsync(accountController.getDetailEmployeeAndAccount)
 );
 
+// [GET] /account/employee/schedule
+router.get(
+	"/employee/schedule",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(accountController.getScheduleAllEmployee)
+);
+
+// [GET] /account/employee/shifts
+router.get(
+	"/employee/shifts",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(accountController.getAllShifts)
+);
+
 // [GET] /account/employee/:employee_id
 router.get(
 	"/employee/:employee_id",
@@ -123,6 +139,14 @@ router.post(
 	checkAccessToken,
 	checkRole(["Admin"]),
 	catchAsync(accountController.addEmployee)
+);
+
+// [POST] /account/employee/schedule
+router.post(
+	"/employee/schedule",
+	checkAccessToken,
+	checkRole(["Admin", "Employee"]),
+	catchAsync(accountController.registerSchedule)
 );
 
 // [GET] /account/customer

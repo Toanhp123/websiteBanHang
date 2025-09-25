@@ -7,6 +7,8 @@ const {
 	EmployeePosition,
 	Customer,
 	CustomerType,
+	WorkSchedule,
+	WorkShift,
 } = require("../models");
 const {
 	CartStatus,
@@ -779,6 +781,76 @@ class AccountService {
 
 			throwServerError(
 				"Can't delete employee",
+				EmployeeError.UPDATE_ERROR
+			);
+		}
+	}
+
+	async getScheduleAllEmployee() {
+		const employees = await Employee.findAll({
+			attributes: [
+				"employee_id",
+				"employee_first_name",
+				"employee_last_name",
+			],
+		});
+
+		// Lấy danh sách ca
+		const shifts = await WorkShift.findAll({
+			attributes: ["shift_id", "shift_name", "start_time", "end_time"],
+		});
+
+		// Lấy lịch làm việc
+		const schedules = await WorkSchedule.findAll();
+
+		// Map employee name
+		const employeeList = employees.map((e) => ({
+			employee_id: e.employee_id,
+			employee_name: `${e.employee_first_name} ${e.employee_last_name}`,
+		}));
+
+		return {
+			employees: employeeList,
+			shifts,
+			schedules,
+		};
+	}
+
+	async getAllShifts() {
+		return await WorkShift.findAll();
+	}
+
+	async registerSchedule(schedules, account_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const account = await Account.findOne({ where: { account_id } });
+			const employee_id = account.employee_id;
+
+			await WorkSchedule.destroy({ where: { employee_id }, transaction });
+
+			const insertData = Object.entries(schedules)
+				.filter(([_, item]) => item !== null)
+				.map(([dayStr, item]) => ({
+					employee_id,
+					work_day: Number(dayStr),
+					shift_id: Number(item),
+				}));
+
+			if (insertData.length > 0) {
+				await WorkSchedule.bulkCreate(insertData, { transaction });
+			}
+
+			await transaction.commit();
+
+			return { message: "Register schedule success", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError(
+				"Can't register schedule",
 				EmployeeError.UPDATE_ERROR
 			);
 		}

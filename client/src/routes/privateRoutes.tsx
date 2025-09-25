@@ -21,6 +21,8 @@ import {
     WarehouseListPage,
     WarehouseTransactionsPage,
     ListDiscountPage,
+    EmployeeSchedulePage,
+    AddEmployeeSchedulePage,
 } from "@/pages/Employee";
 
 const privateRoutes = (
@@ -92,6 +94,16 @@ const privateRoutes = (
             <Route
                 path="/dashboard/discountList"
                 element={<ListDiscountPage />}
+            />
+
+            <Route
+                path="/dashboard/employeeSchedule"
+                element={<EmployeeSchedulePage />}
+            />
+
+            <Route
+                path="/dashboard/addEmployeeSchedule"
+                element={<AddEmployeeSchedulePage />}
             />
 
             <Route path="/dashboard" element={<DashboardHomePage />} />

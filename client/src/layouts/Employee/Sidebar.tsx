@@ -68,6 +68,14 @@ function Sidebar() {
             text: "Thêm nhân viên",
             func: () => handleNavigate("employeeAdd"),
         },
+        {
+            text: "Lịch làm việc",
+            func: () => handleNavigate("employeeSchedule"),
+        },
+        {
+            text: "Đăng ký lịch làm việc",
+            func: () => handleNavigate("addEmployeeSchedule"),
+        },
     ];
 
     const listOptionInDiscount = [

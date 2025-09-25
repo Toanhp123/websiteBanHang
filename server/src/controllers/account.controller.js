@@ -196,6 +196,30 @@ class AccountController {
 
 		res.json(message);
 	}
+
+	// [GET] /account/employee/schedule
+	async getScheduleAllEmployee(req, res) {
+		const schedule = await accountService.getScheduleAllEmployee();
+
+		res.json(schedule);
+	}
+
+	// [GET] /account/employee/shifts
+	async getAllShifts(req, res) {
+		const shifts = await accountService.getAllShifts();
+
+		res.json(shifts);
+	}
+
+	// [POST] /account/employee/schedule
+	async registerSchedule(req, res) {
+		const { schedule } = req.body;
+		const { id } = req.user;
+
+		const message = await accountService.registerSchedule(schedule, id);
+
+		res.json(message);
+	}
 }
 
 module.exports = new AccountController();
