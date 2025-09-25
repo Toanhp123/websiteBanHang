@@ -83,7 +83,8 @@ function ReceiptRefundedTable({ popup }: EditPopupPros) {
                                     className="font-semibold text-green-600 hover:text-green-500"
                                     onClick={() =>
                                         popup({
-                                            import: receipt.receipt_id.toString(),
+                                            importRefunded:
+                                                receipt.receipt_id.toString(),
                                             mode: "detail",
                                         })
                                     }

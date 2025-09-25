@@ -61,7 +61,7 @@ class WarehouseService {
 			where: { source_type },
 		});
 
-		const total = await WarehouseReceipt.count();
+		const total = await WarehouseReceipt.count({ where: { source_type } });
 		const hasMore = offset + warehouseReceiptList.length < total;
 
 		return { warehouseReceiptList, hasMore };
