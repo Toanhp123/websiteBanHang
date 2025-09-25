@@ -70,7 +70,7 @@ function WarehouseTransactionsPage() {
                         {popup.importRefunded !== "" &&
                             popup.mode === "detail" && (
                                 <ReceiptRefundedDetailPopup
-                                    id={popup.import}
+                                    id={popup.importRefunded}
                                     popup={toggleMenu}
                                 />
                             )}
