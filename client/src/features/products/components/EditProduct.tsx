@@ -10,32 +10,17 @@ import {
     editProductSchema,
     type EditProductFormInputs,
 } from "../validations/editProduct.schema";
+import type { ProductImage } from "../types/product.type";
+import isEqual from "lodash/isEqual";
 
 function EditProduct({ id, popup }: EditPopupPros) {
     const advanceInfo = useGetProductAdvancedInfo();
 
     const [originalData, setOriginalData] = useState<unknown>(null);
-    const [name, setName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [price, setPrice] = useState<string>("");
-    const [mainImage, setMainImage] = useState<File | null>(null);
-    const [subImages, setSubImages] = useState<Array<File | null>>(
+    const [mainImage, setMainImage] = useState<ProductImage | null>(null);
+    const [subImages, setSubImages] = useState<Array<ProductImage | null>>(
         Array(4).fill(null),
     );
-    const [supplierID, setSupplierID] = useState<string>("");
-    const [categoryID, setCategoryID] = useState<string>("");
-    const [productTypeID, setProductTypeID] = useState<string>("");
-    const [productStatusID, setProductStatusID] = useState<string>("");
-
-    const currentData = {
-        product_name: name,
-        product_description: description,
-        price: price,
-        product_status_id: productStatusID,
-        product_category_id: categoryID,
-        supplier_id: supplierID,
-        product_type_id: productTypeID,
-    };
 
     const {
         register,
@@ -46,24 +31,22 @@ function EditProduct({ id, popup }: EditPopupPros) {
     } = useForm<EditProductFormInputs>({
         resolver: yupResolver(editProductSchema),
         defaultValues: {
-            name: "",
-            description: "",
+            product_name: "",
+            product_description: "",
             price: 0,
-            categoryID: "",
-            productTypeID: "",
-            productStatusID: "",
-            supplierID: "",
+            product_status_id: "",
+            product_category_id: "",
+            supplier_id: "",
+            product_type_id: "",
+            mainImage: null,
+            subImages: [],
         },
     });
 
-    const isTextChanged =
-        originalData &&
-        JSON.stringify(originalData) !== JSON.stringify(currentData);
+    const currentData = watch();
+    const mainImageFile = watch("mainImage");
 
-    const isImageChanged =
-        mainImage !== null || subImages.some((file) => file !== null);
-
-    const isChanged = isTextChanged || isImageChanged;
+    const isChanged = originalData && !isEqual(originalData, currentData);
 
     const formatDataCategories =
         advanceInfo?.categories.map((category) => ({
@@ -89,50 +72,28 @@ function EditProduct({ id, popup }: EditPopupPros) {
             name: status.product_status_name,
         })) || [];
 
-    const handleSetSubImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
+    // const handleSetSubImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     e.preventDefault();
 
-        const file = e.target.files?.[0] || null;
-        const { id } = e.currentTarget;
+    //     const file = e.target.files?.[0] || null;
+    //     const { id } = e.currentTarget;
 
-        setSubImages((prev) => {
-            const updated = [...prev];
-            updated[Number(id)] = file;
+    //     setSubImages((prev) => {
+    //         const updated = [...prev];
+    //         updated[Number(id)] = file;
 
-            return updated;
-        });
-    };
+    //         return updated;
+    //     });
+    // };
 
     const handleGetProductDetail = async (product_id: number) => {
         try {
             if (advanceInfo) {
                 const productDetail = await getDetailProduct(product_id);
 
-                setCategoryID(
-                    formatDataCategories
-                        .find((item) => item.name === productDetail.category)
-                        ?.id.toString() || "",
-                );
-                setSupplierID(
-                    formatDataSupplier
-                        .find((item) => item.name === productDetail.supplier)
-                        ?.id.toString() || "",
-                );
-                setProductTypeID(
-                    formatDataProductType
-                        .find((item) => item.name === productDetail.type)
-                        ?.id.toString() || "",
-                );
-                setProductStatusID(
-                    formatDataProductStatus
-                        .find((item) => item.name === productDetail.status)
-                        ?.id.toString() || "",
-                );
-                setName(productDetail.product_name);
-                setPrice(productDetail.price.toString());
-                setDescription(productDetail.product_description);
+                console.log(productDetail);
 
-                setOriginalData({
+                const data = {
                     product_name: productDetail.product_name,
                     product_description: productDetail.product_description,
                     price: productDetail.price.toString(),
@@ -156,7 +117,32 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         formatDataProductType
                             .find((item) => item.name === productDetail.type)
                             ?.id.toString() || "",
+                    mainImage: null,
+                    subImages: [],
+                };
+
+                setMainImage(
+                    productDetail.images.filter(
+                        (item) => item.is_main === 1,
+                    )[0],
+                );
+
+                const subImagesFromServer = productDetail.images.filter(
+                    (item) => item.is_main !== 1,
+                );
+
+                const subImagesArray: Array<ProductImage | null> = [
+                    ...subImagesFromServer,
+                    ...Array(4 - subImagesFromServer.length).fill(null),
+                ];
+
+                setSubImages(subImagesArray);
+
+                Object.entries(data).forEach(([key, value]) => {
+                    setValue(key as keyof EditProductFormInputs, value);
                 });
+
+                setOriginalData(data);
             }
         } catch (error) {
             console.log(error);
@@ -169,26 +155,17 @@ function EditProduct({ id, popup }: EditPopupPros) {
         const changes: Record<string, unknown> = {};
 
         Object.entries(currentData).forEach(([key, value]) => {
-            if ((originalData as Record<string, unknown>)[key] !== value) {
+            if (
+                !isEqual((originalData as Record<string, unknown>)[key], value)
+            ) {
                 changes[key] = value;
             }
         });
 
-        if (mainImage) {
-            changes.mainImage = mainImage;
-        }
-
-        const validSubImages = subImages.filter((file) => file !== null);
-        if (validSubImages.length > 0) {
-            changes.subImages = validSubImages;
-        }
-
         return changes;
     };
 
-    const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleSave = async () => {
         const changes = getChangedFields();
 
         const formData = new FormData();
@@ -200,8 +177,8 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         formData.append("subImages", file);
                     }
                 });
-            } else if (key === "mainImage" && value instanceof File) {
-                formData.append("mainImage", value);
+            } else if (key === "mainImage" && value instanceof FileList) {
+                formData.append("mainImage", value[0]);
             } else {
                 formData.append(key, value as string);
             }
@@ -209,10 +186,8 @@ function EditProduct({ id, popup }: EditPopupPros) {
 
         try {
             const res = await updateProduct(formData, Number(id));
-
             if (res.success) {
                 console.log(res.message);
-
                 popup({
                     product: "",
                     mode: "",
@@ -233,7 +208,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
             <form
                 className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-xl"
-                onSubmit={(e) => handleSave(e)}
+                onSubmit={handleSubmit(handleSave)}
             >
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
@@ -259,8 +234,8 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         <InputForDashboard
                             label="Product Title"
                             placeholder="Text Here"
-                            value={name}
-                            setValue={setName}
+                            register={register("product_name")}
+                            error={errors.product_name?.message}
                         />
 
                         <div>
@@ -272,9 +247,14 @@ function EditProduct({ id, popup }: EditPopupPros) {
                                 rows={6}
                                 placeholder="Type something here..."
                                 className="w-full resize-none rounded-lg border border-gray-300 p-3"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                {...register("product_description")}
                             />
+
+                            {errors.product_description && (
+                                <p className="min-h-[20px] text-sm text-red-500">
+                                    {errors.product_description.message}
+                                </p>
+                            )}
                         </div>
 
                         <div className="grid grid-cols-2 items-center gap-8">
@@ -282,39 +262,39 @@ function EditProduct({ id, popup }: EditPopupPros) {
                                 type="number"
                                 label="Product Price"
                                 placeholder="Text Here"
-                                value={price}
-                                setValue={setPrice}
+                                register={register("price")}
+                                error={errors.price?.message}
                             />
 
                             <Dropdown
                                 text="Category"
                                 options={formatDataCategories}
-                                value={categoryID}
-                                setValue={setCategoryID}
+                                register={register("product_category_id")}
+                                error={errors.product_category_id?.message}
                             />
                         </div>
 
                         <div className="grid grid-cols-2 items-center gap-8">
                             <Dropdown
                                 text="Type"
-                                value={productTypeID}
-                                setValue={setProductTypeID}
                                 options={formatDataProductType}
+                                register={register("product_type_id")}
+                                error={errors.product_type_id?.message}
                             />
 
                             <Dropdown
                                 text="Status"
-                                value={productStatusID}
-                                setValue={setProductStatusID}
                                 options={formatDataProductStatus}
+                                register={register("product_status_id")}
+                                error={errors.product_status_id?.message}
                             />
                         </div>
 
                         <Dropdown
                             text="Supplier"
-                            value={supplierID}
-                            setValue={setSupplierID}
                             options={formatDataSupplier}
+                            register={register("supplier_id")}
+                            error={errors.supplier_id?.message}
                         />
                     </div>
 
@@ -327,8 +307,15 @@ function EditProduct({ id, popup }: EditPopupPros) {
                                 </label>
 
                                 <InputImageUpload
-                                    image={mainImage}
-                                    setImage={setMainImage}
+                                    image={
+                                        mainImageFile
+                                            ? mainImageFile[0]
+                                            : mainImage
+                                              ? mainImage.image_url
+                                              : null
+                                    }
+                                    register={register("mainImage")}
+                                    error={errors.mainImage?.message}
                                 />
                             </div>
 
@@ -341,10 +328,14 @@ function EditProduct({ id, popup }: EditPopupPros) {
                                     {subImages.map((subImage, index) => (
                                         <InputImageUpload
                                             id={index.toString()}
-                                            required={false}
                                             key={index}
-                                            image={subImage}
-                                            setListImage={handleSetSubImage}
+                                            image={
+                                                subImage
+                                                    ? subImage instanceof File
+                                                        ? subImage
+                                                        : subImage.image_url
+                                                    : null
+                                            }
                                         />
                                     ))}
                                 </div>

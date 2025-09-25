@@ -42,8 +42,10 @@ export const getProductByCondition = async ({
     return res.data;
 };
 
-export const getDetailProduct = async (product_id: number) => {
-    const res = await axios.get<ProductDetail>(`product/${product_id}`);
+export const getDetailProduct = async (
+    product_id: number,
+): Promise<ProductDetail> => {
+    const res = await axios.get(`product/${product_id}`);
 
     return res.data;
 };

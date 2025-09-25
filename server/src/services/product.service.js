@@ -495,20 +495,27 @@ class ProductService {
 				{ where: { product_id }, transaction }
 			);
 
+			if (mainImage) {
+				const oldMainImage = await ProductImage.findOne({
+					where: {
+						product_id,
+						is_main: true,
+					},
+				});
+
+				deleteImages(oldMainImage, []);
+
+				const mainImageURL = "uploads/images/" + mainImage.filename;
+
+				await ProductImage.update(
+					{
+						image_url: mainImageURL,
+					},
+					{ where: { product_id, is_main: true }, transaction }
+				);
+			}
+
 			// TODO: cần làm tiếp phần update ảnh
-			// if (mainImage) {
-			// 	deleteImages(mainImage, []);
-
-			// 	const mainImageURL = "uploads/images/" + mainImage.filename;
-
-			// 	await ProductImage.update(
-			// 		{
-			// 			image_url: mainImageURL,
-			// 		},
-			// 		{ where: { product_id, is_main: true }, transaction }
-			// 	);
-			// }
-
 			// if (subImages.length > 0) {
 			// 	deleteImages(null, subImages);
 
