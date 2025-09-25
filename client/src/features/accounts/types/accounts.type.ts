@@ -35,6 +35,13 @@ export type Customer = {
     account_status: "pending" | "approved" | "rejected";
 };
 
+export type CustomerMinimal = {
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    email: string;
+};
+
 export type Shifts = {
     shift_id: number;
     shift_name: string;

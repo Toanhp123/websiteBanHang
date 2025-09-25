@@ -1,26 +1,92 @@
 import { Button, Input } from "@/components/shared";
 import { useState, useEffect } from "react";
+import { changeProfile, getProfile } from "../services/account.api";
+import type { CustomerMinimal } from "../types/accounts.type";
+import {
+    updateProfileSchema,
+    type UpdateProfileFormInputs,
+} from "../validations/updateProfile.schema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { isEqual } from "lodash";
 
 function UpdatePersonalInfo() {
-    // Mock data (sau này thay bằng API)
-    const userMockData = {
-        firstName: "Nguyễn",
-        lastName: "Văn A",
-        email: "vana@example.com",
-        phone: "0912345678",
+    const [profile, setProfile] = useState<CustomerMinimal | null>(null);
+    const [reload, setReload] = useState<boolean>(false);
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<UpdateProfileFormInputs>({
+        resolver: yupResolver(updateProfileSchema),
+        defaultValues: {
+            email: "",
+            first_name: "",
+            last_name: "",
+            phone_number: "",
+        },
+    });
+
+    const currentData = watch();
+
+    const isChanged = profile && !isEqual(profile, currentData);
+
+    const getChangedFields = () => {
+        if (!profile) return {};
+
+        const changes: Record<string, unknown> = {};
+
+        Object.entries(currentData).forEach(([key, value]) => {
+            if ((profile as Record<string, unknown>)[key] !== value) {
+                changes[key] = value;
+            }
+        });
+
+        return changes;
     };
 
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [phone, setPhone] = useState<string>("");
+    const handleGetProfile = async () => {
+        try {
+            const res = await getProfile();
+
+            if (res) {
+                const data = {
+                    ...res,
+                };
+
+                Object.entries(data).forEach(([key, value]) => {
+                    setValue(key as keyof UpdateProfileFormInputs, value);
+                });
+
+                setProfile(res);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleChangeProfile = async () => {
+        const changes = getChangedFields();
+
+        try {
+            const res = await changeProfile(changes);
+
+            if (res.success) {
+                console.log(res.message);
+
+                setReload((prev) => !prev);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        setFirstName(userMockData.firstName);
-        setLastName(userMockData.lastName);
-        setEmail(userMockData.email);
-        setPhone(userMockData.phone);
-    }, []);
+        handleGetProfile();
+    }, [reload]);
 
     return (
         <div className="space-y-8">
@@ -32,14 +98,15 @@ function UpdatePersonalInfo() {
                 <div className="space-y-3 text-gray-700">
                     <p>
                         <span className="font-semibold">Họ và tên:</span>{" "}
-                        {firstName} {lastName}
+                        {profile?.first_name} {profile?.last_name}
                     </p>
                     <p>
-                        <span className="font-semibold">Email:</span> {email}
+                        <span className="font-semibold">Email:</span>{" "}
+                        {profile?.email}
                     </p>
                     <p>
                         <span className="font-semibold">Số điện thoại:</span>{" "}
-                        {phone}
+                        {profile?.phone_number}
                     </p>
                 </div>
             </div>
@@ -50,39 +117,42 @@ function UpdatePersonalInfo() {
                     Cập nhật thông tin
                 </h2>
 
-                <form className="space-y-6">
+                <form
+                    className="space-y-6"
+                    onSubmit={handleSubmit(handleChangeProfile)}
+                >
                     <div className="grid grid-cols-2 gap-6">
                         <Input
-                            value={firstName}
-                            setValue={setFirstName}
                             label="Họ"
                             placeholder="Nhập họ"
+                            register={register("first_name")}
+                            error={errors.first_name?.message}
                         />
                         <Input
-                            value={lastName}
-                            setValue={setLastName}
                             label="Tên"
                             placeholder="Nhập tên"
+                            register={register("last_name")}
+                            error={errors.last_name?.message}
                         />
                     </div>
 
                     <Input
-                        value={email}
-                        setValue={setEmail}
                         label="Email"
                         inputFormat="email"
                         placeholder="Địa chỉ email"
+                        register={register("email")}
+                        error={errors.email?.message}
                     />
                     <Input
-                        value={phone}
-                        setValue={setPhone}
                         label="Số điện thoại"
                         inputFormat="tel"
                         placeholder="Nhập số điện thoại"
+                        register={register("phone_number")}
+                        error={errors.phone_number?.message}
                     />
 
                     <div className="pt-2">
-                        <Button text="Lưu thay đổi" />
+                        <Button text="Lưu thay đổi" disabled={!isChanged} />
                     </div>
                 </form>
             </div>

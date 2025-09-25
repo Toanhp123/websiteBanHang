@@ -1,6 +1,7 @@
 import axios from "@/utils/axiosInstance";
 import type {
     Customer,
+    CustomerMinimal,
     Employee,
     EmployeeDetail,
     EmployeeScheduleResponse,
@@ -121,6 +122,20 @@ export const registerSchedule = async (
     schedule: Record<number, number | null>,
 ): Promise<{ message: string; success: boolean }> => {
     const res = await axios.post(`/account/employee/schedule`, { schedule });
+
+    return res.data;
+};
+
+export const getProfile = async (): Promise<CustomerMinimal> => {
+    const res = await axios.get(`/profile`);
+
+    return res.data;
+};
+
+export const changeProfile = async (
+    changes: Record<string, unknown>,
+): Promise<{ message: string; success: boolean }> => {
+    const res = await axios.patch(`/profile/update`, { changes });
 
     return res.data;
 };

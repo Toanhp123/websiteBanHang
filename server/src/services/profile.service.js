@@ -1,4 +1,6 @@
-const { Customer, Account } = require("../models");
+const { ProfileStatus } = require("../constants/errorCode.constants");
+const { Customer, Account, sequelize } = require("../models");
+const { throwServerError } = require("../utils/errorThrowFunc");
 
 class ProfileService {
 	/**
@@ -6,16 +8,21 @@ class ProfileService {
 	 * @param {number} customer_id - ID của khách hàng
 	 * @returns {Promise<Object>} Thông tin hồ sơ của khách hàng
 	 */
-	async getProfile(customer_id) {
-		const customer = await Customer.findOne({
-			attributes: ["first_name", "last_name", "phone_number"],
-			where: { customer_id },
+	async getProfile(account_id) {
+		const customer = await Account.findOne({
 			include: [
 				{
-					model: Account,
-					attributes: ["username", "email"],
+					model: Customer,
+					attributes: [],
 				},
 			],
+			attributes: [
+				"email",
+				[sequelize.col("Customer.first_name"), "first_name"],
+				[sequelize.col("Customer.last_name"), "last_name"],
+				[sequelize.col("Customer.phone_number"), "phone_number"],
+			],
+			where: { account_id },
 		});
 
 		return customer;
@@ -39,6 +46,37 @@ class ProfileService {
 		});
 
 		return customer;
+	}
+
+	async updateProfile(changes, account_id) {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const account = await Account.findOne({ where: { account_id } });
+			const customer_id = account.customer_id;
+
+			await Customer.update(
+				{ ...changes },
+				{ where: { customer_id }, transaction }
+			);
+
+			if (changes.email) {
+				await Account.update(
+					{ email: changes.email },
+					{ where: { account_id }, transaction }
+				);
+			}
+
+			await transaction.commit();
+
+			return { message: "Update profile success", success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			console.log(error);
+
+			throwServerError("Can't update profile", ProfileStatus.NOT_FOUND);
+		}
 	}
 }
 
