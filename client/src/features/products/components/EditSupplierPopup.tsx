@@ -95,9 +95,11 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
                 className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-xl"
                 onSubmit={handleSubmit(handleSaveEditSupplier)}
             >
-                {/* Header */}
+                {/* Tiêu đề */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Edit Supplier</h2>
+                    <h2 className="text-xl font-semibold">
+                        Chỉnh sửa nhà cung cấp
+                    </h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
@@ -111,19 +113,19 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
                         <i className="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-                {/* Body */}
+                {/* Nội dung */}
                 <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-8">
                         <InputForDashboard
-                            label="Supplier Name"
-                            placeholder="Type Here"
+                            label="Tên nhà cung cấp"
+                            placeholder="Nhập vào đây"
                             register={register("supplier_name")}
                             error={errors.supplier_name?.message}
                         />
                     </div>
                 </div>
 
-                {/* Footer */}
+                {/* Chân */}
                 <div className="mt-6 flex justify-end gap-4">
                     <button
                         type="button"
@@ -135,14 +137,14 @@ function EditSupplierPopup({ id, popup }: EditPopupPros) {
                             })
                         }
                     >
-                        Cancel
+                        Hủy
                     </button>
 
                     <button
                         className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white disabled:bg-gray-500"
                         disabled={!isChanged}
                     >
-                        Save
+                        Lưu
                     </button>
                 </div>
             </form>

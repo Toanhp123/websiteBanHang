@@ -26,7 +26,7 @@ function ReceiptRefundedDetailPopup({ id, popup }: EditPopupPros) {
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
                     <h2 className="text-xl font-semibold">
-                        Receipt Refunded Detail
+                        Chi tiết phiếu nhập hoàn
                     </h2>
                     <button
                         type="button"
@@ -47,12 +47,12 @@ function ReceiptRefundedDetailPopup({ id, popup }: EditPopupPros) {
                     <table className="w-full text-left">
                         <thead className="bg-gray-300">
                             <tr>
-                                <th className="px-4 py-2">Code</th>
-                                <th className="px-4 py-2">Product ID</th>
-                                <th className="px-4 py-2">Product Name</th>
-                                <th className="px-4 py-2">Quantity</th>
-                                <th className="px-4 py-2">Unit Price</th>
-                                <th className="px-4 py-2">Total</th>
+                                <th className="px-4 py-2">Mã</th>
+                                <th className="px-4 py-2">Mã sản phẩm</th>
+                                <th className="px-4 py-2">Tên sản phẩm</th>
+                                <th className="px-4 py-2">Số lượng</th>
+                                <th className="px-4 py-2">Đơn giá</th>
+                                <th className="px-4 py-2">Thành tiền</th>
                             </tr>
                         </thead>
 
@@ -87,7 +87,7 @@ function ReceiptRefundedDetailPopup({ id, popup }: EditPopupPros) {
 
                     {/* Footer: tổng cộng */}
                     <div className="mt-4 text-right font-semibold">
-                        Total Refund:{" "}
+                        Tổng hoàn:{" "}
                         {receiptDetail
                             .reduce(
                                 (sum, item) =>

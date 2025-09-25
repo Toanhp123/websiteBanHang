@@ -33,24 +33,16 @@ function WarehouseTransactionsPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">
-                    Warehouse Transaction
-                </h1>
+                <h1 className="text-2xl font-semibold">Giao dịch kho</h1>
 
                 <Tabs defaultValue="import" className="w-full">
                     <TabsList className="grid w-full grid-cols-4">
-                        <TabsTrigger value="import">
-                            Import Receipts
-                        </TabsTrigger>
+                        <TabsTrigger value="import">Phiếu nhập</TabsTrigger>
                         <TabsTrigger value="importRefunded">
-                            Import Refunded Receipts
+                            Phiếu nhập hoàn trả
                         </TabsTrigger>
-                        <TabsTrigger value="export">
-                            Export Receipts
-                        </TabsTrigger>
-                        <TabsTrigger value="inventory">
-                            Inventory Audit
-                        </TabsTrigger>
+                        <TabsTrigger value="export">Phiếu xuất</TabsTrigger>
+                        <TabsTrigger value="inventory">Kiểm kê</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="import">

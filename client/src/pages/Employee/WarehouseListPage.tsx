@@ -24,7 +24,7 @@ function WarehouseListPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Warehouse List</h1>
+                <h1 className="text-2xl font-semibold">Danh sách kho</h1>
 
                 <WarehouseListTable id={popup.warehouse} popup={toggleMenu} />
             </div>

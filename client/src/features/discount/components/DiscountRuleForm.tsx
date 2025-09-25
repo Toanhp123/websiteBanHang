@@ -57,8 +57,6 @@ function DiscountRuleList() {
                 watch("info.range_apply"),
             );
 
-            console.log(promotionRuleTypeList);
-
             setRuleTypeList(
                 Array.isArray(promotionRuleTypeList)
                     ? promotionRuleTypeList
@@ -93,7 +91,7 @@ function DiscountRuleList() {
 
     return (
         <div>
-            <h2 className="mb-4 text-xl font-semibold">Add Discount</h2>
+            <h2 className="mb-4 text-xl font-semibold">Thêm khuyến mãi</h2>
 
             {fields.map((field, index) => (
                 <div key={field.id}>
@@ -125,7 +123,7 @@ function DiscountRuleList() {
                 }
                 className="bg-main-primary mt-4 rounded px-4 py-2 text-white"
             >
-                + Add Rule
+                + Thêm điều kiện
             </button>
         </div>
     );

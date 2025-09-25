@@ -72,26 +72,10 @@ function EditProduct({ id, popup }: EditPopupPros) {
             name: status.product_status_name,
         })) || [];
 
-    // const handleSetSubImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     e.preventDefault();
-
-    //     const file = e.target.files?.[0] || null;
-    //     const { id } = e.currentTarget;
-
-    //     setSubImages((prev) => {
-    //         const updated = [...prev];
-    //         updated[Number(id)] = file;
-
-    //         return updated;
-    //     });
-    // };
-
     const handleGetProductDetail = async (product_id: number) => {
         try {
             if (advanceInfo) {
                 const productDetail = await getDetailProduct(product_id);
-
-                console.log(productDetail);
 
                 const data = {
                     product_name: productDetail.product_name,
@@ -194,7 +178,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
                 });
             }
         } catch (error) {
-            console.error("Failed to save:", error);
+            console.error("Lưu thất bại:", error);
         }
     };
 
@@ -212,7 +196,9 @@ function EditProduct({ id, popup }: EditPopupPros) {
             >
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Edit Product</h2>
+                    <h2 className="text-xl font-semibold">
+                        Chỉnh sửa sản phẩm
+                    </h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
@@ -232,20 +218,20 @@ function EditProduct({ id, popup }: EditPopupPros) {
                     {/* Basic Info */}
                     <div className="space-y-4">
                         <InputForDashboard
-                            label="Product Title"
-                            placeholder="Text Here"
+                            label="Tên sản phẩm"
+                            placeholder="Nhập tên sản phẩm"
                             register={register("product_name")}
                             error={errors.product_name?.message}
                         />
 
                         <div>
                             <label className="text-md text-disable mb-2 block font-semibold">
-                                Description
+                                Mô tả
                             </label>
 
                             <textarea
                                 rows={6}
-                                placeholder="Type something here..."
+                                placeholder="Nhập mô tả sản phẩm..."
                                 className="w-full resize-none rounded-lg border border-gray-300 p-3"
                                 {...register("product_description")}
                             />
@@ -260,14 +246,14 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         <div className="grid grid-cols-2 items-center gap-8">
                             <InputForDashboard
                                 type="number"
-                                label="Product Price"
-                                placeholder="Text Here"
+                                label="Giá sản phẩm"
+                                placeholder="Nhập giá"
                                 register={register("price")}
                                 error={errors.price?.message}
                             />
 
                             <Dropdown
-                                text="Category"
+                                text="Danh mục"
                                 options={formatDataCategories}
                                 register={register("product_category_id")}
                                 error={errors.product_category_id?.message}
@@ -276,14 +262,14 @@ function EditProduct({ id, popup }: EditPopupPros) {
 
                         <div className="grid grid-cols-2 items-center gap-8">
                             <Dropdown
-                                text="Type"
+                                text="Loại sản phẩm"
                                 options={formatDataProductType}
                                 register={register("product_type_id")}
                                 error={errors.product_type_id?.message}
                             />
 
                             <Dropdown
-                                text="Status"
+                                text="Trạng thái"
                                 options={formatDataProductStatus}
                                 register={register("product_status_id")}
                                 error={errors.product_status_id?.message}
@@ -291,7 +277,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         </div>
 
                         <Dropdown
-                            text="Supplier"
+                            text="Nhà cung cấp"
                             options={formatDataSupplier}
                             register={register("supplier_id")}
                             error={errors.supplier_id?.message}
@@ -303,7 +289,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
                         <div className="space-y-4">
                             <div>
                                 <label className="mb-1 block font-medium">
-                                    Main Images
+                                    Ảnh chính
                                 </label>
 
                                 <InputImageUpload
@@ -321,7 +307,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
 
                             <div>
                                 <label className="mb-1 block font-medium">
-                                    Sub Images
+                                    Ảnh phụ
                                 </label>
 
                                 <div className="grid grid-cols-2 gap-4">
@@ -356,14 +342,14 @@ function EditProduct({ id, popup }: EditPopupPros) {
                             })
                         }
                     >
-                        Cancel
+                        Hủy
                     </button>
 
                     <button
                         className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white disabled:bg-gray-500"
                         disabled={!isChanged}
                     >
-                        Save
+                        Lưu
                     </button>
                 </div>
             </form>

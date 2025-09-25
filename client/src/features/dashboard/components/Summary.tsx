@@ -35,15 +35,15 @@ function Summary() {
 
     return (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-            <CardItem text="TotalOrder" value={totalOrder} />
+            <CardItem text="Tổng đơn hàng" value={totalOrder} />
 
-            <CardItem text="Complete" value={orderComplete} />
+            <CardItem text="Hoàn thành" value={orderComplete} />
 
-            <CardItem text="Pending" value={orderPending} />
+            <CardItem text="Đang xử lý" value={orderPending} />
 
-            <CardItem text="Revenue" value={overview.revenue} />
+            <CardItem text="Doanh thu" value={overview.revenue} />
 
-            <CardItem text="Avg order" value={avgOrder} />
+            <CardItem text="Đơn TB" value={avgOrder} />
         </div>
     );
 }

@@ -50,26 +50,26 @@ function AddWarehouseForm() {
             >
                 <div className="grid grid-cols-2 gap-8">
                     <InputForDashboard
-                        label="Warehouse Name"
-                        placeholder="Type Here"
+                        label="Tên kho"
+                        placeholder="Nhập tên kho"
                         register={register("warehouseName")}
                         error={errors.warehouseName?.message}
                     />
                     <InputForDashboard
-                        label="Warehouse Location"
-                        placeholder="Type Here"
+                        label="Địa điểm kho"
+                        placeholder="Nhập địa điểm"
                         register={register("location")}
                         error={errors.location?.message}
                     />
                     <InputForDashboard
-                        label="Warehouse Priority"
+                        label="Độ ưu tiên"
                         type="number"
                         placeholder="0"
                         register={register("priority")}
                         error={errors.priority?.message}
                     />
                     <Dropdown
-                        text="Employee"
+                        text="Nhân viên phụ trách"
                         options={formatDataEmployee}
                         register={register("employeeID")}
                         error={errors.employeeID?.message}
@@ -77,7 +77,7 @@ function AddWarehouseForm() {
                 </div>
 
                 <div className="inline-flex">
-                    <Button text="Add Warehouse" textSize="small" />
+                    <Button text="Thêm kho" textSize="small" />
                 </div>
             </form>
         </div>

@@ -39,7 +39,7 @@ function ExportTable({ popup }: EditPopupPros) {
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
             <div>
                 <p className="font-semibold">
-                    We found {exportBasic.length} items for you
+                    Chúng tôi tìm thấy {exportBasic.length} mục cho bạn
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -48,11 +48,11 @@ function ExportTable({ popup }: EditPopupPros) {
             <table className="w-full text-left">
                 <thead className="bg-gray-100">
                     <tr>
-                        <th className="px-4 py-2">Export ID</th>
-                        <th className="px-4 py-2">Invoice ID</th>
-                        <th className="px-4 py-2">Employee Name</th>
-                        <th className="px-4 py-2">Export Date</th>
-                        <th className="px-4 py-2">Action</th>
+                        <th className="px-4 py-2">Mã Phiếu Xuất</th>
+                        <th className="px-4 py-2">Mã Hóa Đơn</th>
+                        <th className="px-4 py-2">Tên Nhân Viên</th>
+                        <th className="px-4 py-2">Ngày Xuất</th>
+                        <th className="px-4 py-2">Hành động</th>
                     </tr>
                 </thead>
 
@@ -80,7 +80,7 @@ function ExportTable({ popup }: EditPopupPros) {
                                         })
                                     }
                                 >
-                                    Detail
+                                    Chi tiết
                                 </button>
                             </td>
                         </tr>
@@ -92,7 +92,7 @@ function ExportTable({ popup }: EditPopupPros) {
                 <div className="text-center">
                     <div className="inline-flex">
                         <Button
-                            text="Load More"
+                            text="Tải thêm"
                             textSize="small"
                             type="small"
                             onClick={handleLoadMore}

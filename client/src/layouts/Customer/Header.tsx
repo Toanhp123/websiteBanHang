@@ -20,10 +20,10 @@ function Header() {
     return (
         <header>
             <nav className="bg-main-primary flex h-16 justify-center gap-4 py-4 lg:h-36">
-                {/* Sidebar */}
+                {/* Thanh bên */}
                 {sideBar && <SideBar />}
 
-                {/* Navbar */}
+                {/* Thanh điều hướng */}
                 <div className="flex h-full w-full max-w-7/8 lg:flex-col">
                     {/* Hàng 1 */}
                     <div className="flex flex-1 items-center justify-between px-8">
@@ -78,7 +78,7 @@ function Header() {
                                     onClick={handleGetListCategory}
                                 >
                                     <i className="fa-solid fa-bars"></i>
-                                    <h1>Browse All Categories</h1>
+                                    <h1>Tất Cả Danh Mục</h1>
                                 </button>
 
                                 <NavItem text="Trang Chủ" to="#" />
@@ -88,7 +88,7 @@ function Header() {
                             </div>
 
                             <div className="text-surface flex flex-1/4 items-center justify-end gap-2 pr-12">
-                                <p>Recently Viewed</p>
+                                <p> Xem Gần Đây</p>
                                 <i className="fa-solid fa-caret-down"></i>
                             </div>
                         </div>

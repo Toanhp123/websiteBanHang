@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Input } from "@/components/shared";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginCustomer } from "../services/auth.api";
@@ -10,6 +11,7 @@ import { loginSchema, type LoginFormInputs } from "../validations/login.schema";
 function LoginForm() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [loginError, setLoginError] = useState<string>(""); // trạng thái thông báo lỗi
 
     const {
         register,
@@ -35,9 +37,7 @@ function LoginForm() {
                 setRole(res.data.user.role);
                 setAccessToken(res.data.accessToken);
                 navigate(from, { replace: true });
-            }
-
-            if (
+            } else if (
                 (isUserRole(res.data.user.role) &&
                     res.data.user.role === "Admin") ||
                 res.data.user.role === "Employee"
@@ -48,12 +48,10 @@ function LoginForm() {
             }
         } catch (error) {
             console.log(error);
+            setLoginError("Tên đăng nhập hoặc mật khẩu không đúng!");
+            setTimeout(() => setLoginError(""), 3000); // ẩn thông báo sau 3 giây
         }
     };
-
-    // TODO: làm hàm xử lý đăng nhập bằng Google
-    // Hàm xử lý đăng nhập bằng Google
-    // const handleLoginWithGoogle = async (): Promise<void> => {};
 
     return (
         <form
@@ -86,6 +84,13 @@ function LoginForm() {
                         </Link>
                     </div>
                 </div>
+
+                {/* Thông báo lỗi đăng nhập */}
+                {loginError && (
+                    <div className="font-semibold text-red-500">
+                        {loginError}
+                    </div>
+                )}
             </div>
 
             <div className="space-y-3 md:space-y-5">

@@ -42,7 +42,7 @@ function AddDiscountForm() {
     };
 
     const onSubmit = async (data: AddDiscountFormInputs) => {
-        console.log("Submit discount:", data);
+        console.log("Gửi khuyến mãi:", data);
 
         try {
             const res = await createDiscount(data);
@@ -63,7 +63,7 @@ function AddDiscountForm() {
             >
                 {/* Header */}
                 <div className="flex items-center justify-between border-b pb-4">
-                    <h2 className="text-xl font-semibold">Add Discount</h2>
+                    <h2 className="text-xl font-semibold">Thêm khuyến mãi</h2>
                 </div>
 
                 {/* Tabs */}
@@ -77,7 +77,7 @@ function AddDiscountForm() {
                                 : "text-gray-500"
                         }`}
                     >
-                        Info
+                        Thông tin
                     </button>
                     <button
                         type="button"
@@ -88,7 +88,7 @@ function AddDiscountForm() {
                                 : "text-gray-500"
                         }`}
                     >
-                        Rule
+                        Điều kiện
                     </button>
                     <button
                         type="button"
@@ -99,7 +99,7 @@ function AddDiscountForm() {
                                 : "text-gray-500"
                         }`}
                     >
-                        Effect
+                        Hiệu lực
                     </button>
                 </div>
 
@@ -133,7 +133,7 @@ function AddDiscountForm() {
                                 : "bg-main-primary hover:bg-main-secondary"
                         }`}
                     >
-                        Save Discount
+                        Lưu khuyến mãi
                     </button>
                 </div>
             </form>

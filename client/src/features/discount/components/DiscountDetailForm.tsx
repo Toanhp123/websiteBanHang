@@ -27,11 +27,13 @@ function DiscountDetailForm({ id, popup }: EditPopupPros) {
             <form className="w-full max-w-5xl rounded-2xl bg-white p-6 shadow-xl">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Promotion Detail</h2>
+                    <h2 className="text-xl font-semibold">
+                        Chi tiết khuyến mãi
+                    </h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("discount", "")}
+                        onClick={() => popup({ discount: "", mode: "" })}
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -39,59 +41,61 @@ function DiscountDetailForm({ id, popup }: EditPopupPros) {
 
                 {/* Body */}
                 <div className="max-h-[70vh] space-y-6 overflow-y-auto">
-                    {/* General Info */}
+                    {/* Thông tin chung */}
                     {discountDetail && (
                         <div className="rounded-xl border p-4">
-                            <h3 className="mb-3 font-semibold">General Info</h3>
+                            <h3 className="mb-3 font-semibold">
+                                Thông tin chung
+                            </h3>
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <p>
-                                    <strong>Name:</strong>{" "}
+                                    <strong>Tên:</strong>{" "}
                                     {discountDetail.promotion_name}
                                 </p>
                                 <p>
-                                    <strong>Status:</strong>{" "}
+                                    <strong>Trạng thái:</strong>{" "}
                                     {discountDetail.promotion_status}
                                 </p>
                                 <p>
-                                    <strong>Valid From:</strong>{" "}
+                                    <strong>Hiệu lực từ:</strong>{" "}
                                     {discountDetail.valid_from}
                                 </p>
                                 <p>
-                                    <strong>Valid To:</strong>{" "}
+                                    <strong>Hiệu lực đến:</strong>{" "}
                                     {discountDetail.valid_to}
                                 </p>
                                 <p>
-                                    <strong>Distribution:</strong>{" "}
+                                    <strong>Hình thức phân phối:</strong>{" "}
                                     {discountDetail.distribution_type}
                                 </p>
                                 <p>
-                                    <strong>Range:</strong>{" "}
+                                    <strong>Phạm vi áp dụng:</strong>{" "}
                                     {discountDetail.range_apply}
                                 </p>
                                 <p>
-                                    <strong>Created At:</strong>{" "}
+                                    <strong>Ngày tạo:</strong>{" "}
                                     {discountDetail.created_at}
                                 </p>
                             </div>
                         </div>
                     )}
 
-                    {/* Effects */}
+                    {/* Hiệu ứng */}
                     {discountDetail?.effects && (
                         <div className="rounded-xl border p-4">
-                            <h3 className="mb-3 font-semibold">Effects</h3>
+                            <h3 className="mb-3 font-semibold">Hiệu ứng</h3>
                             <table className="w-full text-left text-sm">
                                 <thead className="bg-gray-100">
                                     <tr>
-                                        <th className="px-3 py-2">Effect ID</th>
                                         <th className="px-3 py-2">
-                                            Product ID
+                                            Mã hiệu ứng
                                         </th>
-                                        <th className="px-3 py-2">Value</th>
-                                        <th className="px-3 py-2">Type</th>
                                         <th className="px-3 py-2">
-                                            Description
+                                            Mã sản phẩm
                                         </th>
+                                        <th className="px-3 py-2">Giá trị</th>
+                                        <th className="px-3 py-2">Loại</th>
+                                        <th className="px-3 py-2">Mô tả</th>
                                     </tr>
                                 </thead>
 
@@ -127,31 +131,31 @@ function DiscountDetailForm({ id, popup }: EditPopupPros) {
                         </div>
                     )}
 
-                    {/* Rules */}
+                    {/* Điều kiện */}
                     {discountDetail?.rules &&
                         discountDetail?.rules?.length > 0 && (
                             <div className="rounded-xl border p-4">
-                                <h3 className="mb-3 font-semibold">Rules</h3>
+                                <h3 className="mb-3 font-semibold">
+                                    Điều kiện
+                                </h3>
                                 <table className="w-full text-left text-sm">
                                     <thead className="bg-gray-100">
                                         <tr>
                                             <th className="px-3 py-2">
-                                                Rule ID
-                                            </th>
-                                            <th className="px-3 py-2">Value</th>
-                                            <th className="px-3 py-2">
-                                                Operator
+                                                Mã luật
                                             </th>
                                             <th className="px-3 py-2">
-                                                Product ID
+                                                Giá trị
                                             </th>
                                             <th className="px-3 py-2">
-                                                Category ID
+                                                Toán tử
                                             </th>
-                                            <th className="px-3 py-2">Type</th>
+                                            <th className="px-3 py-2">Mã SP</th>
                                             <th className="px-3 py-2">
-                                                Description
+                                                Mã danh mục
                                             </th>
+                                            <th className="px-3 py-2">Loại</th>
+                                            <th className="px-3 py-2">Mô tả</th>
                                         </tr>
                                     </thead>
 

@@ -37,7 +37,12 @@ function EmployeeDetailPopup({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("employee", "")}
+                        onClick={() =>
+                            popup({
+                                employee: "",
+                                mode: "",
+                            })
+                        }
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>

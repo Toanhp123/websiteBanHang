@@ -4,20 +4,20 @@ import * as yup from "yup";
 export const forgotPassEmailSchema = yup.object({
     email: yup
         .string()
-        .email("Invalid email format")
-        .required("Email is required"),
+        .email("Định dạng email không hợp lệ")
+        .required("Email là bắt buộc"),
 });
 
-// Tab 3: reset password
+// Tab 3: đặt lại mật khẩu
 export const forgotPassResetSchema = yup.object({
     pass: yup
         .string()
-        .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .required("Mật khẩu là bắt buộc"),
     rePass: yup
         .string()
-        .oneOf([yup.ref("pass")], "Passwords do not match")
-        .required("Re password is required"),
+        .oneOf([yup.ref("pass")], "Mật khẩu nhập lại không khớp")
+        .required("Xác nhận mật khẩu là bắt buộc"),
 });
 
 export type ForgotPassResetFormInputs = yup.InferType<

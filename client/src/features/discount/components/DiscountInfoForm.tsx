@@ -5,22 +5,22 @@ import type { AddDiscountFormInputs } from "../validations/addDiscount.schema";
 const dataDiscountApply = [
     {
         id: "invoice",
-        name: "invoice",
+        name: "Hóa đơn",
     },
     {
         id: "product",
-        name: "product",
+        name: "Sản phẩm",
     },
 ];
 
 const dataDiscountDistribution = [
     {
         id: "share",
-        name: "share",
+        name: "Chia sẻ",
     },
     {
         id: "exclusive",
-        name: "exclusive",
+        name: "Độc quyền",
     },
 ];
 
@@ -32,23 +32,23 @@ function DiscountInfoForm() {
 
     return (
         <div>
-            <h2 className="mb-4 text-xl font-semibold">Discount Information</h2>
+            <h2 className="mb-4 text-xl font-semibold">Thông tin khuyến mãi</h2>
 
             <div className="grid grid-cols-2 gap-8">
                 <InputForDashboard
-                    label="Discount Name"
-                    placeholder="Type Here"
+                    label="Tên khuyến mãi"
+                    placeholder="Nhập tại đây"
                     register={register("info.promotion_name")}
                     error={errors.info?.promotion_name?.message}
                 />
                 <Dropdown
-                    text="Discount Distribution"
+                    text="Phân phối khuyến mãi"
                     options={dataDiscountDistribution}
                     register={register("info.distribution_type")}
                     error={errors.info?.distribution_type?.message}
                 />
                 <Dropdown
-                    text="Discount Apply"
+                    text="Phạm vi áp dụng"
                     options={dataDiscountApply}
                     register={register("info.range_apply")}
                     error={errors.info?.range_apply?.message}
@@ -56,13 +56,13 @@ function DiscountInfoForm() {
                 <div className="grid grid-cols-2 gap-4">
                     <InputForDashboard
                         type="date"
-                        label="Discount Start"
+                        label="Ngày bắt đầu"
                         register={register("info.valid_from")}
                         error={errors.info?.valid_from?.message}
                     />
                     <InputForDashboard
                         type="date"
-                        label="Discount End"
+                        label="Ngày kết thúc"
                         register={register("info.valid_to")}
                         error={errors.info?.valid_to?.message}
                     />

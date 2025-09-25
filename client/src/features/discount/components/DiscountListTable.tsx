@@ -68,8 +68,8 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
         >
             <div>
                 <p className="font-semibold">
-                    We found {discountList.length} of {totalDiscount} result for
-                    you
+                    Tìm thấy {discountList.length} trên tổng {totalDiscount} kết
+                    quả
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -78,15 +78,15 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
             <table className="w-full text-left">
                 <thead className="bg-gray-100">
                     <tr>
-                        <td className="px-4 py-2">ID</td>
-                        <td className="px-4 py-2">Name</td>
-                        <td className="px-4 py-2">Distribution</td>
-                        <td className="px-4 py-2">Range</td>
-                        <td className="px-4 py-2">Valid From</td>
-                        <td className="px-4 py-2">Valid To</td>
-                        <td className="px-4 py-2">Created At</td>
-                        <td className="px-4 py-2">Status</td>
-                        <td className="px-4 py-2">Action</td>
+                        <td className="px-4 py-2">Mã</td>
+                        <td className="px-4 py-2">Tên</td>
+                        <td className="px-4 py-2">Phân phối</td>
+                        <td className="px-4 py-2">Phạm vi</td>
+                        <td className="px-4 py-2">Hiệu lực từ</td>
+                        <td className="px-4 py-2">Hiệu lực đến</td>
+                        <td className="px-4 py-2">Ngày tạo</td>
+                        <td className="px-4 py-2">Trạng thái</td>
+                        <td className="px-4 py-2">Thao tác</td>
                     </tr>
                 </thead>
 
@@ -139,13 +139,14 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
                                                 <button
                                                     className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
                                                     onClick={() =>
-                                                        popup(
-                                                            "product",
-                                                            discount.promotion_id.toString(),
-                                                        )
+                                                        popup({
+                                                            discount:
+                                                                discount.promotion_id.toString(),
+                                                            mode: "edit",
+                                                        })
                                                     }
                                                 >
-                                                    Edit Product
+                                                    Chỉnh sửa
                                                 </button>
 
                                                 <button
@@ -161,20 +162,21 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
                                                         "active" ||
                                                     discount.promotion_status ===
                                                         "expired"
-                                                        ? "Delete"
-                                                        : "Active"}
+                                                        ? "Xóa khuyến mãi"
+                                                        : "Kích hoạt khuyến mãi"}
                                                 </button>
 
                                                 <button
                                                     className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
                                                     onClick={() =>
-                                                        popup(
-                                                            "discount",
-                                                            discount.promotion_id.toString(),
-                                                        )
+                                                        popup({
+                                                            discount:
+                                                                discount.promotion_id.toString(),
+                                                            mode: "detail",
+                                                        })
                                                     }
                                                 >
-                                                    Detail Product
+                                                    Xem chi tiết
                                                 </button>
                                             </div>
                                         </div>

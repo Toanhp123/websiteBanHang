@@ -61,45 +61,45 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
 
     return (
         <div className="space-y-8">
-            {/* Add Form */}
+            {/* Form thêm */}
             <form
                 className="space-y-8 rounded-2xl bg-white px-8 py-6"
                 onSubmit={(e) => handleAddSupplier(e)}
             >
-                {/* Header */}
+                {/* Tiêu đề */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Add Supplier</h2>
+                    <h2 className="text-xl font-semibold">Thêm nhà cung cấp</h2>
                 </div>
 
-                {/* Body */}
+                {/* Nội dung */}
                 <div className="grid grid-cols-2 gap-8">
                     <InputForDashboard
-                        label="Supplier ID"
-                        placeholder="Type Here"
+                        label="Mã nhà cung cấp"
+                        placeholder="Nhập vào đây"
                         value={supplierID}
                         setValue={setSupplierID}
                     />
                     <InputForDashboard
-                        label="Supplier Name"
-                        placeholder="Type Here"
+                        label="Tên nhà cung cấp"
+                        placeholder="Nhập vào đây"
                         value={supplierName}
                         setValue={setSupplierName}
                     />
                 </div>
 
-                {/* Footer */}
+                {/* Nút */}
                 <div className="mt-6 flex justify-end gap-4">
                     <button className="bg-main-primary hover:bg-main-secondary rounded px-4 py-2 text-white">
-                        Save
+                        Lưu
                     </button>
                 </div>
             </form>
 
-            {/* List Table */}
+            {/* Bảng danh sách */}
             <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
                 <div>
                     <p className="font-semibold">
-                        We found {supplier.length} result for you
+                        Tìm thấy {supplier.length} kết quả cho bạn
                     </p>
 
                     <div className="mt-4 border-b border-gray-300"></div>
@@ -108,9 +108,9 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
                 <table className="w-full text-left">
                     <thead>
                         <tr>
-                            <th className="px-4 py-2">ID</th>
-                            <th className="px-4 py-2">Name</th>
-                            <th className="px-4 py-2 text-right">Action</th>
+                            <th className="px-4 py-2">Mã</th>
+                            <th className="px-4 py-2">Tên</th>
+                            <th className="px-4 py-2 text-right">Hành động</th>
                         </tr>
                     </thead>
 
@@ -135,7 +135,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
                                                 })
                                             }
                                         >
-                                            Edit
+                                            Chỉnh sửa
                                         </button>
 
                                         <button
@@ -146,7 +146,7 @@ function SupplierListTable({ id, popup }: EditPopupPros) {
                                                 )
                                             }
                                         >
-                                            Delete
+                                            Xóa
                                         </button>
                                     </div>
                                 </td>

@@ -50,7 +50,7 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
         >
             <div>
                 <p className="font-semibold">
-                    We found {warehouseList.length} result for you
+                    Tìm thấy {warehouseList.length} kết quả cho bạn
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -60,11 +60,11 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
                 <thead className="bg-gray-100">
                     <tr>
                         <th className="px-4 py-2">ID</th>
-                        <th className="px-4 py-2">Warehouse Name</th>
-                        <th className="px-4 py-2">Location</th>
-                        <th className="px-4 py-2">Priority</th>
-                        <th className="px-4 py-2">Employee Name</th>
-                        <th className="px-4 py-2 text-center">Action</th>
+                        <th className="px-4 py-2">Tên kho</th>
+                        <th className="px-4 py-2">Địa điểm</th>
+                        <th className="px-4 py-2">Độ ưu tiên</th>
+                        <th className="px-4 py-2">Tên nhân viên</th>
+                        <th className="px-4 py-2 text-center">Hành động</th>
                     </tr>
                 </thead>
 
@@ -113,7 +113,7 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
                                                         })
                                                     }
                                                 >
-                                                    Edit
+                                                    Chỉnh sửa
                                                 </button>
 
                                                 <button
@@ -124,7 +124,7 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
                                                         )
                                                     }
                                                 >
-                                                    Delete
+                                                    Xóa
                                                 </button>
 
                                                 <button
@@ -135,7 +135,7 @@ function WarehouseListTable({ id, popup }: EditPopupPros) {
                                                         )
                                                     }
                                                 >
-                                                    Detail
+                                                    Chi tiết
                                                 </button>
                                             </div>
                                         </div>

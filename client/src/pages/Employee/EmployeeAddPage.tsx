@@ -5,7 +5,7 @@ function EmployeeAddPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Add Employee</h1>
+                <h1 className="text-2xl font-semibold">Thêm Nhân viên</h1>
 
                 <AddEmployeeForm />
             </div>

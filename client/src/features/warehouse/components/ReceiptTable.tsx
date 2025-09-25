@@ -39,7 +39,7 @@ function ReceiptTable({ popup }: EditPopupPros) {
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
             <div>
                 <p className="font-semibold">
-                    We found {receiptBasic.length} items for you
+                    Tìm thấy {receiptBasic.length} phiếu nhập cho bạn
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -48,12 +48,12 @@ function ReceiptTable({ popup }: EditPopupPros) {
             <table className="w-full text-left">
                 <thead className="bg-gray-100">
                     <tr>
-                        <th className="px-4 py-2">Receipt ID</th>
-                        <th className="px-4 py-2">Supplier</th>
-                        <th className="px-4 py-2">Warehouse</th>
-                        <th className="px-4 py-2">Employee</th>
-                        <th className="px-4 py-2">Receipt Date</th>
-                        <th className="px-4 py-2">Action</th>
+                        <th className="px-4 py-2">Mã phiếu nhập</th>
+                        <th className="px-4 py-2">Nhà cung cấp</th>
+                        <th className="px-4 py-2">Kho</th>
+                        <th className="px-4 py-2">Nhân viên</th>
+                        <th className="px-4 py-2">Ngày nhập</th>
+                        <th className="px-4 py-2">Thao tác</th>
                     </tr>
                 </thead>
 
@@ -88,7 +88,7 @@ function ReceiptTable({ popup }: EditPopupPros) {
                                         })
                                     }
                                 >
-                                    Detail
+                                    Chi tiết
                                 </button>
                             </td>
                         </tr>
@@ -100,7 +100,7 @@ function ReceiptTable({ popup }: EditPopupPros) {
                 <div className="text-center">
                     <div className="inline-flex">
                         <Button
-                            text="Load More"
+                            text="Xem thêm"
                             textSize="small"
                             type="small"
                             onClick={handleLoadMore}

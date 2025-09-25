@@ -102,7 +102,7 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
         try {
             await updateEmployee(Number(id), changes);
 
-            popup("employee", "");
+            popup({ employee: "", mode: "" });
         } catch (error) {
             console.error(error);
         }
@@ -126,7 +126,7 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
-                        onClick={() => popup("employee", "")}
+                        onClick={() => popup({ employee: "", mode: "" })}
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
@@ -224,7 +224,7 @@ function EditEmployeePopup({ id, popup }: EditPopupPros) {
                     <button
                         type="button"
                         className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                        onClick={() => popup("employee", "")}
+                        onClick={() => popup({ employee: "", mode: "" })}
                     >
                         Cancel
                     </button>

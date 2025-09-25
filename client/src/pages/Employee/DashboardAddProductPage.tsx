@@ -5,7 +5,7 @@ function DashboardAddProductPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Add New Product</h1>
+                <h1 className="text-2xl font-semibold">Thêm Sản Phẩm Mới</h1>
 
                 <AddProductForm />
             </div>

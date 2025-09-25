@@ -24,7 +24,9 @@ function SupplierListPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Supplier List</h1>
+                <h1 className="text-2xl font-semibold">
+                    Danh sách nhà cung cấp
+                </h1>
 
                 <SupplierListTable id={popup.supplier} popup={toggleMenu} />
             </div>

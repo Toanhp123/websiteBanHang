@@ -13,7 +13,6 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
         try {
             setLoading(true);
             const res = await getDetailProduct(product_id);
-            console.log(res);
 
             setProductDetail(res);
         } catch (error) {
@@ -32,10 +31,10 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
             <form className="w-full max-w-5xl rounded-2xl bg-white p-6 shadow-2xl">
-                {/* Header */}
+                {/* Tiêu đề */}
                 <div className="mb-6 flex items-center justify-between border-b pb-3">
                     <h2 className="text-2xl font-bold text-gray-800">
-                        Product Detail
+                        Chi tiết sản phẩm
                     </h2>
                     <button
                         type="button"
@@ -51,16 +50,18 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                     </button>
                 </div>
 
-                {/* Content */}
+                {/* Nội dung */}
                 {loading ? (
                     <Loading />
                 ) : !productDetail ? (
                     <div className="flex items-center justify-center py-20">
-                        <span className="text-gray-500">No product found</span>
+                        <span className="text-gray-500">
+                            Không tìm thấy sản phẩm
+                        </span>
                     </div>
                 ) : (
                     <div className="grid max-h-130 grid-cols-1 gap-6 overflow-auto md:grid-cols-3">
-                        {/* Left: Image */}
+                        {/* Bên trái: Ảnh */}
                         <div className="col-span-1 flex flex-col items-center">
                             <div className="h-64 w-64 overflow-hidden rounded-xl border shadow-sm">
                                 <img
@@ -79,7 +80,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                             </div>
                         </div>
 
-                        {/* Right: Info */}
+                        {/* Bên phải: Thông tin */}
                         <div className="col-span-2 flex flex-col space-y-4">
                             <h3 className="text-xl font-semibold text-gray-900">
                                 {productDetail.product_name}
@@ -91,7 +92,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                             <div className="grid grid-cols-2 gap-4 text-base">
                                 <div>
                                     <span className="block text-gray-500">
-                                        Category
+                                        Danh mục
                                     </span>
                                     <span className="font-medium text-gray-800">
                                         {productDetail.category}
@@ -99,7 +100,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                 </div>
                                 <div>
                                     <span className="block text-gray-500">
-                                        Supplier
+                                        Nhà cung cấp
                                     </span>
                                     <span className="font-medium text-gray-800">
                                         {productDetail.supplier}
@@ -107,7 +108,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                 </div>
                                 <div>
                                     <span className="block text-gray-500">
-                                        Price
+                                        Giá
                                     </span>
                                     <span className="font-bold text-green-600">
                                         {productDetail.price}
@@ -115,15 +116,15 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                 </div>
                                 <div>
                                     <span className="block text-gray-500">
-                                        Stock
+                                        Tồn kho
                                     </span>
                                     <span className="font-medium text-gray-800">
-                                        {productDetail.totalStock} units
+                                        {productDetail.totalStock} sản phẩm
                                     </span>
                                 </div>
                                 <div>
                                     <span className="block text-gray-500">
-                                        Status
+                                        Trạng thái
                                     </span>
                                     <span className="font-medium text-indigo-600">
                                         {productDetail.status}
@@ -131,7 +132,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                 </div>
                                 <div>
                                     <span className="block text-gray-500">
-                                        Date Added
+                                        Ngày thêm
                                     </span>
                                     <span className="font-medium text-gray-800">
                                         {formatDate(
@@ -142,19 +143,19 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                             </div>
                         </div>
 
-                        {/* Advanced Info */}
+                        {/* Thông tin nâng cao */}
                         <div className="col-span-3 space-y-6">
-                            {/* Promotion */}
+                            {/* Khuyến mãi */}
                             <div className="rounded-lg border bg-white p-5 shadow-md">
                                 <h4 className="mb-3 text-lg font-semibold text-indigo-700">
-                                    Promotion
+                                    Khuyến mãi
                                 </h4>
 
                                 {productDetail.promotion ? (
                                     <div className="grid grid-cols-2 gap-4 text-base">
                                         <div>
                                             <span className="block text-gray-500">
-                                                Name
+                                                Tên
                                             </span>
                                             <span className="font-medium text-gray-900">
                                                 {
@@ -165,7 +166,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                         </div>
                                         <div>
                                             <span className="block text-gray-500">
-                                                Status
+                                                Trạng thái
                                             </span>
                                             <span
                                                 className={`inline-block rounded-full px-2 py-1 text-xs font-semibold ${
@@ -184,7 +185,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                         </div>
                                         <div>
                                             <span className="block text-gray-500">
-                                                Effect
+                                                Giá trị
                                             </span>
                                             <span className="font-medium text-gray-900">
                                                 {productDetail.promotion
@@ -194,7 +195,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                         </div>
                                         <div>
                                             <span className="block text-gray-500">
-                                                Distribution
+                                                Phân phối
                                             </span>
                                             <span className="font-medium text-gray-900 capitalize">
                                                 {
@@ -205,7 +206,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                         </div>
                                         <div className="col-span-2">
                                             <span className="block text-gray-500">
-                                                Valid Period
+                                                Hiệu lực
                                             </span>
                                             <span className="font-medium text-gray-900">
                                                 {formatDate(
@@ -222,25 +223,25 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                     </div>
                                 ) : (
                                     <p className="text-gray-500">
-                                        No promotion
+                                        Không có khuyến mãi
                                     </p>
                                 )}
                             </div>
 
-                            {/* Inventories */}
+                            {/* Tồn kho chi tiết */}
                             <div className="rounded-lg border bg-white p-5 shadow-md">
                                 <h4 className="mb-3 text-lg font-semibold text-indigo-700">
-                                    Inventories
+                                    Kho hàng
                                 </h4>
                                 <table className="w-full text-left text-base">
                                     <thead>
                                         <tr className="border-b text-gray-600">
-                                            <th className="py-2">Warehouse</th>
-                                            <th className="py-2">Quantity</th>
+                                            <th className="py-2">Kho</th>
+                                            <th className="py-2">Số lượng</th>
                                             <th className="py-2">
-                                                Last Checked
+                                                Kiểm tra lần cuối
                                             </th>
-                                            <th className="py-2">Active</th>
+                                            <th className="py-2">Hoạt động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -265,11 +266,13 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                                         <td className="py-2">
                                                             {inv.is_active ? (
                                                                 <span className="rounded bg-green-100 px-2 py-1 text-xs text-green-700">
-                                                                    Active
+                                                                    Đang hoạt
+                                                                    động
                                                                 </span>
                                                             ) : (
                                                                 <span className="rounded bg-red-100 px-2 py-1 text-xs text-red-700">
-                                                                    Inactive
+                                                                    Không hoạt
+                                                                    động
                                                                 </span>
                                                             )}
                                                         </td>
@@ -282,7 +285,7 @@ function DetailProductPopup({ id, popup }: EditPopupPros) {
                                                     colSpan={4}
                                                     className="py-2 text-center text-gray-500"
                                                 >
-                                                    No inventories found
+                                                    Không có dữ liệu kho
                                                 </td>
                                             </tr>
                                         )}

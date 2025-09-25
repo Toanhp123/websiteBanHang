@@ -18,9 +18,9 @@ function InventoryAuditTable() {
     const handleFormatActionInventoryAudit = (action: string) => {
         switch (action) {
             case "import":
-                return "Import";
+                return "Nhập hàng";
             case "invoice_paid":
-                return "Invoice Paid";
+                return "Hóa đơn đã thanh toán";
             default:
                 return action;
         }
@@ -52,7 +52,7 @@ function InventoryAuditTable() {
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
             <div>
                 <p className="font-semibold">
-                    We found {exportBasic.length} items for you
+                    Đã tìm thấy {exportBasic.length} mục cho bạn
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -61,15 +61,15 @@ function InventoryAuditTable() {
             <table className="w-full text-left">
                 <thead className="bg-gray-100">
                     <tr>
-                        <th className="px-4 py-2">Audit ID</th>
-                        <th className="px-4 py-2">Employee Name</th>
-                        <th className="px-4 py-2">Product Name</th>
-                        <th className="px-4 py-2">Old Quantity</th>
-                        <th className="px-4 py-2">New Quantity</th>
-                        <th className="px-4 py-2">Change Amount</th>
-                        <th className="px-4 py-2">Warehouse Name</th>
-                        <th className="px-4 py-2">Action</th>
-                        <th className="px-4 py-2">Audit Date</th>
+                        <th className="px-4 py-2">Mã kiểm kê</th>
+                        <th className="px-4 py-2">Tên nhân viên</th>
+                        <th className="px-4 py-2">Tên sản phẩm</th>
+                        <th className="px-4 py-2">Số lượng cũ</th>
+                        <th className="px-4 py-2">Số lượng mới</th>
+                        <th className="px-4 py-2">Mức thay đổi</th>
+                        <th className="px-4 py-2">Tên kho</th>
+                        <th className="px-4 py-2">Hành động</th>
+                        <th className="px-4 py-2">Ngày kiểm kê</th>
                     </tr>
                 </thead>
 
@@ -104,7 +104,7 @@ function InventoryAuditTable() {
                 <div className="text-center">
                     <div className="inline-flex">
                         <Button
-                            text="Load More"
+                            text="Tải thêm"
                             textSize="small"
                             type="small"
                             onClick={handleLoadMore}

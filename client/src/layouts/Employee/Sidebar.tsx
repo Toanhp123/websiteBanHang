@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Button, ButtonSidebarDashboard } from "@/components/shared";
 import clsx from "clsx";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
@@ -31,52 +31,52 @@ function Sidebar() {
 
     const listOptionInProduct = [
         {
-            text: "Product List",
+            text: "Danh sách sản phẩm",
             func: () => handleNavigate("productList"),
         },
         {
-            text: "Add Product",
+            text: "Thêm sản phẩm",
             func: () => handleNavigate("addProduct"),
         },
     ];
 
     const listOptionInWarehouse = [
         {
-            text: "Warehouse Transactions",
+            text: "Giao dịch kho",
             func: () => handleNavigate("warehouseTransactions"),
         },
         {
-            text: "Warehouse List",
+            text: "Danh sách kho",
             func: () => handleNavigate("warehouseList"),
         },
         {
-            text: "Supplier List",
+            text: "Danh sách nhà cung cấp",
             func: () => handleNavigate("supplierList"),
         },
         {
-            text: "Warehouse Management",
+            text: "Quản lý kho",
             func: () => handleNavigate("warehouseManagement"),
         },
     ];
 
     const listOptionInEmployee = [
         {
-            text: "List Employee",
+            text: "Danh sách nhân viên",
             func: () => handleNavigate("employeeList"),
         },
         {
-            text: "Add Employee",
+            text: "Thêm nhân viên",
             func: () => handleNavigate("employeeAdd"),
         },
     ];
 
     const listOptionInDiscount = [
         {
-            text: "List Discount",
+            text: "Danh sách khuyến mãi",
             func: () => handleNavigate("discountList"),
         },
         {
-            text: "Add Discount",
+            text: "Thêm khuyến mãi",
             func: () => handleNavigate("discountAdd"),
         },
     ];
@@ -110,19 +110,19 @@ function Sidebar() {
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-house"
-                    text="Dashboard"
+                    text="Bảng điều khiển"
                     onClick={() => handleNavigate("")}
                 />
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-cart-shopping"
-                    text="Orders"
+                    text="Đơn hàng"
                     onClick={() => handleNavigate("orders")}
                 />
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-bag-shopping"
-                    text="Product"
+                    text="Sản phẩm"
                     menu={true}
                     closeMenu={menuState.product}
                     listOption={listOptionInProduct}
@@ -131,7 +131,7 @@ function Sidebar() {
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-warehouse"
-                    text="Warehouse"
+                    text="Kho"
                     menu={true}
                     closeMenu={menuState.warehouse}
                     listOption={listOptionInWarehouse}
@@ -140,7 +140,7 @@ function Sidebar() {
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-tags"
-                    text="Discount"
+                    text="Khuyến mãi"
                     menu={true}
                     closeMenu={menuState.discount}
                     listOption={listOptionInDiscount}
@@ -153,13 +153,13 @@ function Sidebar() {
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-user"
-                    text="Customer"
+                    text="Khách hàng"
                     onClick={() => handleNavigate("customer")}
                 />
                 <ButtonSidebarDashboard
                     closeSidebar={closeSidebar}
                     icon="fa-solid fa-user"
-                    text="Employee"
+                    text="Nhân viên"
                     menu={true}
                     closeMenu={menuState.employee}
                     listOption={listOptionInEmployee}

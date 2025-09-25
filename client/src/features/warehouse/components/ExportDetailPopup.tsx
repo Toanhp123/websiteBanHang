@@ -24,9 +24,11 @@ function ExportDetailPopup({ id, popup }: EditPopupPros) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
             <form className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-xl">
-                {/* Header */}
+                {/* Tiêu đề */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Export Detail</h2>
+                    <h2 className="text-xl font-semibold">
+                        Chi tiết phiếu xuất
+                    </h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
@@ -41,20 +43,18 @@ function ExportDetailPopup({ id, popup }: EditPopupPros) {
                     </button>
                 </div>
 
-                {/* Body */}
+                {/* Nội dung */}
                 <div className="shadow-light max-h-[50vh] gap-6 overflow-y-auto rounded-2xl p-4">
                     <table className="w-full text-left">
                         <thead className="bg-gray-300">
                             <tr>
-                                <th className="px-4 py-2">Code</th>
-                                <th className="px-4 py-2">Product ID</th>
-                                <th className="px-4 py-2">Product Name</th>
-                                <th className="px-4 py-2">Quantity</th>
-                                <th className="px-4 py-2">Warehouse ID</th>
-                                <th className="px-4 py-2">Warehouse Name</th>
-                                <th className="px-4 py-2">
-                                    Warehouse Location
-                                </th>
+                                <th className="px-4 py-2">Mã sản phẩm</th>
+                                <th className="px-4 py-2">ID sản phẩm</th>
+                                <th className="px-4 py-2">Tên sản phẩm</th>
+                                <th className="px-4 py-2">Số lượng</th>
+                                <th className="px-4 py-2">ID kho</th>
+                                <th className="px-4 py-2">Tên kho</th>
+                                <th className="px-4 py-2">Địa điểm kho</th>
                             </tr>
                         </thead>
 

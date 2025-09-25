@@ -155,10 +155,11 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
                                                             <button
                                                                 className="text-main-primary disabled:text-disable hover:text-main-secondary flex flex-1 items-center rounded-2xl px-3 font-semibold hover:cursor-pointer hover:bg-gray-300"
                                                                 onClick={() =>
-                                                                    popup(
-                                                                        "employee",
-                                                                        item.employee_id.toString(),
-                                                                    )
+                                                                    popup({
+                                                                        employee:
+                                                                            item.employee_id.toString(),
+                                                                        mode: "Edit",
+                                                                    })
                                                                 }
                                                             >
                                                                 Edit Employee
@@ -178,11 +179,11 @@ function EmployeeListTable({ id, popup }: EditPopupPros) {
                                                             <button
                                                                 className="flex flex-1 items-center rounded-2xl px-3 font-semibold text-pink-600 hover:cursor-pointer hover:bg-gray-300 hover:text-pink-500"
                                                                 onClick={() =>
-                                                                    popup(
-                                                                        "employee",
-                                                                        item.employee_id.toString() +
-                                                                            "Detail",
-                                                                    )
+                                                                    popup({
+                                                                        employee:
+                                                                            item.employee_id.toString(),
+                                                                        mode: "Detail",
+                                                                    })
                                                                 }
                                                             >
                                                                 Detail Employee

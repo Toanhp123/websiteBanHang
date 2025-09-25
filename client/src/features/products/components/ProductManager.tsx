@@ -65,7 +65,8 @@ function ProductManager({ id, popup }: EditPopupPros) {
             <div>
                 <div className="flex items-center justify-between">
                     <p className="font-semibold">
-                        Show {listProduct.length} of {listProductLength} Product
+                        Hiển thị {listProduct.length} trên {listProductLength}{" "}
+                        sản phẩm
                     </p>
                     <DropdownSortProduct />
                 </div>
@@ -77,12 +78,12 @@ function ProductManager({ id, popup }: EditPopupPros) {
                 <thead className="bg-gray-100">
                     <tr>
                         <th className="px-4 py-2 text-left">ID</th>
-                        <th className="px-4 py-2 text-center">Image</th>
-                        <th className="px-4 py-2 text-left">Product Name</th>
-                        <th className="px-4 py-2 text-left">Price</th>
-                        <th className="px-4 py-2 text-left">Stock</th>
-                        <th className="px-4 py-2 text-left">Date</th>
-                        <th className="px-4 py-2 text-right">Edit</th>
+                        <th className="px-4 py-2 text-center">Ảnh</th>
+                        <th className="px-4 py-2 text-left">Tên sản phẩm</th>
+                        <th className="px-4 py-2 text-left">Giá</th>
+                        <th className="px-4 py-2 text-left">Tồn kho</th>
+                        <th className="px-4 py-2 text-left">Ngày thêm</th>
+                        <th className="px-4 py-2 text-right">Chỉnh sửa</th>
                     </tr>
                 </thead>
 
@@ -105,7 +106,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
                                                         product.product_id,
                                             )[0].image_url
                                         }
-                                        alt="image"
+                                        alt="ảnh"
                                     />
                                 </div>
                             </td>
@@ -147,7 +148,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
                                                         })
                                                     }
                                                 >
-                                                    Edit Product
+                                                    Sửa sản phẩm
                                                 </button>
 
                                                 <button
@@ -158,7 +159,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
                                                         )
                                                     }
                                                 >
-                                                    Delete Product
+                                                    Xóa sản phẩm
                                                 </button>
 
                                                 <button
@@ -171,7 +172,7 @@ function ProductManager({ id, popup }: EditPopupPros) {
                                                         })
                                                     }
                                                 >
-                                                    Detail Product
+                                                    Chi tiết sản phẩm
                                                 </button>
                                             </div>
                                         </div>

@@ -31,7 +31,7 @@ function InvoiceDetailPopup({ id, popup }: EditPopupPros) {
             <div className="w-full max-w-5xl rounded-2xl bg-white p-6 shadow-xl">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between border-b pb-3">
-                    <h2 className="text-xl font-semibold">Invoice Detail</h2>
+                    <h2 className="text-xl font-semibold">Chi tiết hóa đơn</h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
@@ -48,21 +48,21 @@ function InvoiceDetailPopup({ id, popup }: EditPopupPros) {
 
                 {/* Body */}
                 {loading ? (
-                    <p className="text-center text-gray-500">Loading...</p>
+                    <p className="text-center text-gray-500">Đang tải...</p>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse">
                             <thead>
                                 <tr className="bg-gray-100 text-left text-sm font-medium text-gray-600">
                                     <th className="p-3">#</th>
-                                    <th className="p-3">Image</th>
-                                    <th className="p-3">Product</th>
-                                    <th className="p-3 text-right">Qty</th>
+                                    <th className="p-3">Ảnh</th>
+                                    <th className="p-3">Sản phẩm</th>
+                                    <th className="p-3 text-right">SL</th>
+                                    <th className="p-3 text-right">Đơn giá</th>
+                                    <th className="p-3 text-right">Giảm giá</th>
                                     <th className="p-3 text-right">
-                                        Unit Price
+                                        Thành tiền
                                     </th>
-                                    <th className="p-3 text-right">Discount</th>
-                                    <th className="p-3 text-right">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -115,7 +115,7 @@ function InvoiceDetailPopup({ id, popup }: EditPopupPros) {
                 {invoiceDetail.length > 0 && (
                     <div className="mt-4 flex justify-end border-t pt-4">
                         <div className="text-right">
-                            <p className="text-sm text-gray-500">Grand Total</p>
+                            <p className="text-sm text-gray-500">Tổng cộng</p>
                             <p className="text-xl font-bold text-blue-600">
                                 {invoiceDetail
                                     .reduce(

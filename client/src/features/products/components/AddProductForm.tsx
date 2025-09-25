@@ -111,25 +111,27 @@ function AddProductForm() {
             <div className="col-span-3 space-y-6">
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
                     <div>
-                        <h1 className="text-xl font-semibold">Basic Info</h1>
+                        <h1 className="text-xl font-semibold">
+                            Thông tin cơ bản
+                        </h1>
                         <div className="mt-4 border-b border-gray-300"></div>
                     </div>
 
                     <InputForDashboard
-                        label="Product title"
-                        placeholder="Type Here"
+                        label="Tên sản phẩm"
+                        placeholder="Nhập tại đây"
                         register={register("productTitle")}
                         error={errors.productTitle?.message}
                     />
 
                     <div>
                         <label className="text-md text-disable mb-2 block font-semibold">
-                            Description
+                            Mô tả
                         </label>
 
                         <textarea
                             rows={6}
-                            placeholder="Type something here..."
+                            placeholder="Nhập mô tả tại đây..."
                             className="w-full resize-none rounded-lg border border-gray-300 p-3"
                             {...register("productDescription")}
                         />
@@ -145,7 +147,7 @@ function AddProductForm() {
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
                     <div>
                         <h1 className="text-xl font-semibold">
-                            Addition Images
+                            Hình ảnh bổ sung
                         </h1>
                         <div className="mt-4 border-b border-gray-300"></div>
                     </div>
@@ -166,7 +168,9 @@ function AddProductForm() {
             <div className="col-span-2 space-y-6">
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
                     <div>
-                        <h1 className="text-xl font-semibold">Main Image</h1>
+                        <h1 className="text-xl font-semibold">
+                            Hình ảnh chính
+                        </h1>
                         <div className="mt-4 border-b border-gray-300"></div>
                     </div>
 
@@ -179,19 +183,21 @@ function AddProductForm() {
 
                 <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
                     <div>
-                        <h1 className="text-xl font-semibold">Advanced Info</h1>
+                        <h1 className="text-xl font-semibold">
+                            Thông tin nâng cao
+                        </h1>
                         <div className="mt-4 border-b border-gray-300"></div>
                     </div>
 
                     <InputForDashboard
-                        label="Product Code"
-                        placeholder="Type Here"
+                        label="Mã sản phẩm"
+                        placeholder="Nhập tại đây"
                         register={register("productCode")}
                         error={errors.productCode?.message}
                     />
 
                     <InputForDashboard
-                        label="Price"
+                        label="Giá"
                         placeholder="0"
                         type="number"
                         register={register("price")}
@@ -199,21 +205,21 @@ function AddProductForm() {
                     />
 
                     <Dropdown
-                        text="Category"
+                        text="Danh mục"
                         options={formatDataCategories}
                         register={register("categoryID")}
                         error={errors.categoryID?.message}
                     />
 
                     <Dropdown
-                        text="Supplier"
+                        text="Nhà cung cấp"
                         options={formatDataSupplier}
                         register={register("supplierID")}
                         error={errors.supplierID?.message}
                     />
 
                     <Dropdown
-                        text="Product Type"
+                        text="Loại sản phẩm"
                         options={formatDataProductType}
                         register={register("productTypeID")}
                         error={errors.productTypeID?.message}
@@ -221,7 +227,7 @@ function AddProductForm() {
                 </div>
 
                 <div className="inline-flex">
-                    <Button text="Add product" textSize="small" />
+                    <Button text="Thêm sản phẩm" textSize="small" />
                 </div>
             </div>
         </form>

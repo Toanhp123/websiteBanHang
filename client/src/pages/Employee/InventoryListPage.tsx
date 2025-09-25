@@ -5,7 +5,7 @@ function InventoryListPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Inventory</h1>
+                <h1 className="text-2xl font-semibold">Kho hàng</h1>
 
                 <InventoryListTable />
             </div>

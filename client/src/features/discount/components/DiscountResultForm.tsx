@@ -8,29 +8,29 @@ function DiscountResultForm() {
 
     return (
         <div className="mt-6 space-y-6 rounded-xl border bg-gray-50 p-6">
-            <h2 className="mb-4 text-xl font-semibold">Discount Summary</h2>
+            <h2 className="mb-4 text-xl font-semibold">Tóm tắt khuyến mãi</h2>
 
             {/* Info Section */}
             <div>
-                <h3 className="mb-2 font-semibold text-gray-700">Info</h3>
+                <h3 className="mb-2 font-semibold text-gray-700">Thông tin</h3>
                 <table className="w-full rounded-lg border border-gray-200">
                     <tbody>
                         <tr className="border-b">
-                            <td className="p-2 font-medium">Promotion Name</td>
+                            <td className="p-2 font-medium">Tên khuyến mãi</td>
                             <td className="p-2">
                                 {allInfo.info?.promotion_name || "-"}
                             </td>
                         </tr>
                         <tr className="border-b">
                             <td className="p-2 font-medium">
-                                Distribution Type
+                                Hình thức phân phối
                             </td>
                             <td className="p-2">
                                 {allInfo.info?.distribution_type || "-"}
                             </td>
                         </tr>
                         <tr className="border-b">
-                            <td className="p-2 font-medium">Valid From</td>
+                            <td className="p-2 font-medium">Ngày bắt đầu</td>
                             <td className="p-2">
                                 {formatDate(
                                     allInfo.info?.valid_from?.toString() || "-",
@@ -38,7 +38,7 @@ function DiscountResultForm() {
                             </td>
                         </tr>
                         <tr>
-                            <td className="p-2 font-medium">Valid To</td>
+                            <td className="p-2 font-medium">Ngày kết thúc</td>
                             <td className="p-2">
                                 {formatDate(
                                     allInfo.info?.valid_to?.toString() || "-",
@@ -51,13 +51,13 @@ function DiscountResultForm() {
 
             {/* Rules Section */}
             <div>
-                <h3 className="mb-2 font-semibold text-gray-700">Rules</h3>
+                <h3 className="mb-2 font-semibold text-gray-700">Điều kiện</h3>
                 <table className="w-full rounded-lg border border-gray-200">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="p-2 text-left">Rule Type</th>
-                            <th className="p-2 text-left">Operator</th>
-                            <th className="p-2 text-right">Value</th>
+                            <th className="p-2 text-left">Loại điều kiện</th>
+                            <th className="p-2 text-left">Toán tử</th>
+                            <th className="p-2 text-right">Giá trị</th>
                         </tr>
                     </thead>
 
@@ -81,13 +81,13 @@ function DiscountResultForm() {
 
             {/* Effect Section */}
             <div>
-                <h3 className="mb-2 font-semibold text-gray-700">Effect</h3>
+                <h3 className="mb-2 font-semibold text-gray-700">Hiệu lực</h3>
 
                 <table className="w-full rounded-lg border border-gray-200 text-left">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="p-2">Effect Type</th>
-                            <th className="p-2">Value</th>
+                            <th className="p-2">Loại hiệu lực</th>
+                            <th className="p-2">Giá trị</th>
                         </tr>
                     </thead>
 

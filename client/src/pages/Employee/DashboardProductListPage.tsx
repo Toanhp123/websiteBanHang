@@ -25,7 +25,7 @@ function DashboardProductListPage() {
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Product List</h1>
+                <h1 className="text-2xl font-semibold">Danh sách Sản phẩm</h1>
 
                 <ProductManager id={popup.product} popup={toggleMenu} />
             </div>

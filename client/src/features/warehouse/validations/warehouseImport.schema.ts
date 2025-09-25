@@ -1,22 +1,23 @@
 import * as yup from "yup";
 
 export const warehouseImportSchema = yup.object().shape({
-    warehouse_id: yup.string().required("Warehouse is required"),
-    supplier_id: yup.string().required("Supplier is required"),
+    warehouse_id: yup.string().required("Vui lòng chọn kho"),
+    supplier_id: yup.string().required("Vui lòng chọn nhà cung cấp"),
     products: yup
         .array()
         .of(
             yup.object({
-                product_id: yup.string().required("Product is required"),
+                product_id: yup.string().required("Vui lòng chọn sản phẩm"),
                 quantity: yup
                     .number()
-                    .integer("Quantity must be an integer")
-                    .required("Quantity is required")
-                    .positive("Quantity must be greater than 0"),
+                    .typeError("Số lượng phải là một số")
+                    .integer("Số lượng phải là số nguyên")
+                    .required("Vui lòng nhập số lượng")
+                    .positive("Số lượng phải lớn hơn 0"),
             }),
         )
-        .required()
-        .min(1, "At least one product is required"),
+        .required("Vui lòng nhập ít nhất một sản phẩm")
+        .min(1, "Cần nhập ít nhất một sản phẩm"),
 });
 
 export type WarehouseImportFormInputs = yup.InferType<

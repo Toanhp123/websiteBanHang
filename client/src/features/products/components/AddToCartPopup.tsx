@@ -23,15 +23,15 @@ function AddToCartPopup() {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/50 p-4">
             <div className="animate-fadeIn max-w-xl rounded-2xl bg-white p-6 shadow-xl">
-                {/* Header */}
+                {/* Tiêu đề */}
                 <h2 className="text-main-primary mb-6 text-xl font-semibold">
-                    Added to your Cart
+                    Đã thêm vào giỏ hàng
                 </h2>
 
-                {/* Body */}
+                {/* Nội dung */}
                 {lastItem ? (
                     <div className="flex items-center gap-6">
-                        {/* Product image */}
+                        {/* Hình sản phẩm */}
                         <div className="h-32 w-32 overflow-hidden rounded-lg border">
                             <img
                                 src={`http://localhost:3000/${lastItem.img}`}
@@ -40,30 +40,30 @@ function AddToCartPopup() {
                             />
                         </div>
 
-                        {/* Product info */}
+                        {/* Thông tin sản phẩm */}
                         <div className="flex flex-col gap-2">
                             <h3 className="text-lg font-semibold">
                                 {lastItem.product}
                             </h3>
                             <p className="text-gray-500">
-                                Quantity: {lastItem.quantity}
+                                Số lượng: {lastItem.quantity}
                             </p>
                             <p className="text-main-primary text-lg font-bold">
                                 {lastItem.price}
                             </p>
                             <p className="text-sm text-gray-400">
-                                Stock left: {lastItem.totalStock}
+                                Còn lại: {lastItem.totalStock}
                             </p>
                         </div>
                     </div>
                 ) : (
-                    <p>No product found in cart</p>
+                    <p>Không có sản phẩm nào trong giỏ</p>
                 )}
 
-                {/* Footer */}
+                {/* Chân */}
                 <div className="mt-6 grid grid-cols-2 gap-4">
                     <Button
-                        text="Continue To Shop"
+                        text="Tiếp tục mua sắm"
                         onClick={handleClosePopup}
                         textColor="text-gray-800"
                         bgColor="bg-gray-200"
@@ -71,7 +71,7 @@ function AddToCartPopup() {
                         textSize="small"
                     />
                     <Button
-                        text={`View My Cart`}
+                        text="Xem giỏ hàng"
                         bgColor="bg-main-primary"
                         onClick={handleGoToCart}
                         textColor="text-white"

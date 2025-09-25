@@ -128,7 +128,7 @@ function WarehouseImportForm() {
             <div className="grid grid-cols-2 gap-4">
                 {/* Chọn kho */}
                 <Dropdown
-                    text="Warehouse"
+                    text="Kho"
                     options={formatWarehouseData}
                     register={register("warehouse_id")}
                     error={errors.warehouse_id?.message}
@@ -136,7 +136,7 @@ function WarehouseImportForm() {
 
                 {/* Chọn nhà cung cấp */}
                 <Dropdown
-                    text="Supplier"
+                    text="Nhà cung cấp"
                     options={formatSupplierData}
                     register={register("supplier_id")}
                     error={errors.supplier_id?.message}
@@ -146,7 +146,7 @@ function WarehouseImportForm() {
             {/* Danh sách sản phẩm */}
             <div>
                 <label className="mb-2 block font-semibold text-gray-700">
-                    Products
+                    Sản phẩm
                 </label>
 
                 <div className="space-y-4">
@@ -157,7 +157,7 @@ function WarehouseImportForm() {
                         >
                             <div className="col-span-6">
                                 <Dropdown
-                                    text="Product"
+                                    text="Sản phẩm"
                                     options={formatProductData(index)}
                                     register={register(
                                         `products.${index}.product_id`,
@@ -172,7 +172,7 @@ function WarehouseImportForm() {
                             <div className="col-span-4">
                                 <InputForDashboard
                                     type="number"
-                                    label="Quantity"
+                                    label="Số lượng"
                                     placeholder="0"
                                     register={register(
                                         `products.${index}.quantity` as const,
@@ -186,7 +186,7 @@ function WarehouseImportForm() {
 
                             <div>
                                 <Button
-                                    text="Remove"
+                                    text="Xóa"
                                     bgColor="bg-red-100"
                                     borderColor="border-red-300"
                                     textColor="text-red-500"
@@ -204,13 +204,13 @@ function WarehouseImportForm() {
                         onClick={() => append({ product_id: "", quantity: 1 })}
                         className="mt-2 rounded bg-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
                     >
-                        + Add Product
+                        + Thêm sản phẩm
                     </button>
                 </div>
             </div>
 
             <div className="inline-flex">
-                <Button text="Save Import" textSize="small" />
+                <Button text="Lưu phiếu nhập" textSize="small" />
             </div>
         </form>
     );

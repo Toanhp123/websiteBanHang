@@ -87,7 +87,7 @@ function InvoiceManager({ popup }: EditPopupPros) {
         >
             <div>
                 <p className="font-semibold">
-                    We found {orderList.length} items for you
+                    Chúng tôi đã tìm thấy {orderList.length} đơn hàng cho bạn
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -99,11 +99,11 @@ function InvoiceManager({ popup }: EditPopupPros) {
                         <tr>
                             <th className="px-4 py-2">ID</th>
                             <th className="px-4 py-2">Email</th>
-                            <th className="px-4 py-2">Discount</th>
-                            <th className="px-4 py-2">Total</th>
-                            <th className="px-4 py-2">Status</th>
-                            <th className="px-4 py-2">Date</th>
-                            <th className="px-4 py-2 text-right">Edit</th>
+                            <th className="px-4 py-2">Giảm giá</th>
+                            <th className="px-4 py-2">Tổng</th>
+                            <th className="px-4 py-2">Trạng thái</th>
+                            <th className="px-4 py-2">Ngày</th>
+                            <th className="px-4 py-2 text-right">Chỉnh sửa</th>
                         </tr>
                     </thead>
 
@@ -167,7 +167,7 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                                                     )
                                                                 }
                                                             >
-                                                                Accept Order
+                                                                Xác nhận đơn
                                                             </button>
 
                                                             <button
@@ -182,7 +182,7 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                                                     )
                                                                 }
                                                             >
-                                                                Cancelled Order
+                                                                Hủy đơn
                                                             </button>
                                                         </>
                                                     ) : (
@@ -196,7 +196,8 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                                                     )
                                                                 }
                                                             >
-                                                                Approve Refund
+                                                                Chấp nhận hoàn
+                                                                tiền
                                                             </button>
 
                                                             <button
@@ -208,7 +209,8 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                                                     )
                                                                 }
                                                             >
-                                                                Reject Refund
+                                                                Từ chối hoàn
+                                                                tiền
                                                             </button>
                                                         </>
                                                     )}
@@ -222,7 +224,7 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                                             })
                                                         }
                                                     >
-                                                        Detail Order
+                                                        Chi tiết đơn
                                                     </button>
                                                 </div>
                                             </div>
@@ -237,7 +239,7 @@ function InvoiceManager({ popup }: EditPopupPros) {
 
             {orderList.length === 0 && (
                 <div className="text-main-primary text-center font-semibold">
-                    No More Order !
+                    Không còn đơn hàng nào!
                 </div>
             )}
 
@@ -245,7 +247,7 @@ function InvoiceManager({ popup }: EditPopupPros) {
                 <div className="text-center">
                     <div className="inline-flex">
                         <Button
-                            text="Load More"
+                            text="Tải thêm"
                             textSize="small"
                             type="small"
                             onClick={handleLoadMoreOrders}

@@ -18,7 +18,7 @@ import { getSaleStatistics } from "../services/dashboard.api";
 import type { SaleStatistics } from "../types/dashboard.type";
 import Loading from "@/features/loading/components/Loading";
 
-const COLORS = ["#4CAF50", "#FFC107", "#F44336"];
+const COLORS = ["#4CAF50", "#FFC107", "#F44336", "#2196F3"];
 
 function OverviewSaleStatistics() {
     const [loading, setLoading] = useState(false);
@@ -52,13 +52,13 @@ function OverviewSaleStatistics() {
 
     return (
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
-            <h1 className="text-xl font-semibold">Sale Statistics</h1>
+            <h1 className="text-xl font-semibold">Thống kê bán hàng</h1>
 
             <div className="flex gap-8">
-                {/* Revenue Line Chart */}
+                {/* Doanh thu */}
                 <div className="flex-1 rounded-2xl bg-white p-6 shadow">
                     <h2 className="mb-4 text-xl font-semibold">
-                        Revenue Over Time
+                        Doanh thu theo thời gian
                     </h2>
                     <ResponsiveContainer width="100%" height={300}>
                         <LineChart data={saleStatistics.revenueByMonth}>
@@ -68,7 +68,7 @@ function OverviewSaleStatistics() {
                             <Tooltip />
                             <Legend
                                 formatter={(value) => {
-                                    if (value === "revenue") return "Revenue";
+                                    if (value === "revenue") return "Doanh thu";
                                     return value;
                                 }}
                             />
@@ -82,10 +82,10 @@ function OverviewSaleStatistics() {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Top Products */}
+                {/* Sản phẩm bán chạy */}
                 <div className="flex-1 rounded-2xl bg-white p-6 shadow">
                     <h2 className="mb-4 text-xl font-semibold">
-                        Top Selling Products
+                        Sản phẩm bán chạy
                     </h2>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={saleStatistics.productSaleData}>
@@ -96,7 +96,7 @@ function OverviewSaleStatistics() {
                             <Legend
                                 formatter={(value) => {
                                     if (value === "total_sold")
-                                        return "Total Sold";
+                                        return "Số lượng bán";
                                     return value;
                                 }}
                             />
@@ -107,20 +107,25 @@ function OverviewSaleStatistics() {
             </div>
 
             <div className="flex gap-8">
-                {/* Order Status Pie */}
+                {/* Trạng thái đơn hàng */}
                 <div className="flex-1 rounded-2xl bg-white p-6 shadow">
                     <h2 className="mb-4 text-xl font-semibold">
-                        Order Status Distribution
+                        Phân bố trạng thái đơn hàng
                     </h2>
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Legend
                                 formatter={(value) => {
-                                    if (value === "cancelled")
-                                        return "Cancelled";
-                                    if (value === "paid") return "Paid";
-                                    if (value === "pending") return "Pending";
-                                    if (value === "refunded") return "Refunded";
+                                    if (value === "cancelled") return "Đã hủy";
+                                    if (value === "paid")
+                                        return "Đã thanh toán";
+                                    if (value === "pending") return "Chờ xử lý";
+                                    if (value === "refunded")
+                                        return "Hoàn tiền";
+                                    if (value === "refund_requested")
+                                        return "Yêu cầu hoàn tiền";
+                                    if (value === "refund_rejected")
+                                        return "Từ chối hoàn tiền";
                                     return value;
                                 }}
                             />
@@ -147,10 +152,10 @@ function OverviewSaleStatistics() {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Customers Area Chart */}
+                {/* Khách hàng mới */}
                 <div className="flex-1 rounded-2xl bg-white p-6 shadow">
                     <h2 className="mb-4 text-xl font-semibold">
-                        New Customers
+                        Khách hàng mới
                     </h2>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={saleStatistics.accountCreatedData}>
@@ -161,7 +166,7 @@ function OverviewSaleStatistics() {
                             <Legend
                                 formatter={(value) => {
                                     if (value === "total_accounts")
-                                        return "Total Account Created";
+                                        return "Tài khoản mới";
                                     return value;
                                 }}
                             />

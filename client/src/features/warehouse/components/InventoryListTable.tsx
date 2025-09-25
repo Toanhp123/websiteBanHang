@@ -30,7 +30,7 @@ function InventoryListTable() {
         <div className="space-y-8 rounded-2xl bg-white px-8 py-6">
             <div>
                 <p className="font-semibold">
-                    We found {inventory.length} result for you
+                    Đã tìm thấy {inventory.length} kết quả cho bạn
                 </p>
 
                 <div className="mt-4 border-b border-gray-300"></div>
@@ -39,11 +39,11 @@ function InventoryListTable() {
             <table className="w-full text-left">
                 <thead className="bg-gray-100">
                     <tr>
-                        <th className="px-4 py-2">Product Code</th>
-                        <th className="px-4 py-2">Product Name</th>
-                        <th className="px-4 py-2">Status</th>
-                        <th className="px-4 py-2">Quantity</th>
-                        <th className="px-4 py-2">Last Check</th>
+                        <th className="px-4 py-2">Mã sản phẩm</th>
+                        <th className="px-4 py-2">Tên sản phẩm</th>
+                        <th className="px-4 py-2">Trạng thái</th>
+                        <th className="px-4 py-2">Số lượng</th>
+                        <th className="px-4 py-2">Lần kiểm tra cuối</th>
                     </tr>
                 </thead>
 

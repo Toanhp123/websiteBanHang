@@ -11,7 +11,7 @@ function DashboardHomePage() {
                 <div className="space-y-1">
                     <h1 className="text-2xl font-semibold">Dashboard</h1>
                     <p className="text-disable">
-                        Whole data about your business here
+                        Toàn bộ dữ liệu về hoạt động kinh doanh của bạn
                     </p>
                 </div>
 

@@ -7,28 +7,32 @@ import { useState } from "react";
 function EmployeeListPage() {
     const [popup, setPopup] = useState<Record<string, string>>({
         employee: "",
+        mode: "",
     });
 
-    const toggleMenu = (menu: string, value: string) => {
-        setPopup((prev) => ({
-            ...prev,
-            [menu]: value,
-        }));
+    const toggleMenu = (values: Partial<Record<string, string>>) => {
+        setPopup(
+            (prev) =>
+                ({
+                    ...prev,
+                    ...values,
+                }) as Record<string, string>,
+        );
     };
 
     return (
         <MainLayout>
             <div className="space-y-8">
-                <h1 className="text-2xl font-semibold">Employee List</h1>
+                <h1 className="text-2xl font-semibold">Danh sách nhân viên</h1>
 
                 <EmployeeListTable id={popup.employee} popup={toggleMenu} />
             </div>
 
-            {popup.employee.includes("Detail") && (
+            {popup.mode === "Detail" && (
                 <EmployeeDetailPopup id={popup.employee} popup={toggleMenu} />
             )}
 
-            {popup.employee !== "" && !popup.employee.includes("Detail") && (
+            {popup.mode === "Edit" && (
                 <EditEmployeePopup id={popup.employee} popup={toggleMenu} />
             )}
         </MainLayout>

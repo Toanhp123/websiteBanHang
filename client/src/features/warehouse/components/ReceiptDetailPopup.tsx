@@ -26,7 +26,9 @@ function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
             <form className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-xl">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Receipt Detail</h2>
+                    <h2 className="text-xl font-semibold">
+                        Chi tiết phiếu nhập
+                    </h2>
                     <button
                         type="button"
                         className="text-gray-500 hover:text-gray-800"
@@ -46,11 +48,11 @@ function ReceiptDetailPopup({ id, popup }: EditPopupPros) {
                     <table className="w-full text-left">
                         <thead className="bg-gray-300">
                             <tr>
-                                <th className="px-4 py-2">Code</th>
-                                <th className="px-4 py-2">Product ID</th>
-                                <th className="px-4 py-2">Product Name</th>
-                                <th className="px-4 py-2">Quantity</th>
-                                <th className="px-4 py-2">Price</th>
+                                <th className="px-4 py-2">Mã</th>
+                                <th className="px-4 py-2">Mã sản phẩm</th>
+                                <th className="px-4 py-2">Tên sản phẩm</th>
+                                <th className="px-4 py-2">Số lượng</th>
+                                <th className="px-4 py-2">Giá</th>
                             </tr>
                         </thead>
 

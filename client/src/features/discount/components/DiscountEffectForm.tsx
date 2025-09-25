@@ -6,6 +6,7 @@ import { getAllPromotionEffectType } from "../services/discount.api";
 import { Dropdown, InputForDashboard } from "@/components/shared";
 import { EffectPromotion } from "@/constants/promotion.constants";
 import { getProductMinimal } from "@/features/products/services/product.api";
+import type { ProductMinimal } from "@/features/products/types/product.type";
 
 function DiscountEffectForm() {
     const [productList, setProductList] = useState<ProductMinimal[]>([]);
