@@ -14,8 +14,10 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Supplier } from "@/features/products/types/product.type";
 import { getSupplier } from "@/features/products/services/product.api";
+import { useNavigate } from "react-router-dom";
 
 function WarehouseImportForm() {
+    const navigate = useNavigate();
     const [warehouseList, setWarehouseList] = useState<Warehouse[]>([]);
     const [supplierList, setSupplierList] = useState<Supplier[]>([]);
     const [productList, setProductList] = useState<Inventory[]>([]);
@@ -104,6 +106,7 @@ function WarehouseImportForm() {
 
             if (res.success) {
                 console.log(res.message);
+                navigate('/dashboard/warehouseTransactions');
             }
         } catch (error) {
             console.log(error);

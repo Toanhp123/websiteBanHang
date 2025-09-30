@@ -7,7 +7,7 @@ type NavItemPros = {
 
 function NavItem({ text, to }: NavItemPros) {
     return (
-        <Link className="text-white" to={`/${to}`}>
+        <Link className="text-red-500 font-bold" to={`/${to}`}>
             {text}
         </Link>
     );

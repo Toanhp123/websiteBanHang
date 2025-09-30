@@ -17,7 +17,7 @@ function Dropdown({ options, text, error, register }: DropdownPros) {
                     className="h-10 w-full appearance-none rounded-md bg-gray-100 px-4"
                     {...register}
                 >
-                    <option value={""}>-- Select {text} --</option>
+                    <option value={""}>-- Chọn {text} --</option>
                     {options?.map((option) => (
                         <option
                             className="rounded-2xl"

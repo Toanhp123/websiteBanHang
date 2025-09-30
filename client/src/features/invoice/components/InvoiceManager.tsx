@@ -197,7 +197,6 @@ function InvoiceManager({ popup }: EditPopupPros) {
                                                                 }
                                                             >
                                                                 Chấp nhận hoàn
-                                                                tiền
                                                             </button>
 
                                                             <button
