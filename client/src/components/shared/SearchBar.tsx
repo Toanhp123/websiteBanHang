@@ -18,19 +18,19 @@ function SearchBar() {
             className="flex h-full w-full items-center"
             onSubmit={(e) => handleSearch(e)}
         >
-            <form className="flex h-full max-h-2/3 w-full max-w-5/6 rounded-xl bg-gray-200">
+            <form className="flex h-full max-h-2/3 w-full max-w-5/6 rounded-xl bg-[oklch(0.65_0.14_153.24)]">
                 <button
                     className={
-                        "relative flex flex-3/9 items-center justify-center gap-2 text-red-500 font-bold " +
+                        "relative flex flex-3/9 items-center justify-center gap-2 text-white " +
                         "after:absolute after:top-1/2 after:-right-0 after:h-2/4 after:w-px after:-translate-y-1/2 after:bg-white after:opacity-50 after:content-['']"
                     }
                 >
                     <p>Tìm kiếm</p>
-                    <i className="fa-solid fa-magnifying-glass text-xs text-red-500 font-bold"></i>
+                    <i className="fa-solid fa-magnifying-glass text-xs text-gray-200"></i>
                 </button>
 
                 <input
-                    className="mx-4 flex-6/8 text-red-500 font-semibold focus:outline-none"
+                    className="mx-4 flex-6/8 text-white focus:outline-none"
                     type="text"
                     placeholder="Tìm kiếm sản phẩm..."
                     value={search}

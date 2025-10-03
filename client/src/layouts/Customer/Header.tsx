@@ -3,7 +3,6 @@ import SideBar from "./SideBar";
 import { Button, NavItem, SearchBar } from "@/components/shared";
 import { useWindowWidth } from "@/hooks/useWindowWidth";
 import { useNavigate } from "react-router-dom";
-import logo from "@/assets/images/background/image2.png";
 
 function Header() {
     const [sideBar, setSideBar] = useState<boolean>(false);
@@ -20,7 +19,7 @@ function Header() {
 
     return (
         <header>
-            <nav className="bg-gray-100 flex h-16 justify-center gap-4 py-4 lg:h-36">
+            <nav className="bg-main-primary flex h-16 justify-center gap-4 py-4 lg:h-36">
                 {/* Thanh bên */}
                 {sideBar && <SideBar />}
 
@@ -28,9 +27,9 @@ function Header() {
                 <div className="flex h-full w-full max-w-7/8 lg:flex-col">
                     {/* Hàng 1 */}
                     <div className="flex flex-1 items-center justify-between px-8">
-                        <div className=" lg:flex-1/4">
-                           <img src={logo} alt="Logo" className="h-12"/>
-                        </div>
+                        <h1 className="text-xl font-semibold text-white lg:flex-1/4">
+                            LOGO
+                        </h1>
 
                         {width < 1024 && (
                             <div
@@ -50,25 +49,19 @@ function Header() {
                                 <div className="flex gap-4">
                                     <Button
                                         border=""
-                                        textColor="text-red-500"
-                                        hoverColor="hover:bg-red-600"
-                                        bgColor="bg-gray-100"
+                                        hoverColor=""
                                         icon="fa-solid fa-heart"
                                     />
                                     <Button
                                         border=""
-                                        hoverColor="hover:bg-red-600"
-                                        textColor="text-red-500"
-                                        bgColor="bg-gray-100"
+                                        hoverColor=""
                                         icon="fa-solid fa-bag-shopping"
                                         onClick={() => handleClick("cartShop")}
                                     />
                                     <Button
                                         border=""
-                                        textColor="text-red-500"
-                                        hoverColor="hover:bg-red-600"
+                                        hoverColor=""
                                         icon="fa-solid fa-user"
-                                        bgColor="bg-gray-100"
                                         onClick={() => handleClick("myAccount")}
                                     />
                                 </div>
