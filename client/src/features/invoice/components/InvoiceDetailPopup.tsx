@@ -93,9 +93,9 @@ function InvoiceDetailPopup({ id, popup }: EditPopupPros) {
                                         </td>
                                         <td className="p-3 text-right text-red-500">
                                             -
-                                            {Number(
+                                            {(item.quantity * Number(
                                                 item.discount_product,
-                                            ).toLocaleString()}
+                                            )).toLocaleString()}
                                             ₫
                                         </td>
                                         <td className="p-3 text-right font-semibold">

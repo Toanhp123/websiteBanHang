@@ -93,8 +93,6 @@ function ForgotPass() {
 
     return (
         <div className="flex flex-col items-center gap-6 rounded-2xl p-4 shadow-xl md:w-2/6 md:min-w-md md:p-8 2xl:p-12">
-            <h1 className="text-2xl font-bold md:text-3xl">Logo</h1>
-
             <div className="w-full space-y-1">
                 <h1 className="text-xl font-bold md:text-2xl">
                     {tab === 1 && "Quên mật khẩu?"}

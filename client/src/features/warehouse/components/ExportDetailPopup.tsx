@@ -7,7 +7,7 @@ function ExportDetailPopup({ id, popup }: EditPopupPros) {
 
     const handleGetReceiptDetail = async (receipt_id: number) => {
         try {
-            const res = await getExportDetail(receipt_id);
+            const res = await getExportDetail(receipt_id);            
 
             setExportDetail(res);
         } catch (error) {
@@ -59,8 +59,8 @@ function ExportDetailPopup({ id, popup }: EditPopupPros) {
                         </thead>
 
                         <tbody>
-                            {exportDetail.map((item) => (
-                                <tr key={item.product_id}>
+                            {exportDetail.map((item, index) => (
+                                <tr key={index}>
                                     <td className="px-4 py-2">
                                         {item.product_code}
                                     </td>
