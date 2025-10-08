@@ -3,7 +3,7 @@ import { handleApiError } from "./errorHandler";
 import { getAccessToken } from "@/stores/authStore";
 
 const instance: AxiosInstance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://websitebanhang-1.onrender.com/",
     withCredentials: true,
 });
 
