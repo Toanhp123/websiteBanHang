@@ -9,7 +9,10 @@ function AboutUsPage() {
             <TitleSection text="Giới Thiệu" />
 
             <Section>
-                <div></div>
+                <div>
+                    <h1>Source Code</h1>
+                    <p>https://github.com/Toanhp123/websiteBanHang.git</p>
+                </div>
             </Section>
 
             <Footer />
