@@ -1,7 +1,7 @@
 export type PromotionIsValid = true | false | "nothing";
 
 export interface PromotionInfo {
-    promotion_id: number;
+    promotion_id: number | null;
     promotion_name: string;
     valid_from: string;
     valid_to: string;

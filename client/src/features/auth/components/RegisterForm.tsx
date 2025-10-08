@@ -35,6 +35,7 @@ function RegisterForm() {
         formState: { errors },
         trigger,
     } = useForm<RegisterFormInputs>({
+        // @ts-expect-error yup type mismatch
         resolver: getResolver(tab),
     });
 
@@ -75,7 +76,9 @@ function RegisterForm() {
     return (
         <div className="flex w-full flex-col items-center gap-6 rounded-2xl p-4 shadow-xl md:w-2/6 md:min-w-md md:p-8 2xl:p-12">
             <div className="w-full space-y-1">
-                <h1 className="text-xl font-bold md:text-2xl text-center mb-8">Đăng ký</h1>
+                <h1 className="mb-8 text-center text-xl font-bold md:text-2xl">
+                    Đăng ký
+                </h1>
                 {tab === 1 && (
                     <p className="text-disable text-sm md:text-xl">
                         Vui lòng nhập địa chỉ email và tên đăng nhập của bạn
@@ -99,6 +102,7 @@ function RegisterForm() {
             <form
                 id="registerForm"
                 className="w-full max-w-4xl space-y-6"
+                // @ts-expect-error yup type mismatch
                 onSubmit={handleSubmit(handleRegister)}
             >
                 {/* Trang 1 của form đăng ký */}

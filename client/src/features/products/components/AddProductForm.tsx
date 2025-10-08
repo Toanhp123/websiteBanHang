@@ -28,6 +28,7 @@ function AddProductForm() {
     } = useForm<AddProductFormInputs>({
         resolver: yupResolver(addProductSchema),
         defaultValues: {
+            // @ts-expect-error yup type mismatch
             mainImage: null,
         },
     });
@@ -106,6 +107,7 @@ function AddProductForm() {
     return (
         <form
             className="grid grid-cols-5 gap-6"
+            // @ts-expect-error yup type mismatch
             onSubmit={handleSubmit(handleAddProduct)}
         >
             <div className="col-span-3 space-y-6">

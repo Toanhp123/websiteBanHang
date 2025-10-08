@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getBlogCategory } from "../services/blog.api";
 import type { BlogCategory } from "../types/blog.type";
-import { Input } from "@/components/shared";
 
 function ListBlogCategory() {
     const [categories, setCategories] = useState<BlogCategory[]>([]);

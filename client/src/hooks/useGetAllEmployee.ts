@@ -7,7 +7,7 @@ export const useGetAllEmployee = () => {
 
     const handleGetAllEmployee = async () => {
         try {
-            const res = await getAllEmployee();
+            const res = await getAllEmployee(false);
 
             if (res) {
                 setEmployee(res);

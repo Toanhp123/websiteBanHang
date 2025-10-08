@@ -126,7 +126,7 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
                                         className="h-8 w-8 rounded-full hover:cursor-pointer hover:bg-gray-300"
                                         onClick={() =>
                                             handleOpenEditMenu(
-                                                discount.promotion_id,
+                                                discount.promotion_id ?? -1,
                                             )
                                         }
                                     >
@@ -141,7 +141,7 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
                                                     onClick={() =>
                                                         popup({
                                                             discount:
-                                                                discount.promotion_id.toString(),
+                                                                discount.promotion_id?.toString(),
                                                             mode: "edit",
                                                         })
                                                     }
@@ -153,7 +153,8 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
                                                     className="disabled:text-disable flex flex-1 items-center rounded-2xl px-3 font-semibold text-red-600 hover:cursor-pointer hover:bg-gray-300 hover:text-red-500"
                                                     onClick={() =>
                                                         handleChangeDiscountStatus(
-                                                            discount.promotion_id,
+                                                            discount.promotion_id ??
+                                                                -1,
                                                             discount.promotion_status,
                                                         )
                                                     }
@@ -171,7 +172,7 @@ function DiscountListTable({ id, popup }: EditPopupPros) {
                                                     onClick={() =>
                                                         popup({
                                                             discount:
-                                                                discount.promotion_id.toString(),
+                                                                discount.promotion_id?.toString(),
                                                             mode: "detail",
                                                         })
                                                     }

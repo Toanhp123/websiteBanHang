@@ -3,7 +3,7 @@ import type { SortOptions, SortOptionsState } from "../types/filter.type";
 import type { RootState } from "@/stores/store";
 
 const initialState: SortOptionsState = {
-    option: "latest",
+    option: "Mới nhất",
 };
 
 export const OptionSortProduct = createSlice({

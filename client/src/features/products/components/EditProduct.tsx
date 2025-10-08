@@ -29,6 +29,7 @@ function EditProduct({ id, popup }: EditPopupPros) {
         setValue,
         formState: { errors },
     } = useForm<EditProductFormInputs>({
+        // @ts-expect-error yup type mismatch
         resolver: yupResolver(editProductSchema),
         defaultValues: {
             product_name: "",

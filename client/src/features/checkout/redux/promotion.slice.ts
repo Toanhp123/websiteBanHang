@@ -9,17 +9,17 @@ const initialState: PromotionDetail = {
     valid_to: "",
     distribution_type: "share",
     range_apply: "invoice",
-
-    // Effect
-    effect_type_name: "",
-    effect_product_id: null,
-    effect_value: "",
-
-    // Rule
-    rule_type_name: "",
-    rule_operator: ">=",
-    rule_value: "",
-    rule_product_id: null,
+    promotion_status: "active",
+    created_at: "",
+    rules: [],
+    effects: {
+        effect_id: 0,
+        effect_value: "",
+        product_id: null,
+        effect_type_id: 0,
+        effect_type: "",
+        effect_description: "",
+    },
 };
 
 const promotionSlice = createSlice({

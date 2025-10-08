@@ -3,9 +3,7 @@ import type {
     LoginCredentials,
     LoginResponse,
     RefreshResponse,
-    RegisterCredentials,
     RegisterResponse,
-    UserInfo,
 } from "../types/auth.type";
 import type { RegisterFormInputs } from "../validations/register.schema";
 
