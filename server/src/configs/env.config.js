@@ -3,6 +3,7 @@ const env = require("env-var");
 module.exports = {
 	PORT: env.get("PORT").default(80).asPortNumber(),
 
+	DATABASE_URL: env.get("DATABASE_URL").required().asString(),
 	DB_HOST: env.get("DB_HOST").required().asString(),
 	DB_USER: env.get("DB_USER").required().asString(),
 	DB_NAME: env.get("DB_NAME").required().asString(),

@@ -22,15 +22,11 @@ function sqlLogger(msg) {
 	}
 }
 
-const sequelize = new Sequelize(
-	envConfig.DB_NAME,
-	envConfig.DB_USER,
-	envConfig.DB_PASS,
-	{
-		host: envConfig.DB_HOST,
-		dialect: "mysql",
-		logging: sqlLogger,
-	}
-);
-
+const sequelize = new Sequelize(envConfig.DATABASE_URL, {
+	dialect: "mysql",
+	logging: sqlLogger,
+	dialectOptions: {
+		connectTimeout: 10000,
+	},
+});
 module.exports = sequelize;
